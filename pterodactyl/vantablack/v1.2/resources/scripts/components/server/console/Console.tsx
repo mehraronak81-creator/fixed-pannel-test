@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ITerminalOptions, Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { SearchAddon } from 'xterm-addon-search';
-import { SearchAddonBar } from 'xterm-addon-search-bar';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import { ServerContext } from '@/state/server';
@@ -62,17 +61,19 @@ interface Props {
 export default ({ fullConsole }: Props) => {
     const { t } = useTranslation('vantablack/server/console');
     const [consoleLog, setConsoleLog] = useState<string[]>([]);
-    const [isCopied, setCopied] = useState<Boolean>(false);
+    const [isCopied, setCopied] = useState<boolean>(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
     const daemonText = ServerContext.useStoreState((state) => state.server.data?.daemonText);
     const containerText = ServerContext.useStoreState((state) => state.server.data?.containerText);
 
     const TERMINAL_PRELUDE = `\u001b[1m\u001b[33m${containerText} \u001b[0m`;
     const TERMINAL_DAEMON =  `\u001b[1m\u001b[33m${daemonText}\u001b[0m`;
     const ref = useRef<HTMLDivElement>(null);
+    const searchInput = useRef<HTMLInputElement>(null);
     const terminal = useMemo(() => new Terminal({ ...terminalProps }), []);
     const fitAddon = useMemo(() => new FitAddon(), []);
     const searchAddon = useMemo(() => new SearchAddon(), []);
-    const searchBar = useMemo(() => new SearchAddonBar({ searchAddon }), [searchAddon]);
     const webLinksAddon = useMemo(() => new WebLinksAddon(), []);
     const { connected, instance } = ServerContext.useStoreState((state) => state.socket);
     const [canSendCommands] = usePermissions(['control.console']);
@@ -97,11 +98,6 @@ export default ({ fullConsole }: Props) => {
 
         return () => window.removeEventListener('keydown', onShortcut);
     }, [clearConsole]);
-    // SearchAddonBar has hardcoded z-index: 999 :(
-    const zIndex = `
-    .xterm-search-bar__addon {
-        z-index: 10;
-    }`;
 
     const addLog = (data: string) => {
         setConsoleLog((prevLog) => [...prevLog, data.startsWith('>') ? data.substring(1) : data]);
@@ -179,12 +175,10 @@ export default ({ fullConsole }: Props) => {
         if (connected && ref.current && !terminal.element) {
             terminal.loadAddon(fitAddon);
             terminal.loadAddon(searchAddon);
-            terminal.loadAddon(searchBar);
             terminal.loadAddon(webLinksAddon);
 
             terminal.open(ref.current);
             fitAddon.fit();
-            searchBar.addNewStyle(zIndex);
 
             // Add support for capturing keys
             terminal.attachCustomKeyEventHandler((e: KeyboardEvent) => {
@@ -193,15 +187,17 @@ export default ({ fullConsole }: Props) => {
                     return false;
                 } else if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                     e.preventDefault();
-                    searchBar.show();
+                    setSearchOpen(true);
+                    window.requestAnimationFrame(() => searchInput.current?.focus());
                     return false;
                 } else if (e.key === 'Escape') {
-                    searchBar.hidden();
+                    setSearchOpen(false);
+                    setSearchTerm('');
                 }
                 return true;
             });
         }
-    }, [terminal, connected]);
+    }, [terminal, connected, fitAddon, searchAddon, webLinksAddon]);
 
     useEventListener(
         'resize',
@@ -288,7 +284,38 @@ export default ({ fullConsole }: Props) => {
                     <span>{t('console')}</span>
                     <span className={styles.console_hint}>{connected ? 'LIVE' : 'CONNECTING'}</span>
                 </div>
-                <span className={styles.console_shortcut}>Ctrl/Cmd + F search · Ctrl/Cmd + L clear</span>
+                {searchOpen && (
+                    <div className="flex items-center gap-2">
+                        <input
+                            ref={searchInput}
+                            value={searchTerm}
+                            onChange={(event) => {
+                                const value = event.target.value;
+                                setSearchTerm(value);
+                                if (value) searchAddon.findNext(value);
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    if (searchTerm) {
+                                        event.shiftKey ? searchAddon.findPrevious(searchTerm) : searchAddon.findNext(searchTerm);
+                                    }
+                                }
+                                if (event.key === 'Escape') {
+                                    setSearchOpen(false);
+                                    setSearchTerm('');
+                                }
+                            }}
+                            placeholder="Search output"
+                            aria-label="Search console output"
+                            className="w-36 rounded border border-gray-600 bg-gray-900/70 px-2 py-1 text-xs text-gray-100 outline-none focus:border-violet-400"
+                        />
+                        <button type="button" onClick={() => searchTerm && searchAddon.findPrevious(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Previous match">ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Ëœ</button>
+                        <button type="button" onClick={() => searchTerm && searchAddon.findNext(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Next match">ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“</button>
+                        <button type="button" onClick={() => { setSearchOpen(false); setSearchTerm(''); }} className="text-xs text-gray-300 hover:text-white" aria-label="Close search">ÃƒÆ’Ã¢â‚¬â€</button>
+                    </div>
+                )}
+                <span className={styles.console_shortcut}>Ctrl/Cmd + F search Ãƒâ€šÃ‚Â· Ctrl/Cmd + L clear</span>
             </div>
             <div
                 className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}

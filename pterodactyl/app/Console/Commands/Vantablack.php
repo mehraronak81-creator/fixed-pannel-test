@@ -26,12 +26,12 @@ class Vantablack extends Command
         if ($action === null) {
             $this->line("
             <title>
-            ██╗   ██╗ █████╗ ███╗   ██╗████████╗ █████╗ ██╗  ██╗ ██████╗ ███████╗████████╗
-            ██║   ██║██╔══██╗████╗  ██║╚══██╔══╝██╔══██╗██║  ██║██╔═══██╗██╔════╝╚══██╔══╝
-            ██║   ██║███████║██╔██╗ ██║   ██║   ███████║███████║██║   ██║███████╗   ██║
-            ╚██╗ ██╔╝██╔══██║██║╚██╗██║   ██║   ██╔══██║██╔══██║██║   ██║╚════██║   ██║
-             ╚████╔╝ ██║  ██║██║ ╚████║   ██║   ██║  ██║██║  ██║╚██████╔╝███████║   ██║
-              ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝
+            â–ˆâ–ˆâ•—   â–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ•—   â–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—  â–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
+            â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ•‘â•šâ•â•â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â•â•šâ•â•â–ˆâ–ˆâ•”â•â•â•
+            â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â–ˆâ–ˆâ•— â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—   â–ˆâ–ˆâ•‘
+            â•šâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘â•šâ–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â•šâ•â•â•â•â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘
+             â•šâ–ˆâ–ˆâ–ˆâ–ˆâ•”â• â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘ â•šâ–ˆâ–ˆâ–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘
+              â•šâ•â•â•â•  â•šâ•â•  â•šâ•â•â•šâ•â•  â•šâ•â•â•â•   â•šâ•â•   â•šâ•â•  â•šâ•â•â•šâ•â•  â•šâ•â• â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â•   â•šâ•â•
 
             VantaHost Control Panel - Vantablack by Void Development</title>
 
@@ -57,7 +57,7 @@ class Vantablack extends Command
             $this->info("This command skips frequently used files by addons during theme updating to avoid losing your addon customizations. If you still experience an error after updating please reinstall.");
         }
 
-        $confirmation = $this->confirm("Are all the required dependencies installed from the readme file?", "yes");
+        $confirmation = $this->confirm("Install VantaHost on this Pterodactyl panel?", true);
         if (!$confirmation) {
             return;
         }
@@ -114,31 +114,34 @@ class Vantablack extends Command
                 }
             }
         } else {
-            $this->info("Controllers already present in the target directory — skipping controller copy.");
+            $this->info("Controllers already present in the target directory â€” skipping controller copy.");
+        }
+
+        if (!File::exists(base_path("package.json"))) {
+            $this->error("Pterodactyl package.json is missing. Run this command from a vanilla Pterodactyl 1.14.1 panel root.");
+            return;
         }
 
         $this->info("Migrating database...");
         Artisan::call('migrate', ['--force' => true]);
         $this->info(Artisan::output());
-
-        $this->info("Installing required packages...");
+        $this->info("Installing frontend dependencies from the committed package manifest...");
         $this->info("This can take a minute...");
-        
-        $packages = ['@types/md5', 'md5', 'react-icons', '@types/bbcode-to-react', 'bbcode-to-react', 'i18next-browser-languagedetector', 'history', 'react-router', 'xterm-addon-search-bar'];
-        
-        // Check if yarn is available, otherwise fallback to npm
+
+        // The archive ships the exact 1.14.1-compatible package.json and yarn.lock.
+        // Never run `yarn add` here: it can silently upgrade the panel dependency graph.
         $hasYarn = (new Process(['yarn', '--version']))->run() === 0;
 
         if ($hasYarn) {
-            if (!$this->runProcess(array_merge(['yarn', 'add'], $packages, ['--ignore-engines']))) {
+            if (!$this->runProcess(['yarn', 'install', '--frozen-lockfile', '--non-interactive'])) {
                 return;
             }
             $this->info("Building panel assets with yarn...");
-            if (!$this->runProcess(['yarn', 'build:production'])) {
+            if (!$this->runProcess(['yarn', 'run', 'build:production'])) {
                 return;
             }
         } else {
-            if (!$this->runProcess(array_merge(['npm', 'install'], $packages, ['--legacy-peer-deps']))) {
+            if (!$this->runProcess(['npm', 'install', '--no-audit', '--no-fund'])) {
                 return;
             }
             $this->info("Building panel assets with npm...");
@@ -153,14 +156,14 @@ class Vantablack extends Command
         Artisan::call('optimize');
         $this->info(Artisan::output());
 
-        $message = $isUpdate ? '│    ──   Theme updated   ──   │' : '│    ──   Theme installed   ──   │';
+        $message = $isUpdate ? 'â”‚    â”€â”€   Theme updated   â”€â”€   â”‚' : 'â”‚    â”€â”€   Theme installed   â”€â”€   â”‚';
         $this->line("
-            ╭───────────────────────────────╮
-            │                               │
+            â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
+            â”‚                               â”‚
             $message
-            │    ╰─╴   successfully   ╶─╯   │
-            │                               │
-            ╰───────────────────────────────╯
+            â”‚    â•°â”€â•´   successfully   â•¶â”€â•¯   â”‚
+            â”‚                               â”‚
+            â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
 
             Note: You may need to set file permissions manually:
             chown -R www-data:www-data " . base_path() . "/*

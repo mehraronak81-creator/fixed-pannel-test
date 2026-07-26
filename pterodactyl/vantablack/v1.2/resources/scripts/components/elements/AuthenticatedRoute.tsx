@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useStoreState } from '@/state/hooks';
 
 export default ({ children, ...props }: Omit<RouteProps, 'render'>) => {

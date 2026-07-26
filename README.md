@@ -1,62 +1,63 @@
 # VantaHost Vantablack Theme
 
-Vantablack is the premium dark interface for VantaHost, built for the Pterodactyl panel. It is focused on a fast server workflow: a clear dashboard, live console access, polished navigation, and a powerful VantaHost Studio admin area.
+VantaHost Vantablack is a production-oriented dark interface overlay for Pterodactyl Panel 1.14.1. It is built for VantaHost by Vantablack, a Void Development company.
 
-VantaHost is built by Vantablack, a Void Development company.
+## What is included
 
-## Highlights
+- A polished user command center with responsive server cards, quick actions, activity, status surfaces, and direct console access.
+- A full console workflow with command history, copy-log, pop-out support, keyboard shortcuts, native terminal search, power controls, and reconnect-safe layout handling.
+- VantaHost Studio administration for branding, metadata, layout, components, colors, styling, mail, announcements, live preview, and health/status checks.
+- Permission-aware routes and actions for files, backups, schedules, network, startup, and server activity.
+- VantaHost branding and the official support community: https://discord.gg/2vx6tCXmr4
+- Only the maintained v1.2 archive. The legacy v1.1 archive has been removed.
 
-- Always-visible live console module on every server dashboard.
-- Dedicated full-screen console route with command history, search, copy-log, pop-out, and power controls.
-- Permission-aware dashboard quick actions for files, backups, schedules, and activity.
-- Console keyboard workflow: Ctrl/Cmd + F searches output and Ctrl/Cmd + L clears the terminal.
-- VantaHost Studio responsive navigation with a Ctrl+K quick-jump command palette.
-- Live dashboard iframe preview and one-click preview/support shortcuts for administrators.
-- User command-center header with server totals, account controls, and direct console actions on every server card.
-- Modern glass surfaces, responsive navigation, accessible focus states, and high-contrast status colors.
-- VantaHost Studio controls for branding, metadata, layout, components, styling, colors, mail, announcements, advanced options, live preview, and status checks.
-- Canonical VantaHost Discord support link: https://discord.gg/2vx6tCXmr4
-- Only the current v1.2 theme archive is included.
+## Compatibility
 
-## Requirements
+This release targets a vanilla Pterodactyl Panel v1.14.1 installation:
 
-- Pterodactyl panel compatible with this theme archive.
-- PHP 8.3 or newer.
-- Node.js 22 or newer.
-- Yarn or npm.
-- The installer automatically adds the theme-only frontend packages, including react-icons and xterm-addon-search-bar.
+- Ubuntu 24.04
+- PHP 8.3
+- Laravel 11
+- Node.js 22 or newer
+- npm or Yarn 1.x
+- Composer 2
 
-## Installation
+The repository contains an overlay under `pterodactyl/`; it is not a replacement for the upstream panel source. Start with a clean Pterodactyl v1.14.1 panel and copy the overlay into it.
 
-1. Copy the contents of pterodactyl/ into the Pterodactyl panel root.
-2. From the panel root, run:
+## Fresh installation
 
-   ~~~bash
-   php artisan vantablack install
-   ~~~
+```bash
+git clone https://github.com/mehraronak81-creator/vantahost-vantablack-theme.git
+cp -a vantahost-vantablack-theme/pterodactyl/. /var/www/pterodactyl
+cd /var/www/pterodactyl
+composer install --no-dev --optimize-autoloader
+npm install
+npm run build:production
+php artisan vantablack install
+php artisan optimize
+php artisan up
+```
 
-3. Select the available v1.2 archive when prompted.
-4. Complete the database and asset build steps shown by the installer.
-5. Run application commands as the web-server user where possible. If ownership needs repair, apply it before clearing or rebuilding caches:
+The repository ships the Pterodactyl 1.14.1-compatible `package.json` and a valid `yarn.lock`. The installer uses those manifests and runs a frozen Yarn install when Yarn is available, or a normal npm install otherwise. No manual package installation, `--force`, or source edits are required.
 
-   ~~~bash
-   chown -R www-data:www-data /var/www/pterodactyl
-   sudo -u www-data php artisan optimize:clear
-   sudo -u www-data php artisan optimize
-   ~~~
+Run the installer from the panel root. It verifies that the target is a Pterodactyl 1.14.1-style panel, installs the selected v1.2 archive, runs migrations, installs frontend dependencies, and builds production assets.
 
-6. Open the admin panel and use VantaHost Studio to finish your branding and layout setup.
+For production deployments, keep the panel files owned by the web-server account and run Laravel cache commands as that account. This prevents root-owned cache and log files from causing permission failures.
 
-## Safe update notes
+## Verification
 
-The legacy archive has been removed. Keep a panel backup before installing or updating, and do not regenerate Laravel caches as root when the panel runs as www-data; doing so can recreate root-owned cache files and cause permission errors.
+The merged overlay was verified against the official Pterodactyl v1.14.1 source with:
 
-## Support
+- frozen Yarn install using Yarn 1.22.22;
+- plain `npm install` with no `--force` or legacy peer override;
+- TypeScript `tsc --noEmit`;
+- production webpack build;
+- stale import/dependency scans for the removed xterm search-bar, Unicode, router, and breakpoint APIs.
 
-For help, join the VantaHost Discord community:
+PHP/Composer and a live browser/server are deployment-time requirements; the Windows audit environment cannot execute `php artisan` or a live Ubuntu Pterodactyl panel.
 
-https://discord.gg/2vx6tCXmr4
+## Support and credits
 
-## Credits
+Join the VantaHost Discord community at https://discord.gg/2vx6tCXmr4.
 
 VantaHost is powered by Vantablack and Pterodactyl, with Void Development as the parent company.

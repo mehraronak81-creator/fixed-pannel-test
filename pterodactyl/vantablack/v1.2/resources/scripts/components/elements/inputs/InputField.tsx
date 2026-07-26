@@ -8,7 +8,7 @@ enum Variant {
     Loose,
 }
 
-interface InputFieldProps extends React.ComponentProps<'input'> {
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     variant?: Variant;
 }
 

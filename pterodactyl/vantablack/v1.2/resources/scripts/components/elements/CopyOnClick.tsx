@@ -31,10 +31,11 @@ const CopyOnClick = ({ text, showInNotification = true, children }: CopyOnClickP
         throw new Error('Component passed to <CopyOnClick/> must be a valid React element.');
     }
 
+    const childElement = React.Children.only(children) as React.ReactElement<{ className?: string; onClick?: (event: React.MouseEvent<HTMLElement>) => void }>;
     const child = !text
         ? React.Children.only(children)
-        : React.cloneElement(React.Children.only(children), {
-              className: classNames(children.props.className || '', 'cursor-pointer'),
+        : React.cloneElement(childElement, {
+              className: classNames(childElement.props.className || '', 'cursor-pointer'),
               onClick: (e: React.MouseEvent<HTMLElement>) => {
                   copy(String(text));
                   setCopied(true);
@@ -43,8 +44,8 @@ const CopyOnClick = ({ text, showInNotification = true, children }: CopyOnClickP
                     copySound.volume = 0.2;
                     copySound.play();
                   }
-                  if (typeof children.props.onClick === 'function') {
-                      children.props.onClick(e);
+                  if (typeof childElement.props.onClick === 'function') {
+                      childElement.props.onClick(e);
                   }
               },
           });

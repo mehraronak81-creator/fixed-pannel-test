@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosProgressEvent } from 'axios';
 import getFileUploadUrl from '@/api/server/files/getFileUploadUrl';
 import tw from 'twin.macro';
 import { Button } from '@/components/elements/button/index';
@@ -61,7 +61,7 @@ export default ({ className }: WithClassname) => {
         return () => timeouts.value.forEach(clearTimeout);
     }, []);
 
-    const onUploadProgress = (data: ProgressEvent, name: string) => {
+    const onUploadProgress = (data: AxiosProgressEvent, name: string) => {
         setUploadProgress({ name, loaded: data.loaded });
     };
 
@@ -110,8 +110,8 @@ export default ({ className }: WithClassname) => {
                 <Fade appear in={visible.value} timeout={75} key={'upload_modal_mask'} unmountOnExit>
                     <ModalMask
                         onClick={() => (visible.value = false)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={(e) => {
+                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => e.preventDefault()}
+                        onDrop={(e: React.DragEvent<HTMLDivElement>) => {
                             e.preventDefault();
                             e.stopPropagation();
 
@@ -140,7 +140,7 @@ export default ({ className }: WithClassname) => {
                 type={'file'}
                 ref={fileUploadInput}
                 css={tw`hidden`}
-                onChange={(e) => {
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     if (!e.currentTarget.files) return;
 
                     onFileSubmission(e.currentTarget.files);

@@ -8,7 +8,7 @@ import PermissionRoute from '@/components/elements/PermissionRoute';
 import Spinner from '@/components/elements/Spinner';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import TransitionRouter from '@/TransitionRouter';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface Props {

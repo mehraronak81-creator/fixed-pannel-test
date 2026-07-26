@@ -1,0 +1,5 @@
+# Local dependency and build output
+node_modules/
+package-lock.json
+pterodactyl/public/assets/*.js
+pterodactyl/public/assets/*.map

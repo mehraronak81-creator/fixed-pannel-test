@@ -97,7 +97,7 @@ const VariableBox = ({ variable }: Props) => {
                         {selectValues.length > 0 ? (
                             <>
                                 <Select
-                                    onChange={(e) => setVariableValue(e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setVariableValue(e.target.value)}
                                     name={variable.envVariable}
                                     defaultValue={variable.serverValue}
                                     disabled={!canEdit || !variable.isEditable}
@@ -115,7 +115,7 @@ const VariableBox = ({ variable }: Props) => {
                         ) : (
                             <>
                                 <Input
-                                    onKeyUp={(e) => {
+                                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                         if (canEdit && variable.isEditable) {
                                             setVariableValue(e.currentTarget.value);
                                         }

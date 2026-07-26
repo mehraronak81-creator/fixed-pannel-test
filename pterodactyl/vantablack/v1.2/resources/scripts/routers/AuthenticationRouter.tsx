@@ -9,7 +9,7 @@ import LoginCheckpointContainer from '@/components/auth/LoginCheckpointContainer
 import { SupportIcon } from '@heroicons/react/outline';
 import { FaDiscord } from "react-icons/fa";
 import { NotFound } from '@/components/elements/ScreenBlock';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const Switches = () => {

@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <div className={'w-[250px]'}>
-            <Select onChange={event => handleChange(event.target.value)} value={(window.location.pathname.split('/',3).join('/'))} className={'selection-container'}>
+            <Select onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleChange(event.target.value)} value={(window.location.pathname.split('/',3).join('/'))} className={'selection-container'}>
                 <option value={`/`} css="display:none;">
                     {t('select-a-server')}
                 </option>
