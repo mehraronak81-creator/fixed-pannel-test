@@ -1,63 +1,121 @@
-# VantaHost Vantablack Theme
+# Fixed Pannel Test — VantaHost Vantablack
 
-VantaHost Vantablack is a production-oriented dark interface overlay for Pterodactyl Panel 1.14.1. It is built for VantaHost by Vantablack, a Void Development company.
+A production-ready VantaHost Vantablack theme overlay for Pterodactyl Panel 1.14.1.
 
-## What is included
-
-- A polished user command center with responsive server cards, quick actions, activity, status surfaces, and direct console access.
-- A full console workflow with command history, copy-log, pop-out support, keyboard shortcuts, native terminal search, power controls, and reconnect-safe layout handling.
-- VantaHost Studio administration for branding, metadata, layout, components, colors, styling, mail, announcements, live preview, and health/status checks.
-- Permission-aware routes and actions for files, backups, schedules, network, startup, and server activity.
-- VantaHost branding and the official support community: https://discord.gg/2vx6tCXmr4
-- Only the maintained v1.2 archive. The legacy v1.1 archive has been removed.
+Built for VantaHost by Vantablack. Parent company: Void Development.
 
 ## Compatibility
 
-This release targets a vanilla Pterodactyl Panel v1.14.1 installation:
-
+- Pterodactyl Panel 1.14.1
 - Ubuntu 24.04
 - PHP 8.3
 - Laravel 11
-- Node.js 22 or newer
-- npm or Yarn 1.x
+- Node.js 22+
 - Composer 2
+- npm or Yarn 1.x
+- MySQL/MariaDB supported by the upstream Pterodactyl release
 
-The repository contains an overlay under `pterodactyl/`; it is not a replacement for the upstream panel source. Start with a clean Pterodactyl v1.14.1 panel and copy the overlay into it.
+This repository is an overlay. It must be applied to a clean Pterodactyl v1.14.1 panel; it is not a standalone replacement for the upstream panel.
+
+## Features
+
+- Premium responsive user dashboard and server command center.
+- Live server console with native output search, command history, copy-log, pop-out, reconnect handling, and power controls.
+- Enhanced server pages for files, backups, schedules, network, startup, activity, and authentication.
+- VantaHost Studio admin controls for branding, metadata, layout, colors, styling, mail, announcements, components, live preview, and health status.
+- Permission-aware routes and actions.
+- VantaHost branding with Discord support at https://discord.gg/2vx6tCXmr4.
+- Maintained v1.2 archive only. Legacy v1.1 is removed.
 
 ## Fresh installation
 
-```bash
-git clone https://github.com/mehraronak81-creator/vantahost-vantablack-theme.git
-cp -a vantahost-vantablack-theme/pterodactyl/. /var/www/pterodactyl
-cd /var/www/pterodactyl
-composer install --no-dev --optimize-autoloader
-npm install
-npm run build:production
-php artisan vantablack install
-php artisan optimize
-php artisan up
-```
+Start with a working, clean Pterodactyl Panel 1.14.1 installation.
 
-The repository ships the Pterodactyl 1.14.1-compatible `package.json` and a valid `yarn.lock`. The installer uses those manifests and runs a frozen Yarn install when Yarn is available, or a normal npm install otherwise. No manual package installation, `--force`, or source edits are required.
+    cd /var/www
 
-Run the installer from the panel root. It verifies that the target is a Pterodactyl 1.14.1-style panel, installs the selected v1.2 archive, runs migrations, installs frontend dependencies, and builds production assets.
+    git clone https://github.com/mehraronak81-creator/fixed-pannel-test.git
+    cp -a fixed-pannel-test/pterodactyl/. /var/www/pterodactyl
 
-For production deployments, keep the panel files owned by the web-server account and run Laravel cache commands as that account. This prevents root-owned cache and log files from causing permission failures.
+    cd /var/www/pterodactyl
+    composer install --no-dev --optimize-autoloader
+    npm install
+    npm run build:production
+    php artisan vantablack install
+    php artisan optimize
+    php artisan up
+
+When the installer asks for a theme version, select v1.2.
+
+The repository ships the compatible package.json and valid yarn.lock. The installer uses the committed manifests, runs Yarn with --frozen-lockfile when Yarn is installed, and falls back to normal npm installation. Do not run manual yarn add, npm install --force, or source edits.
+
+## Applying to an existing panel
+
+Back up the panel and database first, then put the panel into maintenance mode:
+
+    cd /var/www/pterodactyl
+    php artisan down
+
+Clone the theme repository outside the panel and apply the overlay:
+
+    cd /var/www
+    git clone https://github.com/mehraronak81-creator/fixed-pannel-test.git
+    cp -a fixed-pannel-test/pterodactyl/. /var/www/pterodactyl
+    cd /var/www/pterodactyl
+
+Reinstall dependencies and rebuild assets:
+
+    composer install --no-dev --optimize-autoloader
+    npm install
+    npm run build:production
+    php artisan vantablack install
+    php artisan optimize
+    php artisan up
+
+The installer copies the theme files, registers the admin routes/controllers, runs migrations, installs frontend dependencies, builds assets, and clears/rebuilds Laravel caches.
+
+## Permissions
+
+Run panel commands as the same account that owns the panel files. On a standard Ubuntu deployment this is usually www-data:
+
+    chown -R www-data:www-data /var/www/pterodactyl
+    sudo -u www-data php artisan optimize:clear
+    sudo -u www-data php artisan optimize
+
+Do not rebuild Laravel caches as root and then serve the panel as www-data; that creates root-owned cache/log files and causes permission errors.
 
 ## Verification
 
-The merged overlay was verified against the official Pterodactyl v1.14.1 source with:
+The overlay was audited against official Pterodactyl v1.14.1 sources:
 
-- frozen Yarn install using Yarn 1.22.22;
-- plain `npm install` with no `--force` or legacy peer override;
-- TypeScript `tsc --noEmit`;
-- production webpack build;
-- stale import/dependency scans for the removed xterm search-bar, Unicode, router, and breakpoint APIs.
+- Yarn frozen-lockfile installation.
+- Plain npm installation without --force.
+- TypeScript tsc --noEmit.
+- Production webpack compilation.
+- React Router, i18next, React Icons, xterm, and import compatibility checks.
+- Admin route, controller, request, view, and asset checks.
+- Removed v1.1 and obsolete dependency/import checks.
 
-PHP/Composer and a live browser/server are deployment-time requirements; the Windows audit environment cannot execute `php artisan` or a live Ubuntu Pterodactyl panel.
+The Laravel installer and live browser UI must ultimately be tested on the target Ubuntu server because PHP, Composer, and a live Pterodactyl runtime are deployment requirements.
+
+## Troubleshooting
+
+Check the current panel root before installing:
+
+    test -f /var/www/pterodactyl/artisan
+    test -f /var/www/pterodactyl/package.json
+    node --version
+    php --version
+
+If the panel shows stale assets after an update:
+
+    cd /var/www/pterodactyl
+    sudo -u www-data php artisan optimize:clear
+    sudo -u www-data php artisan optimize
+
+If the installer cannot find a theme version, confirm that /var/www/pterodactyl/vantablack/v1.2 exists and that the command is being run from the panel root.
 
 ## Support and credits
 
-Join the VantaHost Discord community at https://discord.gg/2vx6tCXmr4.
+Discord: https://discord.gg/2vx6tCXmr4
 
 VantaHost is powered by Vantablack and Pterodactyl, with Void Development as the parent company.
