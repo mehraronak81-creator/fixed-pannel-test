@@ -57,7 +57,8 @@
                          "xterm-addon-fit":  "^0.5.0",
                          "xterm-addon-search":  "0.5.0",
                          "xterm-addon-web-links":  "^0.6.0",
-                         "yup":  "^0.29.1"
+                         "yup":  "^0.29.1",
+                         "react-router":  "5.3.4"
                      },
     "devDependencies":  {
                             "@babel/core":  "^7.12.1",
