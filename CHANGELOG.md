@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased - complete upstream-overlay consistency audit
+
+- Added pre-installer compatibility overlays for shared themed components, server settings, and Tailwind tokens, so strict TypeScript and Webpack checks succeed both before and after installation.
+- Restored the upstream admin.users.delete route name in the themed admin route file.
+- Added the maintenance Blade view referenced by the registered maintenance middleware.
+- Audited the merged v1.14.1 panel: static named-route references, route controllers, controller and middleware views, source imports, npm lock metadata, and frozen Yarn resolution all resolve.
+
 ## Unreleased - reproducible npm and native console search
 
 - Committed pterodactyl/package-lock.json and regenerated pterodactyl/yarn.lock from the audited manifest. The installer selects npm when the npm lockfile is present.
