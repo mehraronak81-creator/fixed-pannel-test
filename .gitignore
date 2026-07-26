@@ -1,5 +1,7 @@
 # Local dependency and build output
 node_modules/
 package-lock.json
+# Keep the panel npm lockfile for reproducible clean installations.
+!pterodactyl/package-lock.json
 pterodactyl/public/assets/*.js
 pterodactyl/public/assets/*.map

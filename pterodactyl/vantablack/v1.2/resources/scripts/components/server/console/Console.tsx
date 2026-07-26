@@ -310,12 +310,12 @@ export default ({ fullConsole }: Props) => {
                             aria-label="Search console output"
                             className="w-36 rounded border border-gray-600 bg-gray-900/70 px-2 py-1 text-xs text-gray-100 outline-none focus:border-violet-400"
                         />
-                        <button type="button" onClick={() => searchTerm && searchAddon.findPrevious(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Previous match">ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Ëœ</button>
-                        <button type="button" onClick={() => searchTerm && searchAddon.findNext(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Next match">ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“</button>
-                        <button type="button" onClick={() => { setSearchOpen(false); setSearchTerm(''); }} className="text-xs text-gray-300 hover:text-white" aria-label="Close search">ÃƒÆ’Ã¢â‚¬â€</button>
+                        <button type="button" onClick={() => searchTerm && searchAddon.findPrevious(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Previous match">Prev</button>
+                        <button type="button" onClick={() => searchTerm && searchAddon.findNext(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Next match">Next</button>
+                        <button type="button" onClick={() => { setSearchOpen(false); setSearchTerm(''); }} className="text-xs text-gray-300 hover:text-white" aria-label="Close search">Close</button>
                     </div>
                 )}
-                <span className={styles.console_shortcut}>Ctrl/Cmd + F search Ãƒâ€šÃ‚Â· Ctrl/Cmd + L clear</span>
+                <span className={styles.console_shortcut}>Ctrl/Cmd + F search | Ctrl/Cmd + L clear</span>
             </div>
             <div
                 className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}

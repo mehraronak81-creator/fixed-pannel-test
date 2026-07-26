@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased - reproducible npm and native console search
+
+- Committed pterodactyl/package-lock.json and regenerated pterodactyl/yarn.lock from the audited manifest. The installer selects npm when the npm lockfile is present.
+- Kept the React-based console search controls backed by xterm-addon-search; both pre-installer and theme Console.tsx files now contain no SearchBarAddon integration.
+- Confirmed styled-components-breakpoint is not required: the theme uses its local styled-components breakpoint helper, and no source file imports the third-party package.
+
 ## Unreleased - clean Pterodactyl 1.14.1 installation audit
 
 ### Dependency and lockfile fixes
