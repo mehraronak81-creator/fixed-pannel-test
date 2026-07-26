@@ -50,7 +50,7 @@
                          "sockette":  "^2.0.6",
                          "styled-components":  "^5.3.0",
                          "swr":  "^0.2.3",
-                         "tailwindcss":  "^3.0.24",
+                         "tailwindcss":  "3.0.24",
                          "use-fit-text":  "^2.4.0",
                          "uuid":  "^13.0.0",
                          "xterm":  "^4.19.0",

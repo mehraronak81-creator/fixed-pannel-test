@@ -1,4 +1,4 @@
-# Fixed Pannel Test — VantaHost Vantablack
+# Fixed Pannel Test â€” VantaHost Vantablack
 
 A production-ready VantaHost Vantablack theme overlay for Pterodactyl Panel 1.14.1.
 
@@ -46,7 +46,7 @@ Start with a working, clean Pterodactyl Panel 1.14.1 installation.
 
 When the installer asks for a theme version, select v1.2.
 
-The repository ships the compatible package.json and valid yarn.lock. The installer uses the committed manifests, runs Yarn with --frozen-lockfile when Yarn is installed, and falls back to normal npm installation. Do not run manual yarn add, npm install --force, or source edits.
+The repository ships the compatible package.json and valid yarn.lock. The installer uses npm when package-lock.json exists, which matches the documented npm workflow. On Yarn-only deployments it uses Yarn with --frozen-lockfile. Do not run manual yarn add, npm install --force, or source edits.
 
 ## Applying to an existing panel
 

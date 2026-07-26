@@ -1,30 +1,46 @@
 # Changelog
 
-## [Unreleased] — Pterodactyl 1.14.1 audit
+## Unreleased - clean Pterodactyl 1.14.1 installation audit
 
-### Fixed
+### Dependency and lockfile fixes
 
-- Rebased the shipped frontend manifest and lockfile on the official Pterodactyl 1.14.1 dependency baseline.
-- Added and pinned all theme imports: BBCode rendering, MD5, language detection, history, Redux peer support, React type packages, and `react-icons`.
-- Removed the invalid/obsolete xterm search-bar and Unicode11 dependencies, plus the unused breakpoint and path-browserify packages.
-- Replaced the incompatible xterm search-bar API with a native console search toolbar backed by `xterm-addon-search`.
-- Pinned React DOM to the React 16.14-compatible hot-loader alias and aligned `@preact/signals-react`, `react-is`, and Redux peer dependencies.
-- Corrected React Router v5 imports, preserving `StaticContext` from `react-router`.
-- Updated i18next backend typing and browser language detection for the current installed i18next stack.
-- Fixed TypeScript event, upload-progress, input inheritance, clone-element, translation, and component-name casing issues.
-- Renamed the theme announcement component to avoid a Windows case-insensitive collision with Pterodactyl's `alert` directory.
-- Made asset cleanup cross-platform and removed the Node 22 `DEP0180` webpack warning from the production scripts.
-- Updated the installer to use the committed manifest/lockfile rather than floating package installs, with Yarn frozen-lockfile and npm fallbacks.
-- Added package metadata and refreshed installation documentation for VantaHost branding and Void Development ownership.
+- Rebased the manifest on the Pterodactyl Panel 1.14.1 dependency baseline and regenerated the Yarn 1 lockfile.
+- Added all direct theme imports to package.json: bbcode-to-react, md5, i18next browser language detection, history, React Icons, React Router, and their required type packages.
+- Pinned React Router 5.3.4 to match React Router DOM v5 and support the direct StaticContext imports.
+- Pinned React DOM to the React 16.14 hot-loader alias, @preact/signals-react 2.0.0, react-is 16.13.1, Redux 4.2.1, and tslib 2.8.1 to satisfy the installed peer graph without force flags.
+- Pinned Tailwind CSS 3.0.24 and @tailwindcss/line-clamp 0.4.4. This matches the Pterodactyl 1.14 Tailwind and Twin.macro configuration and prevents the modern Tailwind line-clamp warning.
+- Kept xterm 4.19.0 with xterm-addon-fit 0.5.0, xterm-addon-search 0.5.0, and xterm-addon-web-links 0.6.0.
 
-### Verified
+### Removed or replaced incompatible integrations
 
-- Yarn 1.22.22 frozen install.
-- Plain npm install without `--force`, `--legacy-peer-deps`, or manual package additions.
-- TypeScript `tsc --noEmit`.
-- Production webpack build against a clean merged Pterodactyl 1.14.1 tree.
-- Removed v1.1 archive and stale incompatible imports/dependencies.
+- Removed xterm-addon-unicode11 because its published 0.6.0 peer dependency requires xterm 5.
+- Removed xterm-addon-search-bar and replaced its incompatible API with native React search controls backed by xterm-addon-search.
+- Removed styled-components-breakpoint and replaced it with a local styled-components breakpoint helper.
+- Removed the obsolete path-browserify type package and the unnecessary runtime line-clamp configuration from the theme config.
+- Replaced Windows-conflicting Alert.tsx theme naming with VantaAnnouncement.tsx.
 
-### Deployment note
+### Build and installer fixes
 
-The local audit environment is Windows and does not have PHP or Composer installed. The Laravel installer, migrations, route registration, and live browser console must be exercised on the target Ubuntu 24.04 Pterodactyl 1.14.1 server.
+- Added root compatibility overlays for the console, breakpoint helper, and Tailwind configuration. They are copied before the first npm build, so the documented command order works on a vanilla panel before the theme archive is installed.
+- Restored the upstream Tailwind configuration for the pre-installer build and registered line-clamp in the v1.2 theme Tailwind configuration for the post-installer build.
+- Updated the installer to use committed manifests instead of floating package installation commands.
+- Updated the installer to use npm whenever package-lock.json exists, avoiding mixed npm/Yarn lockfile warnings in the documented npm workflow. Yarn-only installations still use frozen-lockfile mode.
+- Added cross-platform asset cleanup and scoped Node 22 DEP0180 warning suppression.
+
+### Application compatibility fixes
+
+- Corrected React Router v5 imports, i18next backend typing and browser detection, React Icons compatibility, TypeScript event types, upload progress types, input inheritance, translation props, and clone-element typing.
+- Restored admin.system-health.json and verified the VantaHost admin controllers and request classes exist.
+- Verified there are no source imports of xterm-addon-search-bar, xterm-addon-unicode11, styled-components-breakpoint, or the removed line-clamp plugin in the theme source.
+
+### Validation completed
+
+- Plain npm install in a clean merged Pterodactyl 1.14.1 panel with no --force and no legacy-peer-deps.
+- Pre-installer npm run build:production against vanilla Pterodactyl plus the copied overlay.
+- Theme archive application followed by TypeScript tsc --noEmit.
+- Post-installer npm run build:production against the full themed panel.
+- Yarn 1.22.22 frozen-lockfile installation using the committed lockfile.
+
+### Environment boundary
+
+PHP, Composer, Laravel migrations, artisan route execution, and live browser smoke testing require an Ubuntu Pterodactyl runtime. The Windows audit workspace does not provide PHP or Composer, so those commands were statically reviewed but cannot be executed here.

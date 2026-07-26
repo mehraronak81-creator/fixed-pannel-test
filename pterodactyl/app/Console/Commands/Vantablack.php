@@ -3,199 +3,128 @@
 namespace Pterodactyl\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 
 class Vantablack extends Command
 {
     protected $signature = 'vantablack {action?}';
+
     protected $description = 'VantaHost theme commands for Pterodactyl.';
 
     public function handle()
     {
-        $action = $this->argument('action');
-
-        $title = new OutputFormatterStyle('#fff', null, ['bold']);
-        $this->output->getFormatter()->setStyle('title', $title);
-
-        $b = new OutputFormatterStyle(null, null, ['bold']);
-        $this->output->getFormatter()->setStyle('b', $b);
-
-        if ($action === null) {
-            $this->line("
-            <title>
-            â–ˆâ–ˆâ•—   â–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ•—   â–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—  â–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-            â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ•‘â•šâ•â•â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â•â•šâ•â•â–ˆâ–ˆâ•”â•â•â•
-            â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â–ˆâ–ˆâ•— â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—   â–ˆâ–ˆâ•‘
-            â•šâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘â•šâ–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â•šâ•â•â•â•â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘
-             â•šâ–ˆâ–ˆâ–ˆâ–ˆâ•”â• â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘ â•šâ–ˆâ–ˆâ–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘
-              â•šâ•â•â•â•  â•šâ•â•  â•šâ•â•â•šâ•â•  â•šâ•â•â•â•   â•šâ•â•   â•šâ•â•  â•šâ•â•â•šâ•â•  â•šâ•â• â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â•   â•šâ•â•
-
-            VantaHost Control Panel - Vantablack by Void Development</title>
-
-           > php artisan vantablack (this window)
-           > php artisan vantablack install
-           > php artisan vantablack update
-           > php artisan vantablack uninstall
-            ");
-        } elseif ($action === 'install') {
-            $this->install();
-        } elseif ($action === 'update') {
-            $this->update();
-        } elseif ($action === 'uninstall') {
-            $this->uninstall();
-        } else {
-            $this->error("Invalid action. Supported actions: install, update, uninstall");
-        }
+        return match ($this->argument('action')) {
+            null => $this->showHelp(),
+            'install' => $this->installOrUpdate(),
+            'update' => $this->installOrUpdate(true),
+            'uninstall' => $this->uninstall(),
+            default => $this->invalidAction(),
+        };
     }
 
-    public function installOrUpdate($isUpdate = false)
+    private function showHelp(): int
     {
-        if ($isUpdate) {
-            $this->info("This command skips frequently used files by addons during theme updating to avoid losing your addon customizations. If you still experience an error after updating please reinstall.");
+        $this->line('VantaHost Control Panel - Vantablack by Void Development');
+        $this->line('php artisan vantablack install');
+        $this->line('php artisan vantablack update');
+        $this->line('php artisan vantablack uninstall');
+
+        return self::SUCCESS;
+    }
+
+    private function invalidAction(): int
+    {
+        $this->error('Invalid action. Supported actions: install, update, uninstall.');
+
+        return self::FAILURE;
+    }
+
+    private function installOrUpdate(bool $isUpdate = false): int
+    {
+        if (!$this->confirm('Install or update VantaHost on this Pterodactyl panel?', true)) {
+            return self::SUCCESS;
         }
 
-        $confirmation = $this->confirm("Install VantaHost on this Pterodactyl panel?", true);
-        if (!$confirmation) {
-            return;
-        }
+        $versions = array_map('basename', File::directories(base_path('vantablack')));
 
-        $versions = File::directories('./vantablack');
         if (empty($versions)) {
-            $this->error("No versions found in /vantablack directory.");
-            return;
+            $this->error('No theme versions were found in the vantablack directory.');
+
+            return self::FAILURE;
         }
 
-        $version = basename($this->choice("Select a version:", $versions));
-        $this->info("Installing Vantablack Theme $version...");
-
-        // Copy theme files to the panel root using PHP instead of exec/rsync
+        $version = $this->choice('Select a version:', $versions);
         $sourcePath = base_path("vantablack/{$version}");
+
         if (!File::isDirectory($sourcePath)) {
-            $this->error("Source directory vantablack/{$version} does not exist.");
-            return;
+            $this->error("Theme source directory does not exist: vantablack/{$version}");
+
+            return self::FAILURE;
         }
 
-        $excludeFiles = $isUpdate
+        if (!File::exists(base_path('package.json'))) {
+            $this->error('Pterodactyl package.json is missing. Run this command from a Pterodactyl 1.14.1 panel root.');
+
+            return self::FAILURE;
+        }
+
+        $this->info(($isUpdate ? 'Updating' : 'Installing') . " VantaHost theme {$version}...");
+        $excludedFiles = $isUpdate
             ? ['routes.ts', 'getServer.ts', 'admin.blade.php', 'admin.php', 'ServerTransformer.php']
             : [];
 
-        $this->copyDirectory($sourcePath, base_path(), $excludeFiles);
+        $this->copyDirectory($sourcePath, base_path(), $excludedFiles);
 
-        // Create Vantablack controllers directory
-        $directoryPath = app_path('Http/Controllers/Admin/Vantablack');
-        File::makeDirectory($directoryPath, 0755, true, true);
-
-        // Copy the locally included controllers
-        $controllers = [
-            'VantablackController',
-            'VantablackAdvancedController',
-            'VantablackAnnouncementController',
-            'VantablackColorsController',
-            'VantablackComponentsController',
-            'VantablackLayoutController',
-            'VantablackMailController',
-            'VantablackMetaController',
-            'VantablackStylingController',
-        ];
-
-        $controllersSourcePath = base_path("vantablack/{$version}/app/Http/Controllers/Admin/Vantablack");
-        if (File::isDirectory($controllersSourcePath)) {
-            foreach ($controllers as $controller) {
-                $src = "{$controllersSourcePath}/{$controller}.php";
-                $dest = "{$directoryPath}/{$controller}.php";
-                if (File::exists($src)) {
-                    File::copy($src, $dest);
-                    $this->info("Copied controller: {$controller}.php");
-                } else {
-                    $this->warn("Controller not found in theme archive: {$controller}.php (may already be installed)");
-                }
-            }
-        } else {
-            $this->info("Controllers already present in the target directory â€” skipping controller copy.");
-        }
-
-        if (!File::exists(base_path("package.json"))) {
-            $this->error("Pterodactyl package.json is missing. Run this command from a vanilla Pterodactyl 1.14.1 panel root.");
-            return;
-        }
-
-        $this->info("Migrating database...");
+        $this->info('Running database migrations...');
         Artisan::call('migrate', ['--force' => true]);
-        $this->info(Artisan::output());
-        $this->info("Installing frontend dependencies from the committed package manifest...");
-        $this->info("This can take a minute...");
+        $this->output->write(Artisan::output());
 
-        // The archive ships the exact 1.14.1-compatible package.json and yarn.lock.
-        // Never run `yarn add` here: it can silently upgrade the panel dependency graph.
-        $hasYarn = (new Process(['yarn', '--version']))->run() === 0;
+        $this->info('Installing frontend dependencies from the committed manifest...');
+        $hasPackageLock = File::exists(base_path('package-lock.json'));
+        $hasYarn = !$hasPackageLock && (new Process(['yarn', '--version']))->run() === 0;
 
         if ($hasYarn) {
             if (!$this->runProcess(['yarn', 'install', '--frozen-lockfile', '--non-interactive'])) {
-                return;
+                return self::FAILURE;
             }
-            $this->info("Building panel assets with yarn...");
+
             if (!$this->runProcess(['yarn', 'run', 'build:production'])) {
-                return;
+                return self::FAILURE;
             }
         } else {
-            if (!$this->runProcess(['npm', 'install', '--no-audit', '--no-fund'])) {
-                return;
+            if ($hasPackageLock) {
+                $this->info('package-lock.json detected; using npm to keep the dependency graph consistent.');
             }
-            $this->info("Building panel assets with npm...");
+
+            if (!$this->runProcess(['npm', 'install', '--no-audit', '--no-fund'])) {
+                return self::FAILURE;
+            }
+
             if (!$this->runProcess(['npm', 'run', 'build:production'])) {
-                return;
+                return self::FAILURE;
             }
         }
 
-        $this->info('Optimize application...');
+        $this->info('Optimizing the application...');
         Artisan::call('optimize:clear');
-        $this->info(Artisan::output());
+        $this->output->write(Artisan::output());
         Artisan::call('optimize');
-        $this->info(Artisan::output());
+        $this->output->write(Artisan::output());
 
-        $message = $isUpdate ? 'â”‚    â”€â”€   Theme updated   â”€â”€   â”‚' : 'â”‚    â”€â”€   Theme installed   â”€â”€   â”‚';
-        $this->line("
-            â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®
-            â”‚                               â”‚
-            $message
-            â”‚    â•°â”€â•´   successfully   â•¶â”€â•¯   â”‚
-            â”‚                               â”‚
-            â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯
+        $this->info($isUpdate ? 'VantaHost theme updated successfully.' : 'VantaHost theme installed successfully.');
 
-            Note: You may need to set file permissions manually:
-            chown -R www-data:www-data " . base_path() . "/*
-        ");
+        return self::SUCCESS;
     }
 
-    public function install()
+    private function uninstall(): int
     {
-        $this->installOrUpdate();
+        $this->line('To uninstall, restore a clean Pterodactyl release over this panel and rebuild dependencies.');
+
+        return self::SUCCESS;
     }
 
-    public function update()
-    {
-        $this->installOrUpdate(true);
-    }
-
-    private function uninstall()
-    {
-        $this->line("To uninstall the Vantablack theme, re-download the official Pterodactyl panel release:");
-        $this->line("  1. Put the panel in maintenance mode: php artisan down");
-        $this->line("  2. Download the latest panel release from https://github.com/pterodactyl/panel/releases");
-        $this->line("  3. Extract it over your current installation");
-        $this->line("  4. Run: composer install --no-dev --optimize-autoloader");
-        $this->line("  5. Run: php artisan view:clear && php artisan config:clear");
-        $this->line("  6. Run: php artisan migrate --seed --force");
-        $this->line("  7. Set permissions: chown -R www-data:www-data " . base_path() . "/*");
-        $this->line("  8. Run: php artisan queue:restart && php artisan up");
-    }
-
-    /**
-     * Run a process safely using Symfony Process component.
-     */
     private function runProcess(array $command): bool
     {
         $process = new Process($command, base_path());
@@ -204,43 +133,27 @@ class Vantablack extends Command
             $this->output->write($buffer);
         });
 
-        if (!$process->isSuccessful()) {
-            $this->error("Command failed: " . implode(' ', $command));
-            $this->error($process->getErrorOutput());
-            return false;
+        if ($process->isSuccessful()) {
+            return true;
         }
 
-        return true;
+        $this->error('Command failed: ' . implode(' ', $command));
+        $this->error($process->getErrorOutput());
+
+        return false;
     }
 
-    /**
-     * Recursively copy a directory, optionally excluding specific filenames.
-     */
-    private function copyDirectory(string $source, string $destination, array $excludeFiles = []): void
+    private function copyDirectory(string $source, string $destination, array $excludedFiles = []): void
     {
-        $files = File::allFiles($source);
-        $directories = File::directories($source);
-
-        // Create all subdirectories first
-        foreach (File::directories($source) as $dir) {
-            $relativePath = str_replace($source, '', $dir);
-            File::makeDirectory($destination . $relativePath, 0755, true, true);
-        }
-
-        // Recursively ensure all nested directories exist
-        foreach ($files as $file) {
-            $basename = $file->getFilename();
-
-            if (in_array($basename, $excludeFiles)) {
+        foreach (File::allFiles($source) as $file) {
+            if (in_array($file->getFilename(), $excludedFiles, true)) {
                 continue;
             }
 
-            $relativePath = $file->getRelativePath();
-            $targetDir = $destination . '/' . $relativePath;
-            File::makeDirectory($targetDir, 0755, true, true);
+            $targetDirectory = $destination . DIRECTORY_SEPARATOR . $file->getRelativePath();
+            File::ensureDirectoryExists($targetDirectory, 0755, true);
 
-            $targetFile = $targetDir . '/' . $basename;
-            File::copy($file->getPathname(), $targetFile);
+            File::copy($file->getPathname(), $targetDirectory . DIRECTORY_SEPARATOR . $file->getFilename());
         }
     }
 }
