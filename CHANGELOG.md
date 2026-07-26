@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased - stale admin dashboard replacement
+
+- Added the upstream Pterodactyl 1.14.1 admin dashboard view to both overlay stages. This replaces stale third-party dashboard files that call unregistered admin.bulk-actions, admin.health, admin.maintenance, or admin.trashbin routes.
+- Rechecked every static Blade route reference after installation: all 66 resolve against the 114 registered named routes.
+
 ## Unreleased - complete upstream-overlay consistency audit
 
 - Added pre-installer compatibility overlays for shared themed components, server settings, and Tailwind tokens, so strict TypeScript and Webpack checks succeed both before and after installation.
