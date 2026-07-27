@@ -40,7 +40,7 @@
             } else {
                 echo '.lightmode';
             }?>{
-                --image: url({{ $siteConfiguration['vantablack']['backgroundImage'] }});
+                --image: url('/vantablack/background-login.png');
                 --primary: {{ $siteConfiguration['vantablack']['primary'] }};
 
                 --successText: {{ $siteConfiguration['vantablack']['successText'] }};
@@ -73,7 +73,7 @@
             } else {
                 echo '.lightmode';
             }?>{
-                --image: url({{ $siteConfiguration['vantablack']['backgroundImageLight'] }});
+                --image: url('/vantablack/background-login.png');
                 --primary: {{ $siteConfiguration['vantablack']['lightmode_primary'] }};
 
                 --successText: {{ $siteConfiguration['vantablack']['lightmode_successText'] }};
