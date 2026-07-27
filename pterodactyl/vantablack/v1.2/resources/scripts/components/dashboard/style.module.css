@@ -1,0 +1,274 @@
+.welcome_row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.welcome_card,
+.discord_card,
+.server_section,
+.quick_link {
+    border: 1px solid color-mix(in srgb, var(--gray500) 74%, transparent);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.welcome_card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    overflow: hidden;
+    min-height: 144px;
+    padding: 1.5rem;
+    border-radius: var(--radiusBox);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--gray700) 94%, var(--primary)), var(--gray700));
+}
+
+.welcome_card::after {
+    position: absolute;
+    right: -4rem;
+    bottom: -7rem;
+    width: 15rem;
+    height: 15rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 34%, transparent);
+    filter: blur(55px);
+    content: '';
+    pointer-events: none;
+}
+
+.welcome_copy {
+    position: relative;
+    z-index: 1;
+    max-width: 44rem;
+}
+
+.eyebrow {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.welcome_copy h1 {
+    margin: 0;
+    color: var(--gray50);
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+}
+
+.welcome_copy h1 span {
+    color: color-mix(in srgb, var(--primary) 74%, white);
+}
+
+.welcome_copy > p {
+    margin: 0.55rem 0 0;
+    color: var(--gray200);
+    font-size: 0.875rem;
+    line-height: 1.55;
+}
+
+.welcome_actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.account_link,
+.admin_link,
+.server_card_primary,
+.server_card_secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: var(--radiusInput);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.account_link {
+    padding: 0.6rem 0.85rem;
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 9px 20px color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+.admin_link {
+    padding: 0.6rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--gray400) 70%, transparent);
+    background: color-mix(in srgb, var(--gray700) 65%, transparent);
+    color: var(--gray100);
+}
+
+.server_total {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    flex: 0 0 auto;
+    gap: 0.15rem;
+    min-width: 8.75rem;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--gray400) 45%, transparent);
+    border-radius: var(--radiusInput);
+    background: color-mix(in srgb, var(--gray800) 62%, transparent);
+    color: var(--gray200);
+}
+
+.server_total svg { color: var(--primary); }
+.server_total strong { color: var(--gray50); font-size: 1.6rem; line-height: 1; }
+.server_total span { font-size: 0.72rem; }
+
+.discord_card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 144px;
+    padding: 1.5rem;
+    overflow: hidden;
+    border-color: #6374ac;
+    border-radius: var(--radiusBox);
+    background: radial-gradient(circle at top right, rgba(90, 125, 230, 0.48), rgba(9, 25, 65, 0.96) 63%);
+    color: white;
+    text-decoration: none;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.discord_card span { color: rgba(255, 255, 255, 0.74); font-size: 0.78rem; }
+.discord_card p { margin: 0.3rem 0 0; font-size: 1rem; font-weight: 650; }
+.discord_icon { flex: 0 0 auto; font-size: 2.6rem; opacity: 0.8; transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease; }
+
+.quick_links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.quick_link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 0;
+    padding: 1rem;
+    border-radius: var(--radiusBox);
+    background: color-mix(in srgb, var(--gray700) 88%, transparent);
+    color: var(--gray200);
+    text-decoration: none;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.quick_link p { margin: 0; color: var(--gray50); font-size: 0.875rem; font-weight: 600; }
+.quick_link span { display: block; margin-top: 0.15rem; color: var(--gray300); font-size: 0.75rem; }
+.quick_link_icon { flex: 0 0 auto; color: var(--primary); font-size: 1.35rem; }
+
+.server_section {
+    padding: 1rem;
+    border-radius: var(--radiusBox);
+    background: color-mix(in srgb, var(--gray700) 84%, transparent);
+}
+
+.server_heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.35rem 0.45rem 1rem;
+}
+
+.server_heading p { margin: 0; color: var(--gray50); font-size: 1rem; font-weight: 650; }
+.server_heading span { display: block; margin-top: 0.2rem; color: var(--gray300); font-size: 0.78rem; }
+
+.server_filter {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    white-space: nowrap;
+}
+
+.server_filter span { margin: 0; color: var(--gray300); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.server_grid > div { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; }
+.empty_state { grid-column: 1 / -1; margin: 1.75rem 0; color: var(--gray300); text-align: center; font-size: 0.875rem; }
+
+.server_card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--gray500) 74%, transparent);
+    border-radius: var(--radiusBox);
+    background: var(--gray700);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.server_card::before {
+    position: absolute;
+    top: 0;
+    right: 1.25rem;
+    left: 1.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--primary) 66%, white), transparent);
+    content: '';
+    opacity: 0.7;
+}
+
+.server_card_visual {
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+}
+
+.server_card_overlay {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(0deg, var(--gray700) 0%, color-mix(in srgb, var(--gray700) 48%, transparent) 100%);
+}
+
+.server_card_metrics {
+    color: var(--gray100);
+}
+
+.server_card_status {
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.server_card_actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+.server_card_primary { padding: 0.75rem; background: var(--primary); color: white; box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 22%, transparent); }
+.server_card_secondary { padding: 0.75rem; border: 1px solid color-mix(in srgb, var(--gray400) 70%, transparent); background: color-mix(in srgb, var(--gray600) 62%, transparent); color: var(--gray100); }
+
+@media (hover: hover) {
+    .account_link:hover, .admin_link:hover, .server_card_primary:hover, .server_card_secondary:hover { transform: translateY(-1px); }
+    .admin_link:hover, .server_card_secondary:hover { border-color: color-mix(in srgb, var(--primary) 65%, white); color: var(--gray50); }
+    .discord_card:hover { transform: translateY(-2px); border-color: #97a8e0; box-shadow: 0 22px 44px rgba(17, 37, 102, 0.35); }
+    .discord_card:hover .discord_icon { transform: scale(1.08) rotate(-4deg); opacity: 1; }
+    .quick_link:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--primary) 58%, white); background: color-mix(in srgb, var(--gray600) 78%, transparent); }
+    .server_card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--primary) 52%, var(--gray400)); box-shadow: 0 24px 48px rgba(0, 0, 0, 0.24); }
+}
+
+@media (min-width: 1024px) {
+    .welcome_row { grid-template-columns: minmax(0, 1fr) minmax(265px, 0.3fr); }
+    .server_grid > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+    .welcome_card { align-items: flex-start; flex-direction: column; }
+    .server_total { width: 100%; grid-template-columns: auto auto 1fr; align-items: center; }
+    .server_total span { align-self: end; }
+    .server_heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .account_link, .admin_link, .discord_card, .discord_icon, .quick_link, .server_card, .server_card_primary, .server_card_secondary { transition-duration: 0.01ms; }
+}

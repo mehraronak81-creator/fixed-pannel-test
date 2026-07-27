@@ -6,6 +6,7 @@ import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
 import tw from 'twin.macro';
 import Spinner from '@/components/elements/Spinner';
 import { useTranslation } from 'react-i18next';
+import styles from './style.module.css';
 
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 
@@ -71,7 +72,7 @@ export default ({ server }: { server: Server }) => {
     
     return (
         <>
-        <div className="bg-gray-700 backdrop px-6 py-5 rounded-box border border-transparent hover:border-gray-500 duration-300 group/card">
+        <div className={`${styles.server_card} px-6 py-5`}>
             <div className="flex items-center justify-between">
                 <div className={'flex items-center gap-3'}>
                     {eggIcon && (
@@ -83,7 +84,7 @@ export default ({ server }: { server: Server }) => {
                         <p className="text-lg font-semibold text-gray-50">{server.name}</p>
                     </div>
                 </div>
-                <span className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
+                <span className={`${styles.server_card_status} py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
                     ${stats?.status === 'offline'
                         ? 'text-danger-50'
                         : stats?.status === 'running' 
@@ -116,7 +117,7 @@ export default ({ server }: { server: Server }) => {
                     }
                 </span>
             </div>
-            <div className="grid lg:grid-cols-2 gap-2 my-4">
+            <div className={`${styles.server_card_metrics} grid lg:grid-cols-2 gap-2 my-4`}>
                 <div className="flex items-center gap-1">
                     <span className="text-sm text-gray-300 font-light">IP:</span>
                     {server.allocations
@@ -171,11 +172,11 @@ export default ({ server }: { server: Server }) => {
                 </React.Fragment>
                 )}
             </div>
-            <div className={'grid grid-cols-2 gap-2'}>
-                <Link to={`/server/${server.id}`} className={'text-secondary-50 bg-secondary-200 border border-secondary-100 hover:bg-secondary-100 rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
+            <div className={styles.server_card_actions}>
+                <Link to={`/server/${server.id}`} className={styles.server_card_primary}>
                     {t('manage-server', { ns: 'vantablack/dashboard'})}
                 </Link>
-                <Link to={`/server/${server.id}/console`} className={'text-gray-100 bg-gray-600 border border-gray-500 hover:border-vantablack hover:text-white rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
+                <Link to={`/server/${server.id}/console`} className={styles.server_card_secondary}>
                     Console
                 </Link>
             </div>

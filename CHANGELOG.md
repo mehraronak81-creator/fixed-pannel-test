@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased - reference-aligned client dashboard
+
+- Rebuilt the client dashboard around the supplied Dashboard.html reference: a compact welcome surface, live Discord card, clean server heading, and a focused two-column server grid.
+- Retained account, admin, Discord, billing, support, status, server filters, and console access while making every selectable server-card style share the same polished visual system.
+- Added responsive card elevation, image overlays, status pills, and reduced-motion handling without changing server data or actions.
 ## Unreleased - refined controls and console surfaces
 
 - Refined all shared buttons with responsive hover lift, pressed feedback, richer elevation, keyboard focus treatment, and reduced-motion support.
