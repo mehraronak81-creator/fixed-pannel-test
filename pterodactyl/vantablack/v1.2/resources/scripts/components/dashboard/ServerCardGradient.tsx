@@ -37,17 +37,20 @@ export default ({ server }: { server: Server }) => {
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : t('unlimited');
     const cpuLimit = server.limits.cpu !== 0 ? `${server.limits.cpu}%` : t('unlimited');
     const currentStatus = isSuspended ? 'suspended' : stats?.status;
-    const statusLabel = currentStatus === 'running' ? t('online')
-        : currentStatus === 'offline' ? t('offline')
-            : currentStatus === 'starting' ? t('starting')
-                : currentStatus === 'stopping' ? t('stopping')
+    const usesDefaultBanner = !server.eggImage || server.eggImage.includes('minecraft-banner.png');
+    const artwork = server.name.toLowerCase().includes('mongo') ? 'mongoDB' : server.name.toLowerCase().includes('node') ? 'Node.js' : 'VantaHost';
+    const statusLabel = currentStatus === 'running' ? t('online', { defaultValue: 'Online' })
+        : currentStatus === 'offline' ? t('offline', { defaultValue: 'Offline' })
+            : currentStatus === 'starting' ? t('starting', { defaultValue: 'Starting' })
+                : currentStatus === 'stopping' ? t('stopping', { defaultValue: 'Stopping' })
                     : server.isTransferring ? t('transferring')
                         : server.status === 'installing' ? t('installing')
                             : currentStatus ? t('unavailable') : '';
 
     return (
         <article className={styles.reference_card}>
-            <div className={styles.reference_visual} css={`background-image:url(${server.eggImage || '/vantablack/minecraft-banner.png'})`}>
+            <div className={`${styles.reference_visual} ${usesDefaultBanner ? styles.reference_default_art : ''}`} css={usesDefaultBanner ? undefined : `background-image:url(${server.eggImage})`}>
+                {usesDefaultBanner && <span className={styles.reference_watermark}>{artwork}</span>}
                 <div className={styles.reference_overlay} />
                 <div className={styles.reference_header}>
                     <p>{server.name}</p>
@@ -71,7 +74,7 @@ export default ({ server }: { server: Server }) => {
                 </div>
             </div>
             <div className={styles.reference_actions}>
-                <Link to={`/server/${server.id}`} className={styles.reference_manage}>{t('manage-server', { ns: 'vantablack/dashboard' })}</Link>
+                <Link to={`/server/${server.id}`} className={styles.reference_manage}>{t('manage-server', { ns: 'vantablack/dashboard', defaultValue: 'Manage server' })}</Link>
             </div>
         </article>
     );

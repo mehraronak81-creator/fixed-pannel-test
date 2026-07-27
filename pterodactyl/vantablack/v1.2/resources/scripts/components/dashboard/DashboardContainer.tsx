@@ -77,11 +77,13 @@ export default () => {
                 <div className={styles.server_grid}>
                     <Pagination data={servers} onPageSelect={setPage}>
                         {({ items }) => items.length > 0 ? (
-                            items.map((server) => (
-                                serverRow === 1 ? <ServerCardGradient key={server.uuid} server={server} />
-                                    : serverRow === 2 ? <ServerCardBanner key={server.uuid} server={server} />
-                                        : <ServerCard key={server.uuid} server={server} />
-                            ))
+                            <div className={styles.server_cards}>
+                                {items.map((server) => (
+                                    serverRow === 1 ? <ServerCardGradient key={server.uuid} server={server} />
+                                        : serverRow === 2 ? <ServerCardBanner key={server.uuid} server={server} />
+                                            : <ServerCard key={server.uuid} server={server} />
+                                ))}
+                            </div>
                         ) : (
                             <p className={styles.empty_state}>
                                 {showOnlyAdmin ? t('there-are-no-servers') : t('there-are-no-servers-associated')}

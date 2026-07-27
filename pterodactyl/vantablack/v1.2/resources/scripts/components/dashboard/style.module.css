@@ -27,7 +27,7 @@
 .admin_filter { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; }
 .admin_filter span { color: var(--gray300); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-.server_grid > div { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; }
+.server_cards { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; }
 .empty_state { grid-column: 1 / -1; padding: 2rem 0; color: var(--gray300); text-align: center; font-size: 0.875rem; }
 
 .reference_card,
@@ -50,6 +50,25 @@
     background-repeat: no-repeat;
 }
 
+.reference_default_art {
+    background: radial-gradient(circle at 78% 28%, color-mix(in srgb, var(--primary) 28%, transparent), transparent 36%), linear-gradient(135deg, color-mix(in srgb, var(--gray600) 78%, transparent), var(--gray700-default));
+}
+
+.reference_watermark {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    color: color-mix(in srgb, var(--gray50) 19%, transparent);
+    font-size: clamp(2.3rem, 6vw, 5.4rem);
+    font-weight: 700;
+    letter-spacing: -0.08em;
+    line-height: 1;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
 .reference_overlay {
     position: absolute;
     z-index: -1;
@@ -57,6 +76,8 @@
     background: linear-gradient(90deg, color-mix(in srgb, var(--gray700-default) 88%, transparent), color-mix(in srgb, var(--gray700-default) 66%, transparent)), linear-gradient(0deg, var(--gray700-default) 0%, color-mix(in srgb, var(--gray700-default) 35%, transparent) 100%);
 }
 
+.reference_header,
+.reference_metrics { position: relative; z-index: 1; }
 .reference_header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
 .reference_header > p { margin: 0; color: var(--gray50); font-size: 1rem; font-weight: 650; line-height: 1.25; }
 .reference_status { display: inline-flex; flex: 0 0 auto; align-items: center; padding: 0.36rem 0.55rem; border-radius: var(--radiusInput); background: color-mix(in srgb, var(--dangerBackground) 76%, transparent); color: var(--dangerText); font-size: 0.78rem; font-weight: 600; line-height: 1; }
@@ -119,6 +140,6 @@
     .quick_link:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 50%, var(--gray400)); }
 }
 
-@media (min-width: 1024px) { .server_grid > div { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .server_cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .reference_visual { padding: 1.15rem 1rem 0.8rem; } .reference_actions { padding: 0.6rem 1rem 1rem; } .reference_metrics { grid-template-columns: 1fr; margin-top: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .create_folder, .reference_card, .server_card, .reference_manage, .quick_link { transition-duration: 0.01ms; } }
