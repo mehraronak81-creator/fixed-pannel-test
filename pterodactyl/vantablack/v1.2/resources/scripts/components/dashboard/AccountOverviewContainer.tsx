@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import AccountApiContainer from '@/components/dashboard/AccountApiContainer';
+import React from 'react';
 import AccountSSHContainer from '@/components/dashboard/ssh/AccountSSHContainer';
 import UpdatePasswordForm from '@/components/dashboard/forms/UpdatePasswordForm';
 import UpdateEmailAddressForm from '@/components/dashboard/forms/UpdateEmailAddressForm';
@@ -15,7 +14,6 @@ import { useTranslation } from 'react-i18next';
 export default () => {
     const { t } = useTranslation('vantablack/account');
     const { state } = useLocation<undefined | { twoFactorRedirect?: boolean }>();
-    const [isTab, setIsTab] = useState('api')
 
     return (
         <PageContentBlock title={t('account-overview')}>
@@ -45,26 +43,14 @@ export default () => {
                 </div>
             </div>
             <div className={'bg-gray-700 backdrop rounded-box px-6 py-5'}>
-                <div className={'flex justify-between mb-5'}>
-                    <p className={'text-gray-300 font-medium'}>
-                        {isTab == 'api' 
-                        ? t('apikey')
-                        : isTab == 'ssh'
-                        && t('sshkey')}
-                    </p>
-                    <div className={'flex gap-x-4'}>
-                        <button onClick={() => setIsTab('api')} className={`pb-2 border-b duration-300 ${isTab === 'api' ? 'border-vantablack text-gray-50' : 'border-transparent hover:text-gray-50'}`}>
-                            {t('apikey')}
-                        </button>
-                        <button onClick={() => setIsTab('ssh')} className={`pb-2 border-b duration-300 ${isTab === 'ssh' ? 'border-vantablack text-gray-50' : 'border-transparent hover:text-gray-50'}`}>
-                            {t('sshkey')}
-                        </button>
+                <div className={'flex items-center justify-between gap-4 mb-5'}>
+                    <div>
+                        <p className={'text-gray-50 font-semibold'}>{t('sshkey')}</p>
+                        <p className={'text-gray-300 text-sm mt-1'}>Manage secure shell access for your servers.</p>
                     </div>
+                    <span className={'px-3 py-1 rounded-full bg-gray-600 text-gray-200 text-xs font-medium'}>Secure access</span>
                 </div>
-                {isTab == 'api' 
-                ? <AccountApiContainer />
-                : isTab == 'ssh'
-                && <AccountSSHContainer />}
+                <AccountSSHContainer />
             </div>
         </PageContentBlock>
     );

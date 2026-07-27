@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased - Phase 2 VantaHost admin foundation
+
+- Removed AdminLTE's stock blue skin and replaced the complete admin shell with a responsive VantaHost control-plane design covering the branded header, navigation, sidebar states, page headings, tables, forms, Select2, cards, tabs, modals, dropdowns, pagination, alerts, buttons, footer, and mobile/collapsed layouts.
+- Kept the admin palette connected to VantaHost Studio's configurable accent, card, button, radius, density, font, and elevation settings instead of introducing a disconnected hard-coded theme.
+- Rebuilt the administration overview with real server, suspended-server, user, node, and location totals, operational shortcuts, panel runtime status, release state, and a node fleet list.
+- Added authenticated live reachability checks through each node's existing Pterodactyl/Wings system-information endpoint. Online nodes report their real OS, CPU count, and Wings version; failed checks are explicitly marked offline.
+- Removed user API-key management from the account interface while preserving all existing backend API-key routes and controller behavior for integrations. SSH key management and two-factor authentication remain available.
+- Verified all new Blade route references, controller dependencies, and retained API-key endpoints. `npm run tsc -- --noEmit` and `npm run build:production` pass on the clean Pterodactyl 1.14.1 audit tree with Node.js 22.
+
 ## Unreleased - Phase 1 dashboard, controls, SEO, and appearance
 
 - Removed Console quick-preview actions from every main-dashboard server card and made Manage the single full-width action; the full server-page terminal remains intact.

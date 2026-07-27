@@ -16,7 +16,6 @@
             {!! Theme::css('vendor/select2/select2.min.css?t={cache-version}') !!}
             {!! Theme::css('vendor/bootstrap/bootstrap.min.css?t={cache-version}') !!}
             {!! Theme::css('vendor/adminlte/admin.min.css?t={cache-version}') !!}
-            {!! Theme::css('vendor/adminlte/colors/skin-blue.min.css?t={cache-version}') !!}
             {!! Theme::css('vendor/sweetalert/sweetalert.min.css?t={cache-version}') !!}
             {!! Theme::css('vendor/animate/animate.min.css?t={cache-version}') !!}
             {!! Theme::css('css/pterodactyl.css?t={cache-version}') !!}
@@ -29,39 +28,44 @@
             <![endif]-->
         @show
     </head>
-    <body class="hold-transition skin-blue fixed sidebar-mini" data-button-style="{{ $siteConfiguration['vantablack']['buttonStyle'] }}" data-card-style="{{ $siteConfiguration['vantablack']['cardStyle'] }}" data-ui-density="{{ $siteConfiguration['vantablack']['uiDensity'] }}">
+    <body class="hold-transition skin-vantahost fixed sidebar-mini" data-button-style="{{ $siteConfiguration['vantablack']['buttonStyle'] }}" data-card-style="{{ $siteConfiguration['vantablack']['cardStyle'] }}" data-ui-density="{{ $siteConfiguration['vantablack']['uiDensity'] }}">
         <div class="wrapper">
             <header class="main-header">
-                <a href="{{ route('index') }}" class="logo">
-                    <span>{{ config('app.name', 'Pterodactyl') }}</span>
+                <a href="{{ route('admin.index') }}" class="logo" aria-label="VantaHost Admin home">
+                    <span class="vh-logo-mark"><img src="{{ $siteConfiguration['vantablack']['logo'] }}" alt=""></span>
+                    <span class="vh-logo-copy"><strong>VantaHost</strong><small>ADMIN CONSOLE</small></span>
                 </a>
                 <nav class="navbar navbar-static-top">
-                    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" aria-label="Toggle admin navigation">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
+                    <div class="vh-admin-context hidden-xs">
+                        <span>Control center</span>
+                        <small>Infrastructure operations</small>
+                    </div>
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <li class="user-menu">
-                                <a href="{{ route('account') }}">
-                                    <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(Auth::user()->email)) }}?s=160" class="user-image" alt="User Image">
-                                    <span class="hidden-xs">{{ Auth::user()->name_first }} {{ Auth::user()->name_last }}</span>
+                                <a href="{{ route('account') }}" class="vh-profile-link">
+                                    <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(Auth::user()->email)) }}?s=160" class="user-image" alt="">
+                                    <span class="hidden-xs"><strong>{{ Auth::user()->name_first }}</strong><small>Administrator</small></span>
                                 </a>
                             </li>
-                            <li>
-                                <li><a href="{{ route('index') }}" data-toggle="tooltip" data-placement="bottom" title="Exit Admin Control"><i class="fa fa-server"></i></a></li>
-                            </li>
-                            <li>
-                                <li><a href="{{ route('auth.logout') }}" id="logoutButton" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fa fa-sign-out"></i></a></li>
-                            </li>
+                            <li><a href="{{ route('index') }}" class="vh-header-action" data-toggle="tooltip" data-placement="bottom" title="Open user panel"><i class="fa fa-server"></i><span class="hidden-sm hidden-xs">User panel</span></a></li>
+                            <li><a href="{{ route('auth.logout') }}" class="vh-header-action" id="logoutButton" data-toggle="tooltip" data-placement="bottom" title="Log out"><i class="fa fa-sign-out"></i></a></li>
                         </ul>
                     </div>
                 </nav>
             </header>
             <aside class="main-sidebar">
                 <section class="sidebar">
+                    <div class="vh-sidebar-status">
+                        <span class="vh-status-pulse" aria-hidden="true"></span>
+                        <div><strong>Admin workspace</strong><small>Secure session active</small></div>
+                    </div>
                     <ul class="sidebar-menu">
                         <li class="header">BASIC ADMINISTRATION</li>
                         <li class="{{ Route::currentRouteName() !== 'admin.index' ?: 'active' }}">
@@ -154,11 +158,11 @@
                 </section>
             </div>
             <footer class="main-footer">
-                <div class="pull-right small text-gray" style="margin-right:10px;margin-top:-7px;">
-                    <strong><i class="fa fa-fw {{ $appIsGit ? 'fa-git-square' : 'fa-code-fork' }}"></i></strong> {{ $appVersion }}<br />
-                    <strong><i class="fa fa-fw fa-clock-o"></i></strong> {{ round(microtime(true) - LARAVEL_START, 3) }}s
+                <div class="pull-right vh-runtime-meta">
+                    <span><i class="fa fa-fw {{ $appIsGit ? 'fa-git-square' : 'fa-code-fork' }}"></i>{{ $appVersion }}</span>
+                    <span><i class="fa fa-fw fa-clock-o"></i>{{ round(microtime(true) - LARAVEL_START, 3) }}s</span>
                 </div>
-                VantaHost&trade; &copy; {{ date('Y') }} &mdash; Built by Vantablack, a <a href="https://discord.gg/2vx6tCXmr4" target="_blank" rel="noopener noreferrer">Void Development</a> company. Powered by <a href="https://pterodactyl.io/" target="_blank" rel="noopener noreferrer">Pterodactyl</a>.
+                <strong>VantaHost Control Plane</strong><span class="vh-footer-divider">/</span> Built by Vantablack, a <a href="https://discord.gg/2vx6tCXmr4" target="_blank" rel="noopener noreferrer">Void Development</a> company.
             </footer>
         </div>
         @section('footer-scripts')
