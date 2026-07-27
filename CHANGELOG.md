@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased - React Router runtime compatibility
+
+- Pinned react-router-dom to 5.3.4, matching the direct react-router 5.3.4 dependency. This eliminates the nested 5.1.2 Router instance that caused production Link/NavLink context invariant failures.
+- Regenerated npm and Yarn lockfiles; the resolved graph now contains one deduplicated react-router 5.3.4 instance.
+
 ## Unreleased - stale admin dashboard replacement
 
 - Added the upstream Pterodactyl 1.14.1 admin dashboard view to both overlay stages. This replaces stale third-party dashboard files that call unregistered admin.bulk-actions, admin.health, admin.maintenance, or admin.trashbin routes.
