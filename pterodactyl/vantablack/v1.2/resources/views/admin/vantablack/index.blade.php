@@ -47,6 +47,14 @@
                 <span><i data-lucide="external-link" style="width:14px;display:inline;vertical-align:middle;margin-right:4px;color:var(--primary);"></i> Preview</span>
                 <small>Open live dashboard</small>
             </a>
+            <a href="{{ route('admin.vantablack.advanced') }}" class="quick-link">
+                <span><i data-lucide="sliders-horizontal" style="width:14px;display:inline;vertical-align:middle;margin-right:4px;color:var(--primary);"></i> Advanced</span>
+                <small>Profile and panel behavior</small>
+            </a>
+            <a href="{{ route('admin.settings') }}" class="quick-link">
+                <span><i data-lucide="shield-cog" style="width:14px;display:inline;vertical-align:middle;margin-right:4px;color:var(--primary);"></i> Panel admin</span>
+                <small>Open core panel settings</small>
+            </a>
         </div>
     </div>
     <form action="{{ route('admin.vantablack') }}" method="POST">

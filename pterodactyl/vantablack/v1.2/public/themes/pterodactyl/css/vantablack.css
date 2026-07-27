@@ -796,3 +796,99 @@ nav .logo img{
         min-height:420px;
     }
 }
+
+/* Visible, label-first VantaHost Studio navigation. */
+.wrapper .sidebar{
+    min-width:240px;
+    padding:14px 10px;
+}
+
+.studio-nav-heading{
+    margin:4px 10px 8px;
+    color:var(--gray400);
+    font-size:.95rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+}
+
+.studio-nav-heading-secondary{
+    margin-top:18px;
+}
+
+.wrapper .sidebar .studio-nav-link{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+    width:100%;
+    min-height:54px;
+    height:auto;
+    padding:8px 10px;
+    border:1px solid transparent;
+    border-radius:12px;
+    color:var(--gray200);
+    text-decoration:none;
+}
+
+.wrapper .sidebar .studio-nav-icon{
+    display:inline-flex;
+    flex:0 0 auto;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    border:1px solid color-mix(in srgb, var(--gray500) 72%, transparent);
+    border-radius:9px;
+    background:color-mix(in srgb, var(--gray800) 48%, transparent);
+    color:var(--primary);
+}
+
+.wrapper .sidebar .studio-nav-icon svg{
+    width:17px;
+    height:17px;
+}
+
+.studio-nav-copy{
+    display:grid;
+    gap:2px;
+    min-width:0;
+}
+
+.studio-nav-copy strong{
+    color:var(--gray100);
+    font-size:1.22rem;
+    font-weight:600;
+    line-height:1.1;
+}
+
+.studio-nav-copy small{
+    overflow:hidden;
+    color:var(--gray400);
+    font-size:1rem;
+    line-height:1.1;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.wrapper .sidebar li.active .studio-nav-link,
+.wrapper .sidebar .studio-nav-link:hover{
+    background:color-mix(in srgb, var(--primary) 14%, var(--gray700));
+    border-color:color-mix(in srgb, var(--primary) 50%, var(--gray500));
+}
+
+.wrapper .sidebar li.active .studio-nav-icon,
+.wrapper .sidebar .studio-nav-link:hover .studio-nav-icon{
+    border-color:color-mix(in srgb, var(--primary) 68%, white);
+    background:color-mix(in srgb, var(--primary) 22%, var(--gray700));
+    color:var(--gray50);
+}
+
+.wrapper .sidebar li .link-tooltip{ display:none; }
+
+@media (max-width:800px){
+    .wrapper .sidebar{
+        min-width:250px;
+        width:250px;
+    }
+}

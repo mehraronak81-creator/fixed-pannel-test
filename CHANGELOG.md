@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased - VantaHost Studio navigation and console controls
+
+- Replaced the Studio’s icon-only sidebar with visible, labelled navigation buttons for Overview, Announcements, Styling, Layout, Components, Colors, Metadata, Mail, Advanced, live preview, support, and panel administration.
+- Added Advanced and Panel Admin launch shortcuts to the Studio home screen, alongside the existing design, publishing, preview, and support controls.
+- Improved console controls: Copy log, Clear, and Expand remain available at every viewport, show labels on wide screens, and provide hover tooltips on compact layouts.
 ## Unreleased - reference-aligned client dashboard
 
 - Matched the supplied Dashboard.html card layout: Home/Create folder breadcrumb, compact two-column server grid, full image backgrounds, resource rows, status badges, and a single full-width Manage server action.

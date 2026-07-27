@@ -350,18 +350,20 @@ export default ({ fullConsole }: Props) => {
             {fullConsole ?
                 <PowerButtons icons className={'absolute flex items-center gap-x-2 right-0 top-0 py-[4px] px-[5px]'}/>
                 :
-                <div className={'absolute right-0 top-0 py-3.5 pr-4 flex items-center gap-x-2'}>
-                    <button onClick={logData} title={'Copy log link'} aria-label={'Copy log link'} className={classNames('lg:block hidden', styles.console_action)}>
-                        {isCopied 
-                            ? <ClipboardCheckIcon className={'w-5 text-success-100'}/>
-                            : <ClipboardIcon className={'w-5'}/>
-                        }
+                <div className={styles.console_action_bar}>
+                    <button onClick={logData} title={'Copy log link'} aria-label={'Copy log link'} className={styles.console_action}>
+                        <span className={styles.console_action_icon}>
+                            {isCopied ? <ClipboardCheckIcon className={'w-4 text-success-100'}/> : <ClipboardIcon className={'w-4'}/>}
+                        </span>
+                        <span className={styles.console_action_label}>{isCopied ? 'Copied' : 'Copy log'}</span>
                     </button>
-                    <button onClick={clearConsole} title={'Clear console'} aria-label={'Clear console'} className={classNames('lg:block hidden', styles.console_action)}>
-                        <TrashIcon className={'w-5'}/>
+                    <button onClick={clearConsole} title={'Clear console'} aria-label={'Clear console'} className={styles.console_action}>
+                        <span className={styles.console_action_icon}><TrashIcon className={'w-4'}/></span>
+                        <span className={styles.console_action_label}>Clear</span>
                     </button>
-                    <button onClick={openWindow} title={'Open full console'} aria-label={'Open full console'} className={classNames('lg:block hidden', styles.console_action)}>
-                        <ArrowsExpandIcon className={'w-5'}/>
+                    <button onClick={openWindow} title={'Open full console'} aria-label={'Open full console'} className={styles.console_action}>
+                        <span className={styles.console_action_icon}><ArrowsExpandIcon className={'w-4'}/></span>
+                        <span className={styles.console_action_label}>Expand</span>
                     </button>
                 </div>
             }

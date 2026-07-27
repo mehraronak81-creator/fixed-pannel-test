@@ -60,81 +60,50 @@
         </nav>
 
         <div class="wrapper">
-            <div class="sidebar" id="studio-sidebar">
+            <div class="sidebar" id="studio-sidebar" aria-label="VantaHost Studio navigation">
+                @php
+                    $studioNavigation = [
+                        ['key' => 'index', 'route' => 'admin.vantablack', 'icon' => 'wand-2', 'label' => 'Overview', 'description' => 'Brand and support'],
+                        ['key' => 'announcement', 'route' => 'admin.vantablack.announcement', 'icon' => 'megaphone', 'label' => 'Announcements', 'description' => 'Banners and notices'],
+                        ['key' => 'styling', 'route' => 'admin.vantablack.styling', 'icon' => 'sparkles', 'label' => 'Styling', 'description' => 'Background and radius'],
+                        ['key' => 'layout', 'route' => 'admin.vantablack.layout', 'icon' => 'layout', 'label' => 'Layout', 'description' => 'Navigation and login'],
+                        ['key' => 'components', 'route' => 'admin.vantablack.components', 'icon' => 'layout-grid', 'label' => 'Components', 'description' => 'Dashboard modules'],
+                        ['key' => 'colors', 'route' => 'admin.vantablack.colors', 'icon' => 'palette', 'label' => 'Colors', 'description' => 'Theme palette'],
+                        ['key' => 'meta', 'route' => 'admin.vantablack.meta', 'icon' => 'tags', 'label' => 'Metadata', 'description' => 'SEO and sharing'],
+                        ['key' => 'mail', 'route' => 'admin.vantablack.mail', 'icon' => 'mailbox', 'label' => 'Mail', 'description' => 'Email experience'],
+                        ['key' => 'advanced', 'route' => 'admin.vantablack.advanced', 'icon' => 'sliders-horizontal', 'label' => 'Advanced', 'description' => 'Panel behavior'],
+                    ];
+                @endphp
+                <p class="studio-nav-heading">Studio</p>
                 <ul>
-                    <li @if($navbar === 'index')class="active"@endif>
-                        <a href="{{ route('admin.vantablack') }}">
-                            <i data-lucide="wand-2"></i>
-                        </a>
-                        <span class="link-tooltip">General</span>
-                    </li>
-                    <li @if($navbar === 'announcement')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.announcement') }}">
-                            <i data-lucide="megaphone"></i>
-                        </a>
-                        <span class="link-tooltip">Announcements</span>
-                    </li>
-                    <li @if($navbar === 'styling')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.styling') }}">
-                            <i data-lucide="sparkles"></i>
-                        </a>
-                        <span class="link-tooltip">Styling</span>
-                    </li>
-                    <li @if($navbar === 'layout')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.layout') }}">
-                            <i data-lucide="layout"></i>
-                        </a>
-                        <span class="link-tooltip">Layouts</span>
-                    </li>
-                    <li @if($navbar === 'components')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.components') }}">
-                            <i data-lucide="layout-grid"></i>
-                        </a>
-                        <span class="link-tooltip">Components</span>
-                    </li>
-                    <li @if($navbar === 'colors')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.colors') }}">
-                            <i data-lucide="palette"></i>
-                        </a>
-                        <span class="link-tooltip">Colors</span>
-                    </li>
-                    <li @if($navbar === 'meta')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.meta') }}">
-                            <i data-lucide="tags"></i>
-                        </a>
-                        <span class="link-tooltip">Meta data</span>
-                    </li>
-                    <li @if($navbar === 'mail')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.mail') }}">
-                            <i data-lucide="mailbox"></i>
-                        </a>
-                        <span class="link-tooltip">Mail settings</span>
-                    </li>
-                    <li @if($navbar === 'advanced')class="active"@endif>
-                        <a href="{{ route('admin.vantablack.advanced') }}">
-                            <i data-lucide="cog"></i>
-                        </a>
-                        <span class="link-tooltip">Advanced</span>
-                    </li>
+                    @foreach($studioNavigation as $item)
+                        <li @class(['active' => $navbar === $item['key']])>
+                            <a href="{{ route($item['route']) }}" class="studio-nav-link" @if($navbar === $item['key']) aria-current="page" @endif>
+                                <span class="studio-nav-icon"><i data-lucide="{{ $item['icon'] }}"></i></span>
+                                <span class="studio-nav-copy"><strong>{{ $item['label'] }}</strong><small>{{ $item['description'] }}</small></span>
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
+                <p class="studio-nav-heading studio-nav-heading-secondary">Tools</p>
                 <ul class="sidebar-bottom">
                     <li>
-                        <a href="{{ route('admin.vantablack.advanced') }}">
-                            <i data-lucide="sliders-horizontal"></i>
+                        <a href="{{ route('index') }}" target="_blank" rel="noopener noreferrer" class="studio-nav-link">
+                            <span class="studio-nav-icon"><i data-lucide="monitor-up"></i></span>
+                            <span class="studio-nav-copy"><strong>Live preview</strong><small>Open user dashboard</small></span>
                         </a>
-                        <span class="link-tooltip">Advanced settings</span>
                     </li>
                     <li>
-                        <a href="https://discord.gg/2vx6tCXmr4" target="_blank" rel="noopener noreferrer">
-                            <i data-lucide="help-circle"></i>
+                        <a href="https://discord.gg/2vx6tCXmr4" target="_blank" rel="noopener noreferrer" class="studio-nav-link">
+                            <span class="studio-nav-icon"><i data-lucide="circle-help"></i></span>
+                            <span class="studio-nav-copy"><strong>Support</strong><small>VantaHost Discord</small></span>
                         </a>
-                        <span class="link-tooltip">Support</span>
                     </li>
                     <li>
-                        <a href="{{ route('admin.settings') }}">
-                            <i data-lucide="corner-down-left"></i>
+                        <a href="{{ route('admin.settings') }}" class="studio-nav-link">
+                            <span class="studio-nav-icon"><i data-lucide="shield-cog"></i></span>
+                            <span class="studio-nav-copy"><strong>Panel admin</strong><small>Core panel settings</small></span>
                         </a>
-                        <span class="link-tooltip">Panel admin</span>
                     </li>
                 </ul>
             </div>

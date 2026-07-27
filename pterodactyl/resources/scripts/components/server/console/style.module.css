@@ -165,9 +165,7 @@
     @apply px-2 py-1;
 }
 
-.console_action {
-    @apply h-8 w-8;
-}
+
 
 .chart_container {
     @apply bg-gray-700 rounded-box pt-2 border-b-4 border-gray-700 relative;
@@ -223,5 +221,78 @@
     .live_indicator,
     .search_controls {
         animation: none;
+    }
+}
+.console_action_bar {
+    @apply absolute right-0 top-0 flex items-center gap-1 pr-2 py-2;
+}
+
+.console_action {
+    @apply h-8 w-8 px-0 gap-0.5;
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent);
+    background: color-mix(in srgb, var(--gray700) 68%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.console_action_icon {
+    @apply inline-flex items-center justify-center;
+}
+
+.console_action_label {
+    display: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+@media (hover: hover) and (max-width: 1279px) {
+    .console_action::after {
+        position: absolute;
+        right: 0;
+        bottom: calc(100% + 0.45rem);
+        z-index: 20;
+        padding: 0.3rem 0.45rem;
+        border: 1px solid color-mix(in srgb, var(--gray500) 72%, transparent);
+        border-radius: 0.35rem;
+        background: var(--gray800);
+        color: var(--gray100);
+        content: attr(aria-label);
+        font-size: 0.68rem;
+        line-height: 1;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(3px);
+        transition: opacity 140ms ease, transform 140ms ease;
+        white-space: nowrap;
+    }
+
+    .console_action:hover::after {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 1280px) {
+    .console_action {
+        @apply w-auto px-2.5;
+    }
+
+    .console_action_label {
+        display: inline;
+    }
+
+    .terminal .command_input {
+        padding-right: 12rem;
+    }
+}
+
+@media (max-width: 639px) {
+    .console_action_bar {
+        gap: 0.2rem;
+        padding-right: 0.35rem;
+    }
+
+    .terminal .command_input {
+        padding-right: 7.3rem;
     }
 }
