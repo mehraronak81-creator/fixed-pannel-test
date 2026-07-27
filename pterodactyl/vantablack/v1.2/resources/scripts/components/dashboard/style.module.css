@@ -109,8 +109,8 @@
     min-height: 2.6rem;
     border: 1px solid color-mix(in srgb, var(--gray400) 52%, transparent);
     border-radius: var(--radiusInput);
-    background: color-mix(in srgb, var(--gray700) 76%, transparent);
-    color: var(--gray100);
+    background: color-mix(in srgb, var(--gray600) 80%, transparent);
+    color: var(--gray50);
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
@@ -129,12 +129,26 @@
 .server_card_metrics { color: var(--gray100); }
 .server_card_status { border: 1px solid color-mix(in srgb, currentColor 30%, transparent); }
 .server_card_actions { display: grid; grid-template-columns: minmax(0, 1fr); }
-.server_card_primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.65rem; border-radius: var(--radiusInput); background: var(--primary); color: white; font-size: 0.82rem; font-weight: 600; text-decoration: none; }
+.server_card_primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 2.65rem;
+    border: 1px solid color-mix(in srgb, var(--gray400) 52%, transparent);
+    border-radius: var(--radiusInput);
+    background: color-mix(in srgb, var(--gray600) 80%, transparent);
+    color: var(--gray50);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
 
 @media (hover: hover) {
     .create_folder:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 60%, white); background: color-mix(in srgb, var(--gray600) 74%, transparent); }
     .reference_card:hover, .server_card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--primary) 44%, var(--gray400)); box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2); }
-    .reference_manage:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 58%, white); background: color-mix(in srgb, var(--gray600) 72%, transparent); color: var(--gray50); }
+    .reference_manage:hover, .server_card_primary:hover { transform: translateY(-1px); border-color: var(--gray300); background: var(--gray600); color: #ffffff; }
     .quick_link:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 50%, var(--gray400)); }
 }
 
