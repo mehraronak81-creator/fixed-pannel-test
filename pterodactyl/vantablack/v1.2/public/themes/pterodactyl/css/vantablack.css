@@ -409,9 +409,13 @@ nav .logo img{
 .control-hero h2{
     margin: 8px 0 8px;
     color: var(--gray50);
-    font-size: 2rem;
+    font-size: 2.2rem;
     line-height: 1.1;
-    font-weight: 650;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gray50) 60%, var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .control-hero p{
@@ -473,9 +477,10 @@ nav .logo img{
 }
 
 .quick-link:hover{
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: var(--primary);
     background: color-mix(in srgb, var(--primary) 15%, var(--gray700));
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .quick-link span{
@@ -503,10 +508,11 @@ nav .logo img{
     }
 }
 .content-box{
-    padding:20px;
-    border-radius:10px;
+    padding:24px;
+    border-radius:14px;
     background-color: var(--gray700);
     margin-top:20px;
+    border: 1px solid var(--gray500);
 }
 .input-rows {
     display: grid;
@@ -530,6 +536,33 @@ nav .logo img{
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gray500);
 }
+
+/* Pulse animation for online dot */
+@keyframes vanta-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+.animate-pulse {
+    animation: vanta-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Smooth card entrance */
+@keyframes vanta-fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.content-box,
+.control-hero,
+.quick-link {
+    animation: vanta-fadeUp .35s ease both;
+}
+.quick-link:nth-child(2) { animation-delay: .04s; }
+.quick-link:nth-child(3) { animation-delay: .08s; }
+.quick-link:nth-child(4) { animation-delay: .12s; }
+.quick-link:nth-child(5) { animation-delay: .16s; }
+.quick-link:nth-child(6) { animation-delay: .20s; }
+.quick-link:nth-child(7) { animation-delay: .24s; }
+.quick-link:nth-child(8) { animation-delay: .28s; }
 
 .studio-menu-toggle{
     display:none;

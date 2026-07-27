@@ -96,8 +96,8 @@ const SideBar = ({ children, type }: Props) => {
     <div className={'w-[250px] shrink-0 bg-gray-700 h-screen overflow-y-auto lg:flex hidden flex-col sticky top-0 backdrop border-t-0 border-b-0 border-l-0'}>
         <SpinnerOverlay visible={isLoggingOut} />
         <div className={'pt-3'}>
-            <Link to={'/'} className='flex gap-x-2 items-center font-semibold text-lg text-gray-50 px-5 pt-2 pb-5'>
-                <img src={logo} alt={name + 'logo'} css={`height:${logoHeight};`} />
+            <Link to={'/'} className='flex gap-x-2 items-center font-semibold text-lg text-gray-50 px-5 pt-2 pb-5 group'>
+                <img src={logo} alt={name + 'logo'} css={`height:${logoHeight};`} className={'group-hover:scale-105 duration-300'} />
                 {String(fullLogo) === 'false' && name}
             </Link>
             {!type &&
@@ -119,10 +119,10 @@ const SideBar = ({ children, type }: Props) => {
         <div className="sticky bottom-0 bg-gray-700 pb-4 px-5 z-20 mt-auto backdrop-blur-xl">
             <hr className={'border-b border-gray-500 mb-4'}/>
             <div className="flex w-full justify-between items-center">
-                <Link to="/account" className="flex items-center gap-x-2">
+                <Link to="/account" className="flex items-center gap-x-2 group">
                     <UserAvatar /> 
                     <div>
-                        <p>{t('account')}</p>
+                        <p className={'group-hover:text-gray-50 duration-200'}>{t('account')}</p>
                     </div>
                 </Link>
                 <DropdownMenu

@@ -19,26 +19,26 @@ const InfoCard = () => {
 
     return(
         <TitledGreyBox title={t('server-info.title')}>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.hostname')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.hostname')}:</span>
                 <CopyOnClick text={hostname}>
-                    <p>{hostname}</p>
+                    <p className={'hover:text-gray-50 duration-200 cursor-pointer'}>{hostname}</p>
                 </CopyOnClick>
             </div>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.node-id')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.node-id')}:</span>
                 <CopyOnClick text={node}>
-                    <div className={'flex items-center gap-x-1'}>
-                        <ServerIcon className={'w-5 text-gray-300'}/>
+                    <div className={'flex items-center gap-x-1 hover:text-gray-50 duration-200 cursor-pointer'}>
+                        <ServerIcon className={'w-4 text-gray-300'}/>
                         {node}
                     </div>
                 </CopyOnClick>
             </div>
             <div className={'grid grid-cols-2 pt-4'}>
-                <span className={'text-gray-300'}>{t('server-info.server-id')}:</span>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.server-id')}:</span>
                 <CopyOnClick text={id}>
-                    <div className={'flex items-center gap-x-1'}>
-                        <HashtagIcon className={'w-5 text-gray-300'}/>
+                    <div className={'flex items-center gap-x-1 hover:text-gray-50 duration-200 cursor-pointer'}>
+                        <HashtagIcon className={'w-4 text-gray-300'}/>
                         {id}
                     </div>
                 </CopyOnClick>

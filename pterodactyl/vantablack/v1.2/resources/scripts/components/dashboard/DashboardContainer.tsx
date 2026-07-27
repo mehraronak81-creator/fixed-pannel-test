@@ -13,7 +13,7 @@ import { usePersistedState } from '@/plugins/usePersistedState';
 import Switch from '@/components/elements/Switch';
 import tw from 'twin.macro';
 import useSWR from 'swr';
-import { LuArrowUpRight, LuChevronRight, LuCreditCard, LuLifeBuoy, LuRouter, LuServer, LuSettings2, LuShieldCheck } from "react-icons/lu";
+import { LuArrowUpRight, LuChevronRight, LuCreditCard, LuLifeBuoy, LuRouter, LuServer, LuSettings2, LuShieldCheck, LuActivity, LuClock, LuZap, LuGlobe } from "react-icons/lu";
 import { RxDiscordLogo } from "react-icons/rx";
 import { FaDiscord } from "react-icons/fa";
 import { PaginatedResult } from '@/api/http';
@@ -55,9 +55,6 @@ export default () => {
     }, [servers?.pagination.currentPage]);
 
     useEffect(() => {
-        // Don't use react-router to handle changing this part of the URL, otherwise it
-        // triggers a needless re-render. We just want to track this in the URL incase the
-        // user refreshes the page.
         window.history.replaceState(null, document.title, `/${page <= 1 ? '' : `?page=${page}`}`);
     }, [page]);
 
@@ -87,13 +84,18 @@ export default () => {
         fetchData();
     }, [discord]);
 
+    const currentHour = new Date().getHours();
+    const greeting = currentHour < 12 ? 'Good morning' : currentHour < 18 ? 'Good afternoon' : 'Good evening';
+
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
+            {/* Hero welcome section */}
             <section className={'relative mb-6 overflow-hidden rounded-box border border-gray-500 bg-gray-700 p-6 backdrop shadow-2xl'}>
                 <div className={'pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full opacity-30 blur-3xl'} css={'background:var(--primary);'} />
+                <div className={'pointer-events-none absolute -left-16 -bottom-20 h-56 w-56 rounded-full opacity-20 blur-3xl'} css={'background:linear-gradient(135deg, var(--primary), #2dd4bf);'} />
                 <div className={'relative flex flex-col justify-between gap-6 lg:flex-row lg:items-end'}>
                     <div>
-                        <p className={'mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-vantablack'}>VantaHost command center</p>
+                        <p className={'mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-vantablack'}>{greeting}</p>
                         <h1 className={'text-3xl font-semibold tracking-tight text-gray-50 sm:text-4xl'}>Welcome back, {username}</h1>
                         <p className={'mt-2 max-w-2xl text-sm text-gray-300'}>Everything you need to keep your game servers fast, healthy, and under control.</p>
                         <div className={'mt-5 flex flex-wrap gap-2'}>
@@ -105,24 +107,36 @@ export default () => {
                             </Link>}
                         </div>
                     </div>
-                    <div className={'grid min-w-[260px] grid-cols-2 gap-2'}>
-                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3'}>
+                    <div className={'grid min-w-[280px] grid-cols-2 gap-2'}>
+                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3 duration-200 hover:border-vantablack'}>
                             <LuServer className={'mb-3 w-5 text-vantablack'} />
                             <p className={'text-2xl font-semibold text-gray-50'}>{servers?.pagination.total ?? '-'}</p>
-                            <span className={'text-xs text-gray-300'}>Accessible servers</span>
+                            <span className={'text-xs text-gray-300'}>Total servers</span>
                         </div>
-                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3'}>
-                            <LuShieldCheck className={'mb-3 w-5 text-success-100'} />
+                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3 duration-200 hover:border-vantablack'}>
+                            <LuActivity className={'mb-3 w-5 text-success-50'} />
                             <p className={'text-2xl font-semibold text-gray-50'}>24/7</p>
-                            <span className={'text-xs text-gray-300'}>Control ready</span>
+                            <span className={'text-xs text-gray-300'}>Always online</span>
+                        </div>
+                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3 duration-200 hover:border-vantablack'}>
+                            <LuZap className={'mb-3 w-5 text-yellow-400'} />
+                            <p className={'text-2xl font-semibold text-gray-50'}>Ultra</p>
+                            <span className={'text-xs text-gray-300'}>Performance</span>
+                        </div>
+                        <div className={'rounded-component border border-gray-500 bg-gray-800 p-3 duration-200 hover:border-vantablack'}>
+                            <LuGlobe className={'mb-3 w-5 text-cyan-400'} />
+                            <p className={'text-2xl font-semibold text-gray-50'}>Global</p>
+                            <span className={'text-xs text-gray-300'}>Network reach</span>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {/* Social links section */}
             {String(socialButtons) == 'true' &&
             <div className={'flex lg:gap-4 gap-2 lg:flex-row flex-col mb-4'}>
                 {discord &&
-                    <a href={discordInvite} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5'}>
+                    <a href={discordInvite} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5 border border-transparent hover:border-vantablack duration-300'}>
                         <div>
                             <p className={'font-medium text-gray-100 flex items-center'}>
                                 Discord
@@ -130,11 +144,11 @@ export default () => {
                             </p>
                             <span className={'font-light text-sm text-gray-200'}>{t('join-our-discord')}</span>
                         </div>
-                        <RxDiscordLogo className={'text-[2.5rem] text-vantablack'}/>
+                        <RxDiscordLogo className={'text-[2.5rem] text-vantablack group-hover:scale-110 duration-300'}/>
                     </a>
                 }
                 {billing &&
-                    <a href={billing} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5'}>
+                    <a href={billing} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5 border border-transparent hover:border-vantablack duration-300'}>
                         <div>
                             <p className={'font-medium text-gray-100 flex items-center'}>
                                 {t('billing-area')}
@@ -142,11 +156,11 @@ export default () => {
                             </p>
                             <span className={'font-light text-sm text-gray-200'}>{t('manage-your-services')}</span>
                         </div>
-                        <LuCreditCard className={'text-[2.5rem] text-vantablack'}/>
+                        <LuCreditCard className={'text-[2.5rem] text-vantablack group-hover:scale-110 duration-300'}/>
                     </a>
                 }
                 {support &&
-                    <a href={support} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5'}>
+                    <a href={support} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5 border border-transparent hover:border-vantablack duration-300'}>
                         <div>
                             <p className={'font-medium text-gray-100 flex items-center'}>
                                 {t('supportcenter')}
@@ -154,11 +168,11 @@ export default () => {
                             </p>
                             <span className={'font-light text-sm text-gray-200'}>{t('get-support')}</span>
                         </div>
-                        <LuLifeBuoy className={'text-[2.5rem] text-vantablack'}/>
+                        <LuLifeBuoy className={'text-[2.5rem] text-vantablack group-hover:scale-110 duration-300'}/>
                     </a>
                 }
                 {status &&
-                    <a href={status} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5'}>
+                    <a href={status} target="_blank" rel="noopener noreferrer" className={'group w-full bg-gray-700 backdrop rounded-box flex items-center justify-between px-6 py-5 border border-transparent hover:border-vantablack duration-300'}>
                         <div>
                     <p className={'font-medium text-gray-100 flex items-center'}>
                                 {t('server-status')}
@@ -166,15 +180,17 @@ export default () => {
                             </p>
                             <span className={'font-light text-sm text-gray-200'}>{t('check-server-status')}</span>
                         </div>
-                        <LuRouter className={'text-[2.5rem] text-vantablack'}/>
+                        <LuRouter className={'text-[2.5rem] text-vantablack group-hover:scale-110 duration-300'}/>
                     </a>
                 }
             </div>}
+
+            {/* Server list header */}
             <div className={'flex gap-4 md:flex-nowrap flex-wrap mb-6'}>
-                <div className={'bg-gray-700 backdrop rounded-box px-6 py-5 w-full flex items-center justify-between'}>
+                <div className={'bg-gray-700 backdrop rounded-box px-6 py-5 w-full flex items-center justify-between border border-transparent hover:border-gray-500 duration-300'}>
                     <div>
-                        <p className={'text-gray-50'}>{t('welcome-back')}</p>
-                        <p className={'font-light'}>{t('all-servers-you-have-access-to')}</p>
+                        <p className={'text-gray-50 font-medium'}>{t('welcome-back')}</p>
+                        <p className={'font-light text-sm text-gray-300'}>{t('all-servers-you-have-access-to')}</p>
                     </div>
                     {rootAdmin && (
                         <div css={tw`flex justify-end items-center`}>
@@ -195,9 +211,11 @@ export default () => {
                         <span className={'font-light text-sm text-white/70'}>{guildData ? guildData.presence_count : '000'} {t('members-online')}</span>
                         <p className={'font-medium text-white'}>{t('join-our-discord')}</p>
                     </div>
-                    <FaDiscord className={'text-[2.5rem] text-white/70 group-hover:text-white duration-300'}/>
+                    <FaDiscord className={'text-[2.5rem] text-white/70 group-hover:text-white group-hover:scale-110 duration-300'}/>
                 </a>}
             </div>
+
+            {/* Server grid */}
             {!servers ? (
                 <Spinner centered size={'large'} />
             ) : (

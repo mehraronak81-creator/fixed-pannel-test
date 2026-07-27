@@ -86,7 +86,6 @@
                 </div>
             </div>
         </div>
-        </div>
         <div class="floating-button-2">
             {!! csrf_field() !!}
             <button type="submit" class="button button-primary">Save changes</button>

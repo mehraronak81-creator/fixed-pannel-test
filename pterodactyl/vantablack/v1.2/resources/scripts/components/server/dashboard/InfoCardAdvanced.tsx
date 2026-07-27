@@ -46,10 +46,10 @@ const InfoCardAdvanced = () => {
 
     return(
         <TitledGreyBox title={t('server-info.title')}>
-            <div className={'grid grid-cols-2 pb-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('status', { ns: 'vantablack/utilities' })}:</span>
+            <div className={'grid grid-cols-2 pb-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('status', { ns: 'vantablack/utilities' })}:</span>
                 <p>
-                    <span className={`py-1 px-2 rounded
+                    <span className={`py-1 px-3 rounded-full text-xs font-medium inline-flex items-center gap-1.5
                         ${status === 'offline'
                             ? 'text-danger-50'
                             : status === 'running' 
@@ -68,6 +68,8 @@ const InfoCardAdvanced = () => {
                             : ''
                         }`}
                     >
+                        {status === 'running' && <span className={'w-1.5 h-1.5 rounded-full bg-success-50 animate-pulse'} />}
+                        {status === 'offline' && <span className={'w-1.5 h-1.5 rounded-full bg-danger-50'} />}
                         {status === 'offline' 
                             ? t('offline', { ns: 'vantablack/utilities' })
                             : status === 'running'
@@ -81,8 +83,8 @@ const InfoCardAdvanced = () => {
                     </span>
                 </p>
             </div>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.uptime')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.uptime')}:</span>
                 {status === null ? (
                     t('offline', { ns: 'vantablack/utilities' })
                 ) : stats.uptime > 0 ? (
@@ -91,32 +93,32 @@ const InfoCardAdvanced = () => {
                     <div className={'capitalize'}>{status}</div>
                 )}
             </div>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.hostname')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.hostname')}:</span>
                 <CopyOnClick text={hostname}>
-                    <p>{hostname}</p>
+                    <p className={'hover:text-gray-50 duration-200 cursor-pointer'}>{hostname}</p>
                 </CopyOnClick>
             </div>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.server-ip')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.server-ip')}:</span>
                 <CopyOnClick text={allocation}>
-                    <p>{allocation}</p>
+                    <p className={'hover:text-gray-50 duration-200 cursor-pointer'}>{allocation}</p>
                 </CopyOnClick>
             </div>
-            <div className={'grid grid-cols-2 py-4 border-b-2 border-gray-600'}>
-                <span className={'text-gray-300'}>{t('server-info.node-id')}:</span>
+            <div className={'grid grid-cols-2 py-4 border-b border-gray-600'}>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.node-id')}:</span>
                 <CopyOnClick text={node}>
-                    <div className={'flex items-center gap-x-1'}>
-                        <ServerIcon className={'w-5 text-gray-300'}/>
+                    <div className={'flex items-center gap-x-1 hover:text-gray-50 duration-200 cursor-pointer'}>
+                        <ServerIcon className={'w-4 text-gray-300'}/>
                         {node}
                     </div>
                 </CopyOnClick>
             </div>
             <div className={'grid grid-cols-2 pt-4'}>
-                <span className={'text-gray-300'}>{t('server-info.server-id')}:</span>
+                <span className={'text-gray-300 text-sm'}>{t('server-info.server-id')}:</span>
                 <CopyOnClick text={id}>
-                    <div className={'flex items-center gap-x-1'}>
-                        <HashtagIcon className={'w-5 text-gray-300'}/>
+                    <div className={'flex items-center gap-x-1 hover:text-gray-50 duration-200 cursor-pointer'}>
+                        <HashtagIcon className={'w-4 text-gray-300'}/>
                         {id}
                     </div>
                 </CopyOnClick>

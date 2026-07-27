@@ -7,11 +7,28 @@ import tw from 'twin.macro';
 import Spinner from '@/components/elements/Spinner';
 import { useTranslation } from 'react-i18next';
 
-// Determines if the current value is in an alarm threshold so we can show it in red rather
-// than the more faded default style.
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 
 type Timer = ReturnType<typeof setInterval>;
+
+const EGG_IMAGES: Record<string, string> = {
+    minecraft: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png',
+    rust: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/rust.png',
+    valheim: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/valheim.png',
+    terraria: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/terraria.png',
+    csgo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/counter-strike-2.png',
+    cs2: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/counter-strike-2.png',
+    ark: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/ark-survival-evolved.png',
+};
+
+const getEggIcon = (name: string, eggImage?: string | null): string | null => {
+    if (eggImage) return eggImage;
+    const lower = name.toLowerCase();
+    for (const [key, url] of Object.entries(EGG_IMAGES)) {
+        if (lower.includes(key)) return url;
+    }
+    return null;
+};
 
 export default ({ server }: { server: Server }) => {
     const { t } = useTranslation(['vantablack/utilities', 'vantablack/dashboard']);
@@ -29,8 +46,6 @@ export default ({ server }: { server: Server }) => {
     }, [stats?.isSuspended, server.status]);
 
     useEffect(() => {
-        // Don't waste a HTTP request if there is nothing important to show to the user because
-        // the server is suspended.
         if (isSuspended) return;
 
         getStats().then(() => {
@@ -52,13 +67,23 @@ export default ({ server }: { server: Server }) => {
     const diskLimit = server.limits.disk !== 0 ? bytesToString(mbToBytes(server.limits.disk)) : t('unlimited');
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : t('unlimited');
     const cpuLimit = server.limits.cpu !== 0 ? server.limits.cpu + '%' : t('unlimited');
+    const eggIcon = getEggIcon(server.name, server.eggImage);
     
     return (
         <>
-        <div className="bg-gray-700 backdrop px-6 py-5 rounded-box">
+        <div className="bg-gray-700 backdrop px-6 py-5 rounded-box border border-transparent hover:border-gray-500 duration-300 group/card">
             <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold text-gray-50">{server.name}</p>
-                <span className={`py-1 px-2 rounded
+                <div className={'flex items-center gap-3'}>
+                    {eggIcon && (
+                        <div className={'flex h-10 w-10 shrink-0 items-center justify-center rounded-component overflow-hidden'} css={'background-color:color-mix(in srgb, var(--primary) 16%, transparent);'}>
+                            <img src={eggIcon} alt="" className={'w-6 h-6 object-contain'} loading="lazy" />
+                        </div>
+                    )}
+                    <div>
+                        <p className="text-lg font-semibold text-gray-50">{server.name}</p>
+                    </div>
+                </div>
+                <span className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
                     ${stats?.status === 'offline'
                         ? 'text-danger-50'
                         : stats?.status === 'running' 
@@ -77,6 +102,8 @@ export default ({ server }: { server: Server }) => {
                         : ''
                     }`}
                 >
+                    {stats?.status === 'running' && <span className={'w-1.5 h-1.5 rounded-full bg-success-50 animate-pulse'} />}
+                    {stats?.status === 'offline' && <span className={'w-1.5 h-1.5 rounded-full bg-danger-50'} />}
                     {stats?.status === 'offline' 
                         ? t('offline')
                         : stats?.status === 'running'
@@ -145,10 +172,10 @@ export default ({ server }: { server: Server }) => {
                 )}
             </div>
             <div className={'grid grid-cols-2 gap-2'}>
-                <Link to={`/server/${server.id}`} className={'text-secondary-50 bg-secondary-200 border border-secondary-100 hover:bg-secondary-100 rounded-component px-3 py-3 w-full block text-center duration-300'}>
+                <Link to={`/server/${server.id}`} className={'text-secondary-50 bg-secondary-200 border border-secondary-100 hover:bg-secondary-100 rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
                     {t('manage-server', { ns: 'vantablack/dashboard'})}
                 </Link>
-                <Link to={`/server/${server.id}/console`} className={'text-gray-100 bg-gray-600 border border-gray-500 hover:border-vantablack hover:text-white rounded-component px-3 py-3 w-full block text-center duration-300'}>
+                <Link to={`/server/${server.id}/console`} className={'text-gray-100 bg-gray-600 border border-gray-500 hover:border-vantablack hover:text-white rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
                     Console
                 </Link>
             </div>

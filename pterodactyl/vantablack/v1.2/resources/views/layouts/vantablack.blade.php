@@ -119,6 +119,12 @@
                 </ul>
                 <ul class="sidebar-bottom">
                     <li>
+                        <a href="{{ route('admin.vantablack.advanced') }}">
+                            <i data-lucide="sliders-horizontal"></i>
+                        </a>
+                        <span class="link-tooltip">Advanced settings</span>
+                    </li>
+                    <li>
                         <a href="https://discord.gg/2vx6tCXmr4" target="_blank" rel="noopener noreferrer">
                             <i data-lucide="help-circle"></i>
                         </a>

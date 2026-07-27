@@ -7,7 +7,7 @@ import ServerDetailsBlock from '@/components/server/console/ServerDetailsBlock';
 import StatGraphs from '@/components/server/console/StatGraphs';
 import SideGraphs from '@/components/server/console/SideGraphs';
 import Can from '@/components/elements/Can';
-import { ArchiveIcon, CalendarIcon, EyeIcon, FolderOpenIcon, TerminalIcon, ViewGridIcon } from '@heroicons/react/outline';
+import { ArchiveIcon, CalendarIcon, EyeIcon, FolderOpenIcon, TerminalIcon, ViewGridIcon, UsersIcon, GlobeIcon } from '@heroicons/react/outline';
 import Sftp from '@/components/server/dashboard/SFTP';
 import Banner from '@/components/server/dashboard/Banner';
 import InfoCardAdvanced from '@/components/server/dashboard/InfoCardAdvanced';
@@ -85,6 +85,7 @@ const DashboardContainer = () => {
 
     return(
         <ServerContentBlock title={t('dashboard')} icon={ViewGridIcon}>
+            {/* Live console embed */}
             <section className={'mb-6 overflow-hidden rounded-box border border-gray-500 bg-gray-700 backdrop shadow-2xl'}>
                 <div className={'flex flex-wrap items-center justify-between gap-3 border-b border-gray-500 px-5 py-4'}>
                     <div className={'flex items-center gap-3'}>
@@ -105,6 +106,8 @@ const DashboardContainer = () => {
                     <Console />
                 </div>
             </section>
+
+            {/* Quick actions */}
             <section className={'mb-6 rounded-box border border-gray-500 bg-gray-700 p-4 backdrop'}>
                 <div className={'mb-3 flex items-center justify-between gap-3'}>
                     <div>
@@ -118,8 +121,12 @@ const DashboardContainer = () => {
                     <Can action={'backup.*'}><QuickAction to={'backups'} label={'Backups'} description={'Protect server data'} icon={ArchiveIcon} /></Can>
                     <Can action={'schedule.*'}><QuickAction to={'schedules'} label={'Schedules'} description={'Automate commands'} icon={CalendarIcon} /></Can>
                     <Can action={'activity.*'}><QuickAction to={'activity'} label={'Activity log'} description={'Review server events'} icon={EyeIcon} /></Can>
+                    <Can action={'allocation.*'}><QuickAction to={'network'} label={'Network'} description={'Manage allocations'} icon={GlobeIcon} /></Can>
+                    <Can action={'user.*'}><QuickAction to={'users'} label={'Subusers'} description={'Manage user access'} icon={UsersIcon} /></Can>
                 </div>
             </section>
+
+            {/* Configurable component slots */}
             <div className={'grid lg:grid-cols-2 grid-cols-1 gap-4'}>
                 <Component type={slot1} />
                 <Component type={slot2} />

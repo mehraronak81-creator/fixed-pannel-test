@@ -7,8 +7,6 @@ import tw from 'twin.macro';
 import Spinner from '@/components/elements/Spinner';
 import { useTranslation } from 'react-i18next';
 
-// Determines if the current value is in an alarm threshold so we can show it in red rather
-// than the more faded default style.
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 
 type Timer = ReturnType<typeof setInterval>;
@@ -29,8 +27,6 @@ export default ({ server }: { server: Server }) => {
     }, [stats?.isSuspended, server.status]);
 
     useEffect(() => {
-        // Don't waste a HTTP request if there is nothing important to show to the user because
-        // the server is suspended.
         if (isSuspended) return;
 
         getStats().then(() => {
@@ -55,12 +51,12 @@ export default ({ server }: { server: Server }) => {
 
     return (
         <>
-        <div className="backdrop rounded-box overflow-hidden" css={'background-color:var(--gray700-default);'}>
+        <div className="backdrop rounded-box overflow-hidden border border-transparent hover:border-gray-500 duration-300 group/card" css={'background-color:var(--gray700-default);'}>
             <div className={'bg-center bg-cover bg-no-repeat relative px-6 pt-5 z-10'} css={`background-image:url(${server.eggImage ? server.eggImage : '/vantablack/minecraft-banner.png'})`}>
                 <div className={'z-[-1] absolute inset-0'} css={'background-image:linear-gradient(0deg, var(--gray700-default) 0%, color-mix(in srgb, var(--gray700-default) 65%, transparent) 100%);'}/>
                 <div className="flex items-center justify-between pb-5">
                     <p className="text-lg font-semibold text-gray-50">{server.name}</p>
-                    <span className={`py-1 px-2 rounded
+                    <span className={`py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
                         ${stats?.status === 'offline'
                             ? 'text-danger-50'
                             : stats?.status === 'running' 
@@ -79,6 +75,8 @@ export default ({ server }: { server: Server }) => {
                             : ''
                         }`}
                     >
+                        {stats?.status === 'running' && <span className={'w-1.5 h-1.5 rounded-full bg-success-50 animate-pulse'} />}
+                        {stats?.status === 'offline' && <span className={'w-1.5 h-1.5 rounded-full bg-danger-50'} />}
                         {stats?.status === 'offline'
                             ? t('offline')
                             : stats?.status === 'running'
@@ -149,10 +147,10 @@ export default ({ server }: { server: Server }) => {
             </div>
             <div className={'px-6 pt-4 pb-5'}>
                 <div className={'grid grid-cols-2 gap-2'}>
-                    <Link to={`/server/${server.id}`} className={'text-secondary-50 bg-secondary-200 border border-secondary-100 hover:bg-secondary-100 rounded-component px-3 py-3 w-full block text-center duration-300'}>
+                    <Link to={`/server/${server.id}`} className={'text-secondary-50 bg-secondary-200 border border-secondary-100 hover:bg-secondary-100 rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
                         {t('manage-server', { ns: 'vantablack/dashboard'})}
                     </Link>
-                    <Link to={`/server/${server.id}/console`} className={'text-gray-100 bg-gray-600 border border-gray-500 hover:border-vantablack hover:text-white rounded-component px-3 py-3 w-full block text-center duration-300'}>
+                    <Link to={`/server/${server.id}/console`} className={'text-gray-100 bg-gray-600 border border-gray-500 hover:border-vantablack hover:text-white rounded-component px-3 py-3 w-full block text-center duration-300 font-medium'}>
                         Console
                     </Link>
                 </div>
