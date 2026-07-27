@@ -115,7 +115,7 @@ function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback |
                         label: label,
                         data: Array(20).fill(-5),
                         borderColor: primary,
-                        backgroundColor: hexToRgba(primary, 0.5),
+                        backgroundColor: 'transparent',
                     },
                     index
                 )

@@ -102,7 +102,7 @@
                 --gray700-default: {{ $siteConfiguration['vantablack']['lightmode_gray700'] }};;
             }
 
-            <?php if ($siteConfiguration['vantablack']['backdrop'] === 'true') {
+            <?php if (true) {
                 echo '.backdrop{border:1px solid;border-color:var(--gray600)!important;backdrop-filter:blur(16px);}';
             }?>
 
@@ -113,7 +113,7 @@
 
         @include('layouts.scripts')
     </head>
-    <body class="{{ $css['body'] ?? 'bg-neutral-50' }}" data-button-style="{{ $siteConfiguration['vantablack']['buttonStyle'] }}" data-card-style="{{ $siteConfiguration['vantablack']['cardStyle'] }}" data-ui-density="{{ $siteConfiguration['vantablack']['uiDensity'] }}">
+    <body class="{{ $css['body'] ?? 'bg-neutral-50' }}" data-button-style="{{ $siteConfiguration['vantablack']['buttonStyle'] }}" data-card-style="glass" data-ui-density="{{ $siteConfiguration['vantablack']['uiDensity'] }}">
         @section('content')
             @yield('above-container')
             @yield('container')
