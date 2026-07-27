@@ -32,8 +32,6 @@ module.exports = {
                 success: { 50: 'var(--successText)', 100: 'var(--successBorder)', 200: 'var(--successBackground)' },
                 danger: { 50: 'var(--dangerText)', 100: 'var(--dangerBorder)', 200: 'var(--dangerBackground)' },
                 secondary: { 50: 'var(--secondaryText)', 100: 'var(--secondaryBorder)', 200: 'var(--secondaryBackground)' },
-                // "primary" and "neutral" are deprecated, prefer the use of "blue" and "gray"
-                // in new code.
                 primary: colors.blue,
                 gray: gray,
                 neutral: gray,
@@ -51,7 +49,9 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/line-clamp'),
+        (() => {
+            try { return require('@tailwindcss/line-clamp'); } catch (e) { return () => {}; }
+        })(),
         require('@tailwindcss/forms')({
             strategy: 'class',
         }),

@@ -63,7 +63,9 @@ module.exports = {
         },
     },
     plugins: [
-                require('@tailwindcss/line-clamp'),
+        (() => {
+            try { return require('@tailwindcss/line-clamp'); } catch (e) { return () => {}; }
+        })(),
         require('@tailwindcss/forms')({
             strategy: 'class',
         }),
