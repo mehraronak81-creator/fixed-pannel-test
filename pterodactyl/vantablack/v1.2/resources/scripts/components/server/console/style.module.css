@@ -168,11 +168,27 @@
 
 
 .chart_container {
-    @apply bg-gray-700 rounded-box pt-2 border-b-4 border-gray-700 relative;
-    border-color: color-mix(in srgb, var(--gray500) 54%, transparent);
-    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16);
+    position: relative;
+    overflow: hidden;
+    min-height: 13rem;
+    border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent);
+    border-radius: var(--radiusBox);
+    background: radial-gradient(circle at 92% 5%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 32%), var(--gray700);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255,255,255,.025);
     transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease;
 }
+.chart_header { display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem; padding: 1.1rem 1.15rem .3rem; }
+.chart_title { margin: 0; color: var(--gray300); font-size: .72rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.chart_metric { display: flex; align-items: baseline; gap: .35rem; margin-top: .28rem; }
+.chart_metric strong { color: var(--gray50); font-size: 1.05rem; font-weight: 700; }
+.chart_metric span { color: var(--gray300); font-size: .75rem; font-weight: 600; }
+.chart_meta { display: flex; align-items: center; gap: .6rem; }
+.chart_legend { display: flex; align-items: center; padding: .32rem .4rem; border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--gray800) 52%, transparent); }
+.chart_legend svg { margin: 0 !important; }
+.chart_icon { display: grid; place-items: center; width: 2.65rem; height: 2.65rem; border: 1px solid color-mix(in srgb, var(--primary) 38%, var(--gray400)); border-radius: calc(var(--radiusInput) + 3px); color: var(--gray50); background: color-mix(in srgb, var(--primary) 20%, var(--gray700)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
+.chart_icon svg { width: 1.35rem; height: 1.35rem; }
+.chart_canvas { position: relative; left: -8px; bottom: -5px; width: calc(100% + 13px); height: 8rem; padding-top: .35rem; }
+.chart_canvas canvas { max-height: 8rem; }
 
 @keyframes live-pulse {
     50% {

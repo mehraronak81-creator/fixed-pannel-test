@@ -2,6 +2,11 @@
 
 ## Unreleased - Minecraft Modrinth installer
 
+## Unreleased - SaaS console controls and graphs
+
+- Upgraded the shared Start, Restart, Stop, and force-stop controls with premium gradient surfaces, accessible labels, focus states, responsive icon-only variants, and clear disabled socket-state handling.
+- Connected the console graph card stylesheet to the live CPU, memory, and network charts, adding polished metric headers, legends, status-aware values, icon surfaces, elevation, and reduced-motion support.
+- Preserved the existing Pterodactyl permission checks, confirmation dialog, and websocket power actions; this change only improves presentation and prevents controls from appearing actionable before a websocket instance is available.
 - Added a real Minecraft Mods page under a server’s Management menu. It searches the Modrinth catalog by project name, loader, and Minecraft version, then queues only Modrinth CDN `.jar` files for installation.
 - Installs use Pterodactyl’s existing permission-gated file APIs: the UI is available only with `file.create`, creates `/mods` when needed, and asks Wings to pull the selected file directly to that directory.
 - Added VantaHost Studio component controls to enable or disable the installer and set Fabric, Forge, NeoForge, or Quilt plus an optional default Minecraft version.

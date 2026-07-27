@@ -1,9 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import { ServerContext } from '@/state/server';
 import styles from '@/components/server/console/style.module.css';
 import { ChipIcon, CloudIcon } from '@heroicons/react/outline';
-import { LuMemoryStick } from "react-icons/lu";
+import { LuMemoryStick } from 'react-icons/lu';
 
 interface ChartBlockProps {
     type: string;
@@ -18,37 +17,26 @@ interface ChartBlockProps {
 
 export default ({ type, title, legend, usage, limit, inbound, outbound, children }: ChartBlockProps) => {
     const status = ServerContext.useStoreState((state) => state.status.value);
+    const value = inbound && outbound ? `${inbound} / ${outbound}` : usage;
 
     return (
-    <>
-    <div className={'bg-gray-700 backdrop overflow-hidden rounded-box'}>
-        <div className={'px-6 pt-5 flex justify-between items-center'}>
-            <div>
-                <span className={'text-gray-300'}>{title}:</span>
-                <div className={'flex items-center gap-x-1'}>
-                    {status === 'offline' ? (
-                        <p>Offline</p>
-                    ) : (
-                        <p className={'text-lg font-medium'}>
-                            {usage && usage}
-                            {inbound && outbound && `${inbound} / ${outbound}`}
-                        </p>
-                    )}
-                    <span className={'text-gray-300 font-medium'}>{limit && '/ ' + limit}</span>
+        <section className={styles.chart_container}>
+            <header className={styles.chart_header}>
+                <div>
+                    <p className={styles.chart_title}>{title}</p>
+                    <div className={styles.chart_metric}>
+                        <strong>{status === 'offline' ? 'Offline' : value || '—'}</strong>
+                        {status !== 'offline' && limit && <span>/ {limit}</span>}
+                    </div>
                 </div>
-            </div>
-            <div className={'text-white bg-vantablack rounded-component w-16 h-16 flex items-center justify-center'}>
-                {type == 'cpu'
-                ? <ChipIcon className={'w-10'}/>
-                : type == 'network'
-                ? <CloudIcon className={'w-10'}/>
-                : <LuMemoryStick className={'text-[2.5rem]'}/>
-                }
-            </div>
-        </div>
-        <div css={'left:-11px;bottom:-11px;width:calc(100% + 17px);position:relative;'}>
-            {children}
-        </div>
-    </div>
-    </>
-)};
+                <div className={styles.chart_meta}>
+                    {legend && <div className={styles.chart_legend}>{legend}</div>}
+                    <div className={styles.chart_icon}>
+                        {type === 'cpu' ? <ChipIcon /> : type === 'network' ? <CloudIcon /> : <LuMemoryStick />}
+                    </div>
+                </div>
+            </header>
+            <div className={styles.chart_canvas}>{children}</div>
+        </section>
+    );
+};
