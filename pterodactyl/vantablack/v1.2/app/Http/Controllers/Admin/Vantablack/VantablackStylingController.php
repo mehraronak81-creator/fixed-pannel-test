@@ -20,7 +20,7 @@ class VantablackStylingController extends Controller
     public function index(): View
     {
         return view('admin.vantablack.styling', [
-            'backgroundImage' => $this->settings->get('settings::vantablack:backgroundImage', 'none'),
+            'backgroundImage' => $this->settings->get('settings::vantablack:backgroundImage', '/vantablack/background-login.png'),
             'backgroundImageLight' => $this->settings->get('settings::vantablack:backgroundImageLight', 'none'),
             'backdrop' => $this->settings->get('settings::vantablack:backdrop', false),
             'backdropPercentage' => $this->settings->get('settings::vantablack:backdropPercentage', '100%'),
