@@ -17,6 +17,9 @@ class VantablackComponentsRequest extends AdminFormRequest
             'vantablack:serverRow' => 'required|numeric',
             'vantablack:socialButtons' => 'required|in:true,false',
             'vantablack:discordBox' => 'required|in:true,false',
+            'vantablack:modsInstaller' => 'required|in:true,false',
+            'vantablack:modsDefaultLoader' => 'nullable|in:fabric,forge,neoforge,quilt',
+            'vantablack:modsDefaultVersion' => 'nullable|string|max:32',
 
             'vantablack:statsCards' => 'required|numeric',
             'vantablack:sideGraphs' => 'required|numeric',

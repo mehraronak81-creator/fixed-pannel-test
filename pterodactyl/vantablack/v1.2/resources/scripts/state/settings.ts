@@ -16,6 +16,9 @@ export interface SiteSettings {
         serverRow: number,
         socialButtons: boolean,
         discordBox: boolean,
+        modsInstaller: boolean,
+        modsDefaultLoader: string,
+        modsDefaultVersion: string,
       
         statsCards: number,
         sideGraphs: number,

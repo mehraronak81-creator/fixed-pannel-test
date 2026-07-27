@@ -76,6 +76,51 @@
             </div>
 
             <div class="header" style="margin-top:50px;">
+                <p>Minecraft mod installer</p>
+                <span class="description-text">Configure the Modrinth-powered installer displayed in each eligible server's management menu.</span>
+            </div>
+            <div class="row" style="border-bottom:1px solid var(--gray500);padding-top:20px;padding-bottom:20px;">
+                <div class="col-md-4">
+                    <p style="margin:0;font-weight:550;">Enable mod installer</p>
+                    <span style="font-size:1.5rem;color:var(--gray300);">Allow users with file-create permission to browse and install trusted Modrinth .jar files.</span>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-field">
+                        <select name="vantablack:modsInstaller">
+                            <option value="false" @if(old('vantablack:modsInstaller', $modsInstaller) == 'false') selected @endif>Disable</option>
+                            <option value="true" @if(old('vantablack:modsInstaller', $modsInstaller) == 'true') selected @endif>Enable</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border-bottom:1px solid var(--gray500);padding-top:20px;padding-bottom:20px;">
+                <div class="col-md-4">
+                    <p style="margin:0;font-weight:550;">Default mod loader</p>
+                    <span style="font-size:1.5rem;color:var(--gray300);">Preselect a loader for new searches. Users can still choose the correct loader per server.</span>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-field">
+                        <select name="vantablack:modsDefaultLoader">
+                            <option value="fabric" @if(old('vantablack:modsDefaultLoader', $modsDefaultLoader) == 'fabric') selected @endif>Fabric</option>
+                            <option value="forge" @if(old('vantablack:modsDefaultLoader', $modsDefaultLoader) == 'forge') selected @endif>Forge</option>
+                            <option value="neoforge" @if(old('vantablack:modsDefaultLoader', $modsDefaultLoader) == 'neoforge') selected @endif>NeoForge</option>
+                            <option value="quilt" @if(old('vantablack:modsDefaultLoader', $modsDefaultLoader) == 'quilt') selected @endif>Quilt</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border-bottom:1px solid var(--gray500);padding-top:20px;padding-bottom:20px;">
+                <div class="col-md-4">
+                    <p style="margin:0;font-weight:550;">Default Minecraft version</p>
+                    <span style="font-size:1.5rem;color:var(--gray300);">Optional version filter, for example 1.21.1. Leave blank to show all compatible releases.</span>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-field">
+                        <input type="text" name="vantablack:modsDefaultVersion" maxlength="32" value="{{ old('vantablack:modsDefaultVersion', $modsDefaultVersion) }}" placeholder="1.21.1" />
+                    </div>
+                </div>
+            </div>
+            <div class="header" style="margin-top:50px;">
                 <p>Console components</p>
                 <span class="description-text">Manage all components on the console page.</span>
             </div>

@@ -60,6 +60,9 @@ class AssetComposer
                 'serverRow' => $this->settings->get('settings::vantablack:serverRow', 1),
                 'socialButtons' => $this->settings->get('settings::vantablack:socialButtons', false),
                 'discordBox' => $this->settings->get('settings::vantablack:discordBox', true),
+                'modsInstaller' => $this->settings->get('settings::vantablack:modsInstaller', true),
+                'modsDefaultLoader' => $this->settings->get('settings::vantablack:modsDefaultLoader', 'fabric'),
+                'modsDefaultVersion' => $this->settings->get('settings::vantablack:modsDefaultVersion', ''),
 
                 'statsCards' => $this->settings->get('settings::vantablack:statsCards', 1),
                 'sideGraphs' => $this->settings->get('settings::vantablack:sideGraphs', 2),

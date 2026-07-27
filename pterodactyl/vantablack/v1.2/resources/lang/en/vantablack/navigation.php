@@ -16,6 +16,7 @@ return [
     'settings' => 'Settings',
     'activity' => 'Activity',
     'files' => 'Files',
+    'mods' => 'Mods',
     'databases' => 'Databases',
     'backups' => 'Backups',
     'network' => 'Network',

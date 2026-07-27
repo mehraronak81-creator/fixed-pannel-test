@@ -9,11 +9,12 @@ import BackupContainer from '@/components/server/backups/BackupContainer';
 import NetworkContainer from '@/components/server/network/NetworkContainer';
 import StartupContainer from '@/components/server/startup/StartupContainer';
 import FileManagerContainer from '@/components/server/files/FileManagerContainer';
+import MinecraftModsContainer from '@/components/server/mods/MinecraftModsContainer';
 import SettingsContainer from '@/components/server/settings/SettingsContainer';
 import AccountOverviewContainer from '@/components/dashboard/AccountOverviewContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
-import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon } from '@heroicons/react/outline'
+import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon } from '@heroicons/react/outline'
 
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
@@ -165,6 +166,13 @@ export default {
                 permission: 'file.*',
                 name: undefined,
                 component: FileEditContainer,
+            },
+            {
+                path: '/mods',
+                permission: 'file.create',
+                name: 'mods',
+                icon: CubeIcon,
+                component: MinecraftModsContainer,
             },
             {
                 path: '/databases',
