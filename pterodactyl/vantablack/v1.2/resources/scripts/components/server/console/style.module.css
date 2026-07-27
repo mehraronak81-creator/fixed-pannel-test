@@ -20,7 +20,7 @@
 
 .terminal {
     @apply flex flex-col w-full h-full py-3 md:px-3 px-6;
-    background-color: var(--gray700);
+    background-color: transparent;
     border: 1px solid color-mix(in srgb, var(--gray500) 70%, transparent);
     border-radius: var(--radiusBox);
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
@@ -44,7 +44,7 @@
 
     & > .container {
         @apply rounded-t p-1 sm:p-2 min-h-[16rem] flex-1 font-mono text-sm;
-        background: linear-gradient(145deg, color-mix(in srgb, var(--gray700) 96%, white), var(--gray700));
+        background: transparent;
         border: 1px solid color-mix(in srgb, var(--gray500) 42%, transparent);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
         transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
@@ -69,7 +69,7 @@
     }
 
     & .command_input {
-        @apply relative bg-gray-600 px-2 text-gray-100 pl-10 pr-4 py-3 w-full text-sm rounded-component !border-gray-500;
+        @apply relative bg-transparent px-2 text-gray-100 pl-10 pr-4 py-3 w-full text-sm rounded-component !border-gray-500;
         @apply focus:ring-0 outline-none focus-visible:outline-none;
         border: var(--borderInput);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
@@ -80,7 +80,7 @@
         }
 
         &:focus {
-            background-color: color-mix(in srgb, var(--gray600) 92%, white);
+            background-color: transparent;
             border-color: color-mix(in srgb, var(--primary) 72%, white);
             box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
