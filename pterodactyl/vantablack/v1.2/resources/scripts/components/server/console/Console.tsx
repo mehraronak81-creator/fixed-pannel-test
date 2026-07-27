@@ -285,7 +285,7 @@ export default ({ fullConsole }: Props) => {
                     <span className={styles.console_hint}>{connected ? 'LIVE' : 'CONNECTING'}</span>
                 </div>
                 {searchOpen && (
-                    <div className="flex items-center gap-2">
+                    <div className={styles.search_controls}>
                         <input
                             ref={searchInput}
                             value={searchTerm}
@@ -308,11 +308,11 @@ export default ({ fullConsole }: Props) => {
                             }}
                             placeholder="Search output"
                             aria-label="Search console output"
-                            className="w-36 rounded border border-gray-600 bg-gray-900/70 px-2 py-1 text-xs text-gray-100 outline-none focus:border-violet-400"
+                            className={styles.search_input}
                         />
-                        <button type="button" onClick={() => searchTerm && searchAddon.findPrevious(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Previous match">Prev</button>
-                        <button type="button" onClick={() => searchTerm && searchAddon.findNext(searchTerm)} className="text-xs text-gray-300 hover:text-white" aria-label="Next match">Next</button>
-                        <button type="button" onClick={() => { setSearchOpen(false); setSearchTerm(''); }} className="text-xs text-gray-300 hover:text-white" aria-label="Close search">Close</button>
+                        <button type="button" onClick={() => searchTerm && searchAddon.findPrevious(searchTerm)} className={styles.search_button} aria-label="Previous match">Prev</button>
+                        <button type="button" onClick={() => searchTerm && searchAddon.findNext(searchTerm)} className={styles.search_button} aria-label="Next match">Next</button>
+                        <button type="button" onClick={() => { setSearchOpen(false); setSearchTerm(''); }} className={styles.search_button} aria-label="Close search">Close</button>
                     </div>
                 )}
                 <span className={styles.console_shortcut}>Ctrl/Cmd + F search | Ctrl/Cmd + L clear</span>
@@ -351,16 +351,16 @@ export default ({ fullConsole }: Props) => {
                 <PowerButtons icons className={'absolute flex items-center gap-x-2 right-0 top-0 py-[4px] px-[5px]'}/>
                 :
                 <div className={'absolute right-0 top-0 py-3.5 pr-4 flex items-center gap-x-2'}>
-                    <button onClick={logData} title={'Copy log link'} aria-label={'Copy log link'} className={'lg:block hidden text-gray-200 hover:text-gray-100 duration-300'}>
+                    <button onClick={logData} title={'Copy log link'} aria-label={'Copy log link'} className={classNames('lg:block hidden', styles.console_action)}>
                         {isCopied 
                             ? <ClipboardCheckIcon className={'w-5 text-success-100'}/>
                             : <ClipboardIcon className={'w-5'}/>
                         }
                     </button>
-                    <button onClick={clearConsole} title={'Clear console'} aria-label={'Clear console'} className={'lg:block hidden text-gray-200 hover:text-gray-100 duration-300'}>
+                    <button onClick={clearConsole} title={'Clear console'} aria-label={'Clear console'} className={classNames('lg:block hidden', styles.console_action)}>
                         <TrashIcon className={'w-5'}/>
                     </button>
-                    <button onClick={openWindow} title={'Open full console'} aria-label={'Open full console'} className={'lg:block hidden text-gray-200 hover:text-gray-100 duration-300'}>
+                    <button onClick={openWindow} title={'Open full console'} aria-label={'Open full console'} className={classNames('lg:block hidden', styles.console_action)}>
                         <ArrowsExpandIcon className={'w-5'}/>
                     </button>
                 </div>

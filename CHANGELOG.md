@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased - refined controls and console surfaces
+
+- Refined all shared buttons with responsive hover lift, pressed feedback, richer elevation, keyboard focus treatment, and reduced-motion support.
+- Reworked the console surface with smooth terminal and chart cards, focused command input feedback, an animated live indicator, and polished native search controls and action buttons.
+- Added the console stylesheet to the pre-installer overlay, keeping the same UI available before and after applying the VantaHost theme archive.
 ## Unreleased - React Router runtime compatibility
 
 - Pinned react-router-dom to 5.3.4, matching the direct react-router 5.3.4 dependency. This eliminates the nested 5.1.2 Router instance that caused production Link/NavLink context invariant failures.

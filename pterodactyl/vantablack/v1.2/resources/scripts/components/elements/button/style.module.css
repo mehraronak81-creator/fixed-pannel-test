@@ -1,7 +1,29 @@
 .button {
     @apply px-4 py-2 inline-flex items-center justify-center;
-    @apply rounded-component text-base font-medium transition-all duration-100;
+    @apply rounded-component text-base font-medium;
     @apply focus:ring-[1px] focus:ring-offset-2 focus:ring-offset-gray-700;
+    transition-property: transform, box-shadow, background-color, border-color, color, opacity, filter;
+    transition-duration: 220ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateZ(0);
+    will-change: transform, box-shadow;
+
+    &:not(:disabled):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+        filter: saturate(1.06);
+    }
+
+    &:not(:disabled):active {
+        transform: translateY(0) scale(0.98);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+        transition-duration: 80ms;
+    }
+
+    &:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 3px;
+    }
 
     /* Sizing Controls */
     &.small {
@@ -22,6 +44,9 @@
 
     &:disabled {
         @apply cursor-not-allowed;
+        box-shadow: none;
+        transform: none;
+        will-change: auto;
     }
 
     &.square {
@@ -72,7 +97,6 @@
     }
 }
 
-
 .success {
     @apply bg-success-200 text-success-50 border-success-100 border-[1px];
     @apply hover:text-success-50 active:text-success-50 hover:bg-success-100 active:bg-success-100 focus:ring-success-100;
@@ -83,5 +107,12 @@
 
     &:disabled {
         @apply opacity-50;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button {
+        transition-duration: 0.01ms;
+        will-change: auto;
     }
 }
