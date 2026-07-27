@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased - Phase 3 Operations Suite & Admin Features
+
+- Completed Node Health Center with authenticated Wings system calls, memory/disk allocation tracking, and configurable alert threshold policies.
+- Implemented DDoS Protection Center with provider-adapter settings (OVH, Path.net, CosmicGuard, generic BGP/edge scrubbing), edge mitigation toggles, attack anomaly event logging, and incoming webhook endpoint.
+- Implemented Audit & Activity Log Viewer with searchable, filterable log UI covering actor username/email, event types, IP addresses, and payload properties.
+- Added Broadcast Banners & Announcements management for posting site-wide or node-specific notifications with priority levels, active windows, and user dismissibility.
+- Added IP & Abuse Blocklist with CIDR subnet support and access control middleware enforcing restrictions at login and API levels.
+- Added Resource-Usage Alerts for CPU, RAM, and Disk threshold monitoring with notification cooldowns and email/panel alerts.
+- Added Automated Backup Manager for global backup policy scheduling, retention limits, and policy execution tracking across node clusters.
+- Added Bulk Server Actions allowing administrators to select multiple servers and perform batch suspend, unsuspend, reinstall, or delete operations.
+- Added File Recycle Bin for server file manager deletions with recoverable trash state, admin inspection, manual restore/purge, and automated 7-day retention.
+- Added Staff & Sub-Admin Role Manager with granular permissions for support agents without granting root administrator privileges.
+- Updated admin navigation layout with dedicated Security & Operations menu section.
+
 ## Unreleased - Phase 2 VantaHost admin foundation
 
 - Removed AdminLTE's stock blue skin and replaced the complete admin shell with a responsive VantaHost control-plane design covering the branded header, navigation, sidebar states, page headings, tables, forms, Select2, cards, tabs, modals, dropdowns, pagination, alerts, buttons, footer, and mobile/collapsed layouts.

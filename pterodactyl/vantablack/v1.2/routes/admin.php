@@ -27,6 +27,43 @@ Route::get('/system-health.json', function () {
     ]);
 })->name('admin.system-health.json');
 
+Route::get('/health', [Admin\HealthController::class, 'index'])->name('admin.health');
+Route::get('/health/status.json', [Admin\HealthController::class, 'status'])->name('admin.health.json');
+Route::post('/health/settings', [Admin\HealthController::class, 'store'])->name('admin.health.settings');
+
+Route::get('/ddos', [Admin\DdosController::class, 'index'])->name('admin.ddos');
+Route::post('/ddos', [Admin\DdosController::class, 'update'])->name('admin.ddos.update');
+Route::post('/ddos/node/{id}', [Admin\DdosController::class, 'toggleNode'])->name('admin.ddos.node');
+
+Route::get('/activity', [Admin\ActivityLogController::class, 'index'])->name('admin.activity');
+
+Route::get('/announcements', [Admin\AnnouncementController::class, 'index'])->name('admin.announcements');
+Route::post('/announcements', [Admin\AnnouncementController::class, 'store'])->name('admin.announcements.store');
+Route::delete('/announcements/{id}', [Admin\AnnouncementController::class, 'destroy'])->name('admin.announcements.delete');
+
+Route::get('/security/blocklist', [Admin\BlocklistController::class, 'index'])->name('admin.security.blocklist');
+Route::post('/security/blocklist', [Admin\BlocklistController::class, 'store'])->name('admin.security.blocklist.store');
+Route::delete('/security/blocklist/{id}', [Admin\BlocklistController::class, 'destroy'])->name('admin.security.blocklist.delete');
+
+Route::get('/alerts', [Admin\ResourceAlertController::class, 'index'])->name('admin.alerts');
+Route::post('/alerts', [Admin\ResourceAlertController::class, 'store'])->name('admin.alerts.store');
+Route::delete('/alerts/{id}', [Admin\ResourceAlertController::class, 'destroy'])->name('admin.alerts.delete');
+
+Route::get('/backups', [Admin\BackupManagerController::class, 'index'])->name('admin.backups');
+Route::post('/backups', [Admin\BackupManagerController::class, 'store'])->name('admin.backups.store');
+Route::delete('/backups/{id}', [Admin\BackupManagerController::class, 'destroy'])->name('admin.backups.delete');
+
+Route::post('/servers/bulk', [Admin\BulkServerActionsController::class, 'process'])->name('admin.servers.bulk');
+
+Route::get('/servers/trash', [Admin\FileRecycleBinController::class, 'index'])->name('admin.servers.trash');
+Route::post('/servers/trash/{id}/restore', [Admin\FileRecycleBinController::class, 'restore'])->name('admin.servers.trash.restore');
+Route::delete('/servers/trash/{id}/purge', [Admin\FileRecycleBinController::class, 'purge'])->name('admin.servers.trash.purge');
+
+Route::get('/roles', [Admin\RoleController::class, 'index'])->name('admin.roles');
+Route::post('/roles', [Admin\RoleController::class, 'store'])->name('admin.roles.store');
+Route::delete('/roles/{id}', [Admin\RoleController::class, 'destroy'])->name('admin.roles.delete');
+
+
 /*
 |--------------------------------------------------------------------------
 | Theme Controller Routes

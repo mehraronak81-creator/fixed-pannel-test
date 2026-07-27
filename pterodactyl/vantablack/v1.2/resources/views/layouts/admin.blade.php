@@ -104,14 +104,61 @@
                                 <i data-lucide="server"></i> <span>Nodes</span>
                             </a>
                         </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.health' ?: 'active' }}">
+                            <a href="{{ route('admin.health') }}">
+                                <i data-lucide="heart-pulse"></i> <span>Node Health</span>
+                                <span class="vh-nav-badge">LIVE</span>
+                            </a>
+                        </li>
                         <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.servers') ?: 'active' }}">
                             <a href="{{ route('admin.servers') }}">
                                 <i data-lucide="terminal-square"></i> <span>Servers</span>
                             </a>
                         </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.servers.trash' ?: 'active' }}">
+                            <a href="{{ route('admin.servers.trash') }}">
+                                <i data-lucide="trash-2"></i> <span>File Recycle Bin</span>
+                            </a>
+                        </li>
                         <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.users') ?: 'active' }}">
                             <a href="{{ route('admin.users') }}">
                                 <i data-lucide="users"></i> <span>Users</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.roles' ?: 'active' }}">
+                            <a href="{{ route('admin.roles') }}">
+                                <i data-lucide="shield-check"></i> <span>Staff Roles</span>
+                            </a>
+                        </li>
+                        <li class="header">SECURITY & OPERATIONS</li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.ddos' ?: 'active' }}">
+                            <a href="{{ route('admin.ddos') }}">
+                                <i data-lucide="shield"></i> <span>DDoS Protection</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.security.blocklist' ?: 'active' }}">
+                            <a href="{{ route('admin.security.blocklist') }}">
+                                <i data-lucide="shield-ban"></i> <span>IP Blocklist</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.announcements' ?: 'active' }}">
+                            <a href="{{ route('admin.announcements') }}">
+                                <i data-lucide="megaphone"></i> <span>Announcements</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.alerts' ?: 'active' }}">
+                            <a href="{{ route('admin.alerts') }}">
+                                <i data-lucide="bell"></i> <span>Resource Alerts</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.backups' ?: 'active' }}">
+                            <a href="{{ route('admin.backups') }}">
+                                <i data-lucide="archive"></i> <span>Backup Manager</span>
+                            </a>
+                        </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.activity' ?: 'active' }}">
+                            <a href="{{ route('admin.activity') }}">
+                                <i data-lucide="list-tree"></i> <span>Audit Logs</span>
                             </a>
                         </li>
                         <li class="header">SERVICE MANAGEMENT</li>

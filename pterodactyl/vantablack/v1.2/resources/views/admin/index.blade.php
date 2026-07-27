@@ -83,6 +83,7 @@
                 <div class="box-body vh-quick-actions">
                     <a href="{{ route('admin.servers.new') }}"><span><i data-lucide="plus-circle"></i></span><div><strong>Deploy a server</strong><small>Create and assign a new instance</small></div><i data-lucide="arrow-right"></i></a>
                     <a href="{{ route('admin.nodes') }}"><span><i data-lucide="server-cog"></i></span><div><strong>Manage nodes</strong><small>Capacity and daemon settings</small></div><i data-lucide="arrow-right"></i></a>
+                    <a href="{{ route('admin.health') }}"><span><i data-lucide="heart-pulse"></i></span><div><strong>Node Health Center</strong><small>Live Wings fleet monitoring</small></div><i data-lucide="arrow-right"></i></a>
                     <a href="{{ route('admin.settings') }}"><span><i data-lucide="settings-2"></i></span><div><strong>Panel settings</strong><small>Core services and mail</small></div><i data-lucide="arrow-right"></i></a>
                     <a href="{{ route('admin.vantablack.styling') }}"><span><i data-lucide="palette"></i></span><div><strong>Appearance</strong><small>Theme and interface controls</small></div><i data-lucide="arrow-right"></i></a>
                 </div>
