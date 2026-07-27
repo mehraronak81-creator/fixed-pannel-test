@@ -50,6 +50,11 @@ export interface SiteSettings {
         backdrop: boolean,
         backdropPercentage: string,
         defaultMode: string,
+        font: string,
+        buttonStyle: string,
+        cardStyle: string,
+        uiDensity: string,
+        buttonWeight: string,
         modeToggler: boolean,
         langSwitch: boolean,
         copyright: string,
@@ -64,6 +69,16 @@ export interface SiteSettings {
         profileType: string,
         ipFlag: boolean;
         lowResourcesAlert: boolean;
+
+        /* META DATA */
+        meta_color: string,
+        meta_title: string,
+        meta_site_name: string,
+        meta_description: string,
+        meta_image: string,
+        meta_favicon: string,
+        meta_canonical: string,
+        meta_robots: string,
 
         /* COLORS */
         primary: string,

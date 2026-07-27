@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased - Phase 1 dashboard, controls, SEO, and appearance
+
+- Removed Console quick-preview actions from every main-dashboard server card and made Manage the single full-width action; the full server-page terminal remains intact.
+- Added a prominent active/suspended access summary to the native server management screen and polished Suspend/Unsuspend controls while preserving Pterodactyl's route, CSRF protection, action payloads, transfer safety, and controller flow.
+- Replaced duplicated and hard-coded metadata with one shared SEO layer across the client, admin, and Studio layouts, including canonical URLs, crawler rules, Open Graph, Twitter cards, theme color, site name, favicon, and locale.
+- Expanded VantaHost Studio with validated controls for interface font, button style and weight, card design, and UI density. The resulting CSS variables and data attributes now affect React, Studio, and native admin surfaces.
+- Hardened metadata and appearance validation with explicit allowlists and field limits, fixed the login-gradient editor binding, and synchronized the PHP view composer with the typed frontend settings contract.
+- Verified the overlay against a clean Pterodactyl 1.14.1 audit tree: `npm run tsc -- --noEmit` and `npm run build:production` both pass on Node.js 22, with Webpack 5.105.2 compiling successfully.
+
 ## Unreleased - Minecraft Modrinth installer
 
 ## Unreleased - SaaS console controls and graphs

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ config('app.name', 'Pterodactyl') }}</title>
+        <title>{{ $siteConfiguration['vantablack']['meta_title'] }}</title>
 
         @section('meta')
             <meta charset="utf-8">
@@ -9,36 +9,8 @@
             <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
             <meta name="csrf-token" content="{{ csrf_token() }}">
             
-            <!-- meta data -->
-
-            <meta name="theme-color" content="{{ $siteConfiguration['vantablack']['meta_color'] }}"/>
-            <link rel="icon" type="image/x-icon" href="{{ $siteConfiguration['vantablack']['meta_favicon'] }}">
-
-            <meta name="title" content="{{ $siteConfiguration['vantablack']['meta_title'] }}" />
-            <meta name="description" content="{{ $siteConfiguration['vantablack']['meta_description'] }}" />
-
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content="{{config('app.url', 'https://localhost')}}" />
-            <meta property="og:title" content="{{ $siteConfiguration['vantablack']['meta_title'] }}" />
-            <meta property="og:description" content="{{ $siteConfiguration['vantablack']['meta_description'] }}" />
-            <meta property="og:image" content="{{ $siteConfiguration['vantablack']['meta_image'] }}" />
-
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content="{{config('app.url', 'https://localhost')}}" />
-            <meta property="twitter:title" content="{{ $siteConfiguration['vantablack']['meta_title'] }}" />
-            <meta property="twitter:description" content="{{ $siteConfiguration['vantablack']['meta_description'] }}" />
-            <meta property="twitter:image" content="{{ $siteConfiguration['vantablack']['meta_image'] }}" />
-
-            <!-- meta data -->
-            <!--
-            <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png?v=3041cf234d50072cfa636ac560ac966f">
-            <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
-            <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
-            <link rel="manifest" href="/favicons/manifest.json">
-            <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#bc6e3c">
-            <link rel="shortcut icon" href="/favicons/favicon.ico">
-            <meta name="msapplication-config" content="/favicons/browserconfig.xml">
-        -->
+            @include('partials.vantablack-meta')
+            @include('partials.vantablack-appearance')
         @show
 
         @section('user-data')
@@ -133,15 +105,15 @@
             <?php if ($siteConfiguration['vantablack']['backdrop'] === 'true') {
                 echo '.backdrop{border:1px solid;border-color:var(--gray600)!important;backdrop-filter:blur(16px);}';
             }?>
-            @import url('//fonts.googleapis.com/css?family=Rubik:300,400,500&display=swap');
-            @import url('//fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:500&display=swap');
+
+
         </style>
 
         @yield('assets')
 
         @include('layouts.scripts')
     </head>
-    <body class="{{ $css['body'] ?? 'bg-neutral-50' }}">
+    <body class="{{ $css['body'] ?? 'bg-neutral-50' }}" data-button-style="{{ $siteConfiguration['vantablack']['buttonStyle'] }}" data-card-style="{{ $siteConfiguration['vantablack']['cardStyle'] }}" data-ui-density="{{ $siteConfiguration['vantablack']['uiDensity'] }}">
         @section('content')
             @yield('above-container')
             @yield('container')

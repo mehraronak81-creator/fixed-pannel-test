@@ -27,7 +27,7 @@
 .admin_filter { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; }
 .admin_filter span { color: var(--gray300); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-.server_cards { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; }
+.server_cards { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: var(--vh-content-gap, 1rem); }
 .empty_state { grid-column: 1 / -1; padding: 2rem 0; color: var(--gray300); text-align: center; font-size: 0.875rem; }
 
 .reference_card,
@@ -37,14 +37,14 @@
     border: 1px solid color-mix(in srgb, var(--gray500) 76%, transparent);
     border-radius: var(--radiusBox);
     background: var(--gray700-default);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    box-shadow: var(--vh-card-shadow, none), inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
 .reference_visual {
     position: relative;
     isolation: isolate;
     min-height: 132px;
-    padding: 1.35rem 1.5rem 0.9rem;
+    padding: var(--vh-card-padding, 1.35rem) var(--vh-card-padding, 1.5rem) 0.9rem;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -100,7 +100,7 @@
 .reference_metrics .reference_status { padding: 0.32rem 0.5rem; vertical-align: middle; }
 .alarm { color: var(--dangerText) !important; }
 
-.reference_actions { padding: 0.7rem 1.5rem 1.25rem; }
+.reference_actions { padding: 0.7rem var(--vh-card-padding, 1.5rem) var(--vh-card-padding, 1.25rem); }
 .reference_manage {
     display: flex;
     align-items: center;
@@ -118,7 +118,7 @@
 }
 
 .quick_links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
-.quick_link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid color-mix(in srgb, var(--gray500) 70%, transparent); border-radius: var(--radiusBox); background: var(--gray700); color: var(--gray200); text-decoration: none; transition: transform 180ms ease, border-color 180ms ease; }
+.quick_link { display: flex; align-items: center; gap: 0.75rem; padding: var(--vh-card-padding, 1rem); border: 1px solid color-mix(in srgb, var(--gray500) 70%, transparent); border-radius: var(--radiusBox); background: var(--gray700); color: var(--gray200); text-decoration: none; transition: transform 180ms ease, border-color 180ms ease; }
 .quick_link p { margin: 0; color: var(--gray50); font-size: 0.85rem; font-weight: 600; }
 .quick_link span { display: block; margin-top: 0.15rem; color: var(--gray300); font-size: 0.72rem; }
 .quick_link_icon { flex: 0 0 auto; color: var(--primary); font-size: 1.25rem; }
@@ -128,10 +128,8 @@
 .server_card_overlay { position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, var(--gray700-default), color-mix(in srgb, var(--gray700-default) 40%, transparent)); }
 .server_card_metrics { color: var(--gray100); }
 .server_card_status { border: 1px solid color-mix(in srgb, currentColor 30%, transparent); }
-.server_card_actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
-.server_card_primary, .server_card_secondary { display: flex; align-items: center; justify-content: center; min-height: 2.65rem; border-radius: var(--radiusInput); font-size: 0.82rem; font-weight: 600; text-decoration: none; }
-.server_card_primary { background: var(--primary); color: white; }
-.server_card_secondary { border: 1px solid color-mix(in srgb, var(--gray400) 60%, transparent); color: var(--gray100); }
+.server_card_actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+.server_card_primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.65rem; border-radius: var(--radiusInput); background: var(--primary); color: white; font-size: 0.82rem; font-weight: 600; text-decoration: none; }
 
 @media (hover: hover) {
     .create_folder:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 60%, white); background: color-mix(in srgb, var(--gray600) 74%, transparent); }

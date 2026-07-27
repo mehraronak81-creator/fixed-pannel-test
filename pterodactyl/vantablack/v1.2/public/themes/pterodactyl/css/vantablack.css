@@ -892,3 +892,54 @@ nav .logo img{
         width:250px;
     }
 }
+/* VantaHost Appearance System */
+body {
+    font-family: var(--fontFamily), sans-serif;
+}
+
+.button {
+    border-radius: var(--vh-button-radius, 8px);
+    font-weight: var(--vh-button-weight, 600);
+}
+
+.content-box,
+.sideEditor form,
+.control-hero,
+.quick-link {
+    border-radius: var(--vh-card-radius, 14px);
+    box-shadow: var(--vh-card-shadow, none);
+}
+
+body[data-ui-density='compact'] .content-box { padding: 18px; }
+body[data-ui-density='comfortable'] .content-box { padding: 24px; }
+body[data-ui-density='spacious'] .content-box { padding: 30px; }
+
+body[data-card-style='flat'] .content-box,
+body[data-card-style='flat'] .sideEditor form,
+body[data-card-style='flat'] .control-hero,
+body[data-card-style='flat'] .quick-link {
+    box-shadow: none;
+}
+
+body[data-card-style='glass'] .content-box,
+body[data-card-style='glass'] .sideEditor form,
+body[data-card-style='glass'] .control-hero,
+body[data-card-style='glass'] .quick-link {
+    background: color-mix(in srgb, var(--gray700) 76%, transparent);
+    border-color: color-mix(in srgb, var(--gray400) 55%, transparent);
+    backdrop-filter: blur(18px) saturate(1.12);
+}
+
+body[data-button-style='soft'] .button-primary {
+    border: 1px solid color-mix(in srgb, var(--primary) 58%, transparent);
+    background: color-mix(in srgb, var(--primary) 24%, var(--gray700));
+    color: color-mix(in srgb, var(--primary) 35%, white);
+    box-shadow: none;
+}
+
+body[data-button-style='glass'] .button-primary {
+    border: 1px solid color-mix(in srgb, var(--primary) 62%, transparent);
+    background: color-mix(in srgb, var(--primary) 32%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 10px 30px rgba(0, 0, 0, .18);
+    backdrop-filter: blur(14px) saturate(1.15);
+}

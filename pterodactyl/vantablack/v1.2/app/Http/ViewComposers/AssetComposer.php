@@ -89,6 +89,11 @@ class AssetComposer
                 'backdrop' => $this->settings->get('settings::vantablack:backdrop', false),
                 'backdropPercentage' => $this->settings->get('settings::vantablack:backdropPercentage', '100%'),
                 'defaultMode' => $this->settings->get('settings::vantablack:defaultMode', 'darkmode'),
+                'font' => $this->settings->get('settings::vantablack:font', 'Inter'),
+                'buttonStyle' => $this->settings->get('settings::vantablack:buttonStyle', 'solid'),
+                'cardStyle' => $this->settings->get('settings::vantablack:cardStyle', 'elevated'),
+                'uiDensity' => $this->settings->get('settings::vantablack:uiDensity', 'comfortable'),
+                'buttonWeight' => $this->settings->get('settings::vantablack:buttonWeight', '600'),
                 'copyright' => $this->settings->get('settings::vantablack:copyright', 'VantaHost - Built by Vantablack, a Void Development company.'),
                 'radiusInput' => $this->settings->get('settings::vantablack:radiusInput', '7px'),
                 'borderInput' => $this->settings->get('settings::vantablack:borderInput', true),
@@ -101,12 +106,14 @@ class AssetComposer
                 /* META DATA */
                 'meta_color' => $this->settings->get('settings::vantablack:meta_color', '#4a35cf'),
                 'meta_title' => $this->settings->get('settings::vantablack:meta_title', 'VantaHost - Game Server Hosting'),
+                'meta_site_name' => $this->settings->get('settings::vantablack:meta_site_name', 'VantaHost'),
                 'meta_description' => $this->settings->get('settings::vantablack:meta_description', 'VantaHost game server hosting, powered by Vantablack and Void Development.'),
                 'meta_image' => $this->settings->get('settings::vantablack:meta_image', '/vantablack/meta-tags.png'),
                 'meta_favicon' => $this->settings->get('settings::vantablack:meta_favicon', '/vantablack/Vantablack.png'),
+                'meta_canonical' => $this->settings->get('settings::vantablack:meta_canonical', config('app.url', '')),
+                'meta_robots' => $this->settings->get('settings::vantablack:meta_robots', 'index,follow'),
 
                 /* ADVANCED */
-                'font' => $this->settings->get('settings::vantablack:font', 'Roboto'),
                 'profileType' => $this->settings->get('settings::vantablack:profileType', 'gravatar'),
                 'modeToggler' => $this->settings->get('settings::vantablack:modeToggler', true),
                 'langSwitch' => $this->settings->get('settings::vantablack:langSwitch', true),

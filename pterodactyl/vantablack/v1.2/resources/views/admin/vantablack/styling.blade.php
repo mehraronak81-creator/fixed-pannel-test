@@ -1,7 +1,7 @@
 @extends('layouts.vantablack', ['navbar' => 'styling', 'sideEditor' => false])
 
 @section('title')
-    Vantablack Styling
+    VantaHost Appearance
 @endsection
 
 @section('content')
@@ -9,8 +9,56 @@
     <form action="{{ route('admin.vantablack.styling') }}" method="POST">
         <div class="content-box">
             <div class="header">
+                <p>Appearance system</p>
+                <span class="description-text">Set typography, button treatment, card depth, interface spacing, and visual weight from one place.</span>
+            </div>
+            <div class="input-rows" style="padding-top:20px;">
+                <div class="input-field">
+                    <label for="vantablack:font">Interface font</label>
+                    <select id="vantablack:font" name="vantablack:font">
+                        @foreach(['Inter', 'Roboto', 'Rubik', 'IBM Plex Sans', 'system-ui'] as $fontOption)
+                            <option value="{{ $fontOption }}" @if(old('vantablack:font', $font) === $fontOption) selected @endif>{{ $fontOption === 'system-ui' ? 'System default' : $fontOption }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="vantablack:buttonStyle">Button style</label>
+                    <select id="vantablack:buttonStyle" name="vantablack:buttonStyle">
+                        <option value="solid" @if(old('vantablack:buttonStyle', $buttonStyle) === 'solid') selected @endif>Solid</option>
+                        <option value="soft" @if(old('vantablack:buttonStyle', $buttonStyle) === 'soft') selected @endif>Soft tint</option>
+                        <option value="glass" @if(old('vantablack:buttonStyle', $buttonStyle) === 'glass') selected @endif>Glass</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="vantablack:buttonWeight">Button weight</label>
+                    <select id="vantablack:buttonWeight" name="vantablack:buttonWeight">
+                        <option value="500" @if((string) old('vantablack:buttonWeight', $buttonWeight) === '500') selected @endif>Medium</option>
+                        <option value="600" @if((string) old('vantablack:buttonWeight', $buttonWeight) === '600') selected @endif>Semibold</option>
+                        <option value="700" @if((string) old('vantablack:buttonWeight', $buttonWeight) === '700') selected @endif>Bold</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="vantablack:cardStyle">Card design</label>
+                    <select id="vantablack:cardStyle" name="vantablack:cardStyle">
+                        <option value="flat" @if(old('vantablack:cardStyle', $cardStyle) === 'flat') selected @endif>Flat</option>
+                        <option value="elevated" @if(old('vantablack:cardStyle', $cardStyle) === 'elevated') selected @endif>Elevated</option>
+                        <option value="glass" @if(old('vantablack:cardStyle', $cardStyle) === 'glass') selected @endif>Glass</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="vantablack:uiDensity">Interface density</label>
+                    <select id="vantablack:uiDensity" name="vantablack:uiDensity">
+                        <option value="compact" @if(old('vantablack:uiDensity', $uiDensity) === 'compact') selected @endif>Compact</option>
+                        <option value="comfortable" @if(old('vantablack:uiDensity', $uiDensity) === 'comfortable') selected @endif>Comfortable</option>
+                        <option value="spacious" @if(old('vantablack:uiDensity', $uiDensity) === 'spacious') selected @endif>Spacious</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="content-box">
+            <div class="header">
                 <p>Styling settings</p>
-                <span class="description-text">Customize the general appears of Vantablack Theme.</span>
+                <span class="description-text">Customize VantaHost surfaces, backgrounds, and component geometry.</span>
             </div>
             <div class="row" style="border-bottom:1px solid var(--gray500);padding-top:20px;padding-bottom:20px;">
                 <div class="col-md-4">
@@ -90,7 +138,7 @@
                     <div class="input-field">
                         <select name="vantablack:loginGradient" value="{{ old('vantablack:loginGradient', $loginGradient) }}">
                             <option value="false">Disable</option>
-                            <option value="true" @if(old('vantablack:logoPosition', $loginGradient) == 'true') selected @endif>Enable</option>
+                            <option value="true" @if(old('vantablack:loginGradient', $loginGradient) == 'true') selected @endif>Enable</option>
                         </select>
                     </div>
                 </div>

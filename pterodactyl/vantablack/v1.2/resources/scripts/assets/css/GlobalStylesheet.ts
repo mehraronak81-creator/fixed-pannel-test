@@ -65,4 +65,32 @@ export default createGlobalStyle`
     ::-webkit-scrollbar-corner {
         background: transparent;
     }
+
+    .page-content-shell {
+        padding-right: var(--vh-content-padding) !important;
+        padding-left: var(--vh-content-padding) !important;
+        transition: padding 180ms ease;
+    }
+
+    body[data-card-style='flat'] .backdrop {
+        box-shadow: none !important;
+        backdrop-filter: none;
+    }
+
+    body[data-card-style='elevated'] .backdrop {
+        box-shadow: var(--vh-card-shadow);
+    }
+
+    body[data-card-style='glass'] .backdrop {
+        border-color: color-mix(in srgb, var(--gray400) 45%, transparent) !important;
+        background-color: color-mix(in srgb, var(--gray700-default) 72%, transparent) !important;
+        box-shadow: var(--vh-card-shadow);
+        backdrop-filter: blur(18px) saturate(1.12);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .page-content-shell {
+            transition-duration: 0.01ms;
+        }
+    }
 `;

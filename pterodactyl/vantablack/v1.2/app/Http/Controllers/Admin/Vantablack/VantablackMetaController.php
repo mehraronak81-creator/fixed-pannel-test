@@ -21,10 +21,13 @@ class VantablackMetaController extends Controller
     {
         return view('admin.vantablack.meta', [
             'meta_color' => $this->settings->get('settings::vantablack:meta_color', '#4a35cf'),
-            'meta_title' => $this->settings->get('settings::vantablack:meta_title', 'Pterodactyl Panel'),
-            'meta_description' => $this->settings->get('settings::vantablack:meta_description', 'Our official Pterodactyl panel'),
+            'meta_title' => $this->settings->get('settings::vantablack:meta_title', 'VantaHost - Game Server Hosting'),
+            'meta_site_name' => $this->settings->get('settings::vantablack:meta_site_name', 'VantaHost'),
+            'meta_description' => $this->settings->get('settings::vantablack:meta_description', 'VantaHost game server hosting, powered by Vantablack and Void Development.'),
             'meta_image' => $this->settings->get('settings::vantablack:meta_image', '/vantablack/meta-tags.png'),
             'meta_favicon' => $this->settings->get('settings::vantablack:meta_favicon', '/vantablack/Vantablack.png'),
+            'meta_canonical' => $this->settings->get('settings::vantablack:meta_canonical', config('app.url', '')),
+            'meta_robots' => $this->settings->get('settings::vantablack:meta_robots', 'index,follow'),
         ]);
     }
 

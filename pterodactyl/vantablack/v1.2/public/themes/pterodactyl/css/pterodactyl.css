@@ -872,3 +872,71 @@ pre {
 .input-w-reset > button:focus > svg{
     transform: rotate(-360deg);
 }
+/* VantaHost Phase 1: server access controls */
+.vh-suspension-summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+    padding: 20px 22px;
+    border: 1px solid rgba(74, 53, 207, .22);
+    border-left: 4px solid var(--vh-primary, #4a35cf);
+    border-radius: var(--vh-card-radius, 10px);
+    background: linear-gradient(135deg, rgba(74, 53, 207, .09), rgba(255, 255, 255, .96));
+    box-shadow: var(--vh-card-shadow, 0 12px 30px rgba(26, 31, 54, .09));
+}
+.vh-suspension-summary.is-suspended { border-left-color: #dd4b39; background: linear-gradient(135deg, rgba(221, 75, 57, .11), rgba(255, 255, 255, .97)); }
+.vh-suspension-icon { display: flex; flex: 0 0 48px; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 14px; background: var(--vh-primary, #4a35cf); color: #fff; font-size: 23px; box-shadow: 0 9px 20px rgba(74, 53, 207, .23); }
+.vh-suspension-summary.is-suspended .vh-suspension-icon { background: #dd4b39; box-shadow: 0 9px 20px rgba(221, 75, 57, .2); }
+.vh-suspension-copy { min-width: 0; flex: 1; }
+.vh-suspension-copy h2 { margin: 2px 0 4px; color: #253046; font-size: 19px; font-weight: 700; }
+.vh-suspension-copy p { margin: 0; color: #647086; line-height: 1.5; }
+.vh-eyebrow { color: var(--vh-primary, #4a35cf); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.vh-suspension-summary.is-suspended .vh-eyebrow { color: #b13a2c; }
+.vh-server-actions { display: flex; flex-wrap: wrap; }
+.vh-server-actions > [class*="col-"] { display: flex; }
+.vh-server-actions .box { display: flex; flex: 1; flex-direction: column; width: 100%; overflow: hidden; border-radius: var(--vh-card-radius, 10px); box-shadow: var(--vh-card-shadow, 0 10px 25px rgba(26, 31, 54, .08)); transition: transform .18s ease, box-shadow .18s ease; }
+.vh-server-actions .box-body { flex: 1; color: #5f6b7d; line-height: 1.55; }
+.vh-server-actions .box-footer { padding: 14px; background: #fbfcfe; }
+.vh-server-actions .btn { min-height: 38px; border-radius: var(--vh-button-radius, 7px); font-weight: var(--vh-button-weight, 600); transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+.vh-server-actions .btn:hover:not([disabled]) { transform: translateY(-1px); filter: saturate(1.08); box-shadow: 0 8px 18px rgba(26, 31, 54, .14); }
+.vh-suspension-card { order: -1; }
+@media (max-width: 767px) { .vh-suspension-summary { align-items: flex-start; flex-wrap: wrap; } .vh-suspension-summary .btn { width: 100%; } .vh-server-actions > [class*="col-"] { display: block; } }
+@media (prefers-reduced-motion: reduce) { .vh-server-actions .box, .vh-server-actions .btn { transition-duration: .01ms; } }
+/* VantaHost Appearance System: admin */
+body {
+    font-family: var(--fontFamily), sans-serif;
+}
+
+.box,
+.info-box,
+.small-box {
+    border-radius: var(--vh-card-radius, 10px);
+    box-shadow: var(--vh-card-shadow, none);
+}
+
+.btn {
+    border-radius: var(--vh-button-radius, 7px);
+    font-weight: var(--vh-button-weight, 600);
+    transition: transform 180ms cubic-bezier(.22, 1, .36, 1), box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.btn:not(:disabled):hover { transform: translateY(-1px); }
+.btn:not(:disabled):active { transform: translateY(0) scale(.98); }
+body[data-card-style='flat'] .box { box-shadow: none; }
+body[data-card-style='glass'] .box {
+    background: color-mix(in srgb, #182033 86%, transparent);
+    border-color: color-mix(in srgb, var(--vh-primary) 28%, #40506a);
+    backdrop-filter: blur(16px);
+}
+body[data-button-style='soft'] .btn-primary {
+    border-color: color-mix(in srgb, var(--vh-primary) 62%, transparent);
+    background: color-mix(in srgb, var(--vh-primary) 32%, #1b2436);
+}
+body[data-button-style='glass'] .btn-primary {
+    border-color: color-mix(in srgb, var(--vh-primary) 65%, transparent);
+    background: color-mix(in srgb, var(--vh-primary) 34%, transparent);
+    backdrop-filter: blur(12px);
+}
+body[data-ui-density='compact'] .box-body { padding: 12px; }
+body[data-ui-density='spacious'] .box-body { padding: 22px; }

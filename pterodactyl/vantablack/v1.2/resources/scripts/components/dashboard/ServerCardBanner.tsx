@@ -149,9 +149,6 @@ export default ({ server }: { server: Server }) => {
                     <Link to={`/server/${server.id}`} className={styles.server_card_primary}>
                         {t('manage-server', { ns: 'vantablack/dashboard'})}
                     </Link>
-                    <Link to={`/server/${server.id}/console`} className={styles.server_card_secondary}>
-                        Console
-                    </Link>
                 </div>
             </div>
         </div>
