@@ -134,34 +134,11 @@ export default () => {
                 if (status !== 409) throw error;
             }
 
-            // Try the pull endpoint first (Pterodactyl 1.11+), fall back to download-from-url
-            try {
-                await http.post(`/api/client/servers/${uuid}/files/pull`, {
-                    url: file.url,
-                    directory: 'mods',
-                    filename: file.filename,
-                });
-            } catch (pullError) {
-                const pullStatus = (pullError as { response?: { status?: number } }).response?.status;
-                // If pull endpoint doesn't exist (404/405), try the write approach via download
-                if (pullStatus === 404 || pullStatus === 405 || pullStatus === 500) {
-                    // Download the file content through Modrinth CDN and write it
-                    const downloadResponse = await fetch(file.url);
-                    if (!downloadResponse.ok) throw new Error('Failed to download mod file from Modrinth CDN.');
-                    const blob = await downloadResponse.blob();
-                    
-                    await http.post(
-                        `/api/client/servers/${uuid}/files/write`,
-                        blob,
-                        {
-                            params: { file: `/mods/${file.filename}` },
-                            headers: { 'Content-Type': 'application/octet-stream' },
-                        }
-                    );
-                } else {
-                    throw pullError;
-                }
-            }
+            await http.post(`/api/client/servers/${uuid}/files/pull`, {
+                url: file.url,
+                directory: 'mods',
+                filename: file.filename,
+            });
 
             addFlash({
                 key: 'minecraft-mods',

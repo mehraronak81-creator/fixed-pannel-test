@@ -14,8 +14,7 @@ import SettingsContainer from '@/components/server/settings/SettingsContainer';
 import AccountOverviewContainer from '@/components/dashboard/AccountOverviewContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
-import WorldSettingsContainer from '@/components/server/world/WorldSettingsContainer';
-import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon, GlobeAltIcon, LightningBoltIcon } from '@heroicons/react/outline'
+import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon } from '@heroicons/react/outline'
 
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
@@ -224,13 +223,6 @@ export default {
                 name: 'startup',
                 icon: AdjustmentsIcon,
                 component: StartupContainer,
-            },
-            {
-                path: '/world',
-                permission: 'file.*',
-                name: 'world',
-                icon: GlobeAltIcon,
-                component: WorldSettingsContainer,
             },
         ]
     }
