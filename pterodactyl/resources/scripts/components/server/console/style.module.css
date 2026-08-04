@@ -1,16 +1,41 @@
+/* ═══════════════════════════════════════════════════════════
+   Console — Premium Liquid Glass
+   ═══════════════════════════════════════════════════════════ */
+
 .stat_block {
-    @apply flex items-center rounded shadow-lg relative;
+    @apply flex items-center relative;
     @apply col-span-3 md:col-span-2 lg:col-span-6;
     @apply px-3 py-2 md:p-3 lg:p-4;
+    background: rgba(26, 26, 51, 0.55);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%);
+        pointer-events: none;
+        border-radius: inherit;
+    }
 
     & > .status_bar {
         @apply w-1 h-full absolute left-0 top-0 rounded-l sm:hidden;
     }
 
     & > .icon {
-        @apply hidden flex-shrink-0 items-center justify-center rounded-lg shadow-md w-12 h-12;
+        @apply hidden flex-shrink-0 items-center justify-center w-12 h-12;
         @apply transition-colors duration-500;
         @apply sm:flex sm:mr-4;
+        background: rgba(108, 92, 231, 0.12);
+        border: 1px solid rgba(108, 92, 231, 0.25);
+        border-radius: 14px;
+        box-shadow: 0 0 20px rgba(108, 92, 231, 0.1);
 
         & > svg {
             @apply w-6 h-6 m-auto;
@@ -20,17 +45,31 @@
 
 .terminal {
     @apply flex flex-col w-full h-full py-3 md:px-3 px-6;
-    background-color: var(--gray700);
-    border: 1px solid color-mix(in srgb, var(--gray500) 70%, transparent);
-    border-radius: var(--radiusBox);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    background: rgba(26, 26, 51, 0.55);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255,255,255,0.04);
     isolation: isolate;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, box-shadow 260ms ease;
     will-change: transform, box-shadow;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%);
+        pointer-events: none;
+        border-radius: inherit;
+        z-index: 0;
+    }
 
     &:focus-within {
-        border-color: color-mix(in srgb, var(--primary) 72%, white);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent), 0 28px 76px rgba(0, 0, 0, 0.3);
+        border-color: color-mix(in srgb, var(--primary) 55%, rgba(255,255,255,0.15));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), 0 28px 76px rgba(0, 0, 0, 0.3), 0 0 40px color-mix(in srgb, var(--primary) 10%, transparent);
     }
 
     & .overflows_container {
@@ -44,10 +83,13 @@
 
     & > .container {
         @apply rounded-t p-1 sm:p-2 min-h-[16rem] flex-1 font-mono text-sm;
-        background: linear-gradient(145deg, color-mix(in srgb, var(--gray700) 96%, white), var(--gray700));
-        border: 1px solid color-mix(in srgb, var(--gray500) 42%, transparent);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-        transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+        background: linear-gradient(145deg, rgba(13, 13, 36, 0.6), rgba(6, 6, 26, 0.8));
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        transition: border-color 220ms ease, box-shadow 220ms ease;
+        position: relative;
+        z-index: 1;
 
         & #terminal {
             @apply h-full;
@@ -57,7 +99,7 @@
             }
 
             &::-webkit-scrollbar-thumb {
-                @apply bg-gray-900;
+                background: rgba(255, 255, 255, 0.1);
                 border-radius: 999px;
             }
         }
@@ -69,24 +111,30 @@
     }
 
     & .command_input {
-        @apply relative bg-gray-600 px-2 text-gray-100 pl-10 pr-4 py-3 w-full text-sm rounded-component !border-gray-500;
+        @apply relative px-2 text-gray-100 pl-10 pr-4 py-3 w-full text-sm;
         @apply focus:ring-0 outline-none focus-visible:outline-none;
-        border: var(--borderInput);
+        background: rgba(26, 26, 51, 0.65);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
-        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative;
+        z-index: 1;
 
         &:hover:not(:disabled) {
-            border-color: color-mix(in srgb, var(--gray300) 62%, transparent);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(26, 26, 51, 0.75);
         }
 
         &:focus {
-            background-color: color-mix(in srgb, var(--gray600) 92%, white);
-            border-color: color-mix(in srgb, var(--primary) 72%, white);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            background: rgba(26, 26, 51, 0.85);
+            border-color: color-mix(in srgb, var(--primary) 60%, rgba(255,255,255,0.2));
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent), 0 0 20px color-mix(in srgb, var(--primary) 8%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         &:disabled {
-            opacity: 0.58;
+            opacity: 0.5;
         }
     }
 }
@@ -94,17 +142,21 @@
 .console_header {
     @apply flex items-center justify-between gap-3 px-1 pb-3;
     color: var(--gray100);
+    position: relative;
+    z-index: 1;
 }
 
 .console_identity {
-    @apply flex items-center gap-2 text-sm font-semibold;
+    @apply flex items-center gap-2.5 text-sm font-semibold;
 }
 
 .console_hint {
-    @apply text-[10px] font-semibold tracking-[0.12em] px-2 py-0.5 rounded-full;
+    @apply text-[10px] font-semibold tracking-[0.12em] px-2.5 py-0.5;
     color: var(--gray200);
-    background: color-mix(in srgb, var(--gray600) 78%, transparent);
-    border: 1px solid color-mix(in srgb, var(--gray400) 35%, transparent);
+    background: rgba(108, 92, 231, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: 999px;
 }
 
 .console_shortcut {
@@ -115,39 +167,42 @@
 .live_indicator {
     @apply h-2 w-2 rounded-full;
     background: var(--successBackground);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--successBackground) 18%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--successBackground) 18%, transparent), 0 0 12px color-mix(in srgb, var(--successBackground) 30%, transparent);
     animation: live-pulse 2.2s ease-in-out infinite;
 }
 
 .search_controls {
-    @apply flex items-center gap-2 rounded-component px-2 py-1;
-    background: color-mix(in srgb, var(--gray700) 92%, black);
-    border: 1px solid color-mix(in srgb, var(--gray400) 38%, transparent);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    @apply flex items-center gap-2 px-2 py-1;
+    background: rgba(26, 26, 51, 0.7);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     animation: search-controls-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .search_input {
     @apply w-36 rounded border px-2 py-1 text-xs text-gray-100 outline-none;
-    background: color-mix(in srgb, var(--gray900) 72%, transparent);
-    border-color: color-mix(in srgb, var(--gray500) 72%, transparent);
-    transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+    background: rgba(6, 6, 26, 0.5);
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, box-shadow 180ms ease;
 
     &:focus {
         @apply w-44;
-        border-color: color-mix(in srgb, var(--primary) 72%, white);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+        border-color: color-mix(in srgb, var(--primary) 60%, rgba(255,255,255,0.2));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
     }
 }
 
 .search_button,
 .console_action {
     @apply inline-flex items-center justify-center rounded text-xs text-gray-300;
-    transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+    transition: all 160ms cubic-bezier(0.22, 1, 0.36, 1);
 
     &:hover {
         @apply text-white;
-        background: color-mix(in srgb, var(--gray500) 35%, transparent);
+        background: rgba(108, 92, 231, 0.15);
         transform: translateY(-1px);
     }
 
@@ -156,7 +211,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid color-mix(in srgb, var(--primary) 76%, white);
+        outline: 2px solid color-mix(in srgb, var(--primary) 70%, white);
         outline-offset: 2px;
     }
 }
@@ -165,18 +220,30 @@
     @apply px-2 py-1;
 }
 
-
-
 .chart_container {
-    @apply bg-gray-700 rounded-box pt-2 border-b-4 border-gray-700 relative;
-    border-color: color-mix(in srgb, var(--gray500) 54%, transparent);
+    @apply pt-2 relative;
+    background: rgba(26, 26, 51, 0.55);
+    backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    border-bottom: 3px solid rgba(108, 92, 231, 0.3);
     box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16);
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease;
+    transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.chart_container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none;
 }
 
 @keyframes live-pulse {
     50% {
-        box-shadow: 0 0 0 7px color-mix(in srgb, var(--successBackground) 5%, transparent);
+        box-shadow: 0 0 0 7px color-mix(in srgb, var(--successBackground) 5%, transparent), 0 0 16px color-mix(in srgb, var(--successBackground) 20%, transparent);
     }
 }
 
@@ -190,17 +257,17 @@
 @media (hover: hover) {
     .terminal:hover {
         transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--gray300) 55%, transparent);
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), 0 0 40px color-mix(in srgb, var(--primary) 6%, transparent);
     }
 
     .terminal:hover > .container {
-        border-color: color-mix(in srgb, var(--gray400) 48%, transparent);
+        border-color: rgba(255, 255, 255, 0.08);
     }
 
     .chart_container:hover {
         transform: translateY(-1px);
-        border-color: color-mix(in srgb, var(--gray300) 52%, transparent);
+        border-color: rgba(255, 255, 255, 0.12);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
     }
 }
@@ -223,16 +290,26 @@
         animation: none;
     }
 }
+
 .console_action_bar {
-    @apply absolute right-0 top-0 flex items-center gap-1 pr-2 py-2;
+    @apply absolute right-0 top-0 flex items-center gap-1.5 pr-2 py-2;
+    z-index: 2;
 }
 
 .console_action {
     @apply h-8 w-8 px-0 gap-0.5;
     position: relative;
-    border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent);
-    background: color-mix(in srgb, var(--gray700) 68%, transparent);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(26, 26, 51, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.console_action:hover {
+    background: rgba(108, 92, 231, 0.15);
+    border-color: rgba(108, 92, 231, 0.3);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.15);
 }
 
 .console_action_icon {
@@ -251,10 +328,11 @@
         right: 0;
         bottom: calc(100% + 0.45rem);
         z-index: 20;
-        padding: 0.3rem 0.45rem;
-        border: 1px solid color-mix(in srgb, var(--gray500) 72%, transparent);
-        border-radius: 0.35rem;
-        background: var(--gray800);
+        padding: 0.35rem 0.55rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        background: rgba(26, 26, 51, 0.85);
+        backdrop-filter: blur(16px);
         color: var(--gray100);
         content: attr(aria-label);
         font-size: 0.68rem;
@@ -275,6 +353,7 @@
 @media (min-width: 1280px) {
     .console_action {
         @apply w-auto px-2.5;
+        border-radius: 10px;
     }
 
     .console_action_label {

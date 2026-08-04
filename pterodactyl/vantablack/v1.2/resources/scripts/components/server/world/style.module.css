@@ -1,0 +1,323 @@
+/* ═══════════════════════════════════════════════════════════
+   World Settings — Premium Liquid Glass
+   ═══════════════════════════════════════════════════════════ */
+
+.heroSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: 22px;
+    background:
+        radial-gradient(ellipse 60% 80% at 85% 0%, rgba(108, 92, 231, 0.18), transparent),
+        rgba(26, 26, 51, 0.55);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.heroSection::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.heroContent h2 {
+    margin: .35rem 0 .3rem;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 750;
+    background: linear-gradient(135deg, #fff 50%, #b9b5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.heroContent p {
+    margin: 0;
+    color: #b9bdd7;
+    line-height: 1.5;
+    font-size: .9rem;
+}
+
+.heroContent strong {
+    color: #d9d8ff;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    border-radius: 999px;
+    background: rgba(108, 92, 231, 0.12);
+    color: #b9b5ff;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.heroActions {
+    display: flex;
+    gap: .6rem;
+    flex-shrink: 0;
+}
+
+/* ── Tab Bar ────────────────────────────────────────────── */
+.tabBar {
+    display: flex;
+    gap: .4rem;
+    padding: .4rem;
+    margin-bottom: 1.25rem;
+    background: rgba(26, 26, 51, 0.5);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    flex: 1;
+    justify-content: center;
+    padding: .65rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: #8282a4;
+    background: transparent;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tab:hover {
+    color: #d5d5e0;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tabActive {
+    color: #fff !important;
+    background: rgba(108, 92, 231, 0.18) !important;
+    border-color: rgba(108, 92, 231, 0.3) !important;
+    box-shadow: 0 4px 16px rgba(108, 92, 231, 0.12);
+}
+
+/* ── Settings Grid ──────────────────────────────────────── */
+.settingsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: .75rem;
+}
+
+.settingCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    background: rgba(26, 26, 51, 0.45);
+    backdrop-filter: blur(20px) saturate(1.4);
+    transition: all 0.2s ease;
+}
+
+.settingCard:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(26, 26, 51, 0.6);
+    transform: translateY(-1px);
+}
+
+.dangerCard {
+    border-color: rgba(231, 76, 60, 0.2) !important;
+    background: rgba(231, 76, 60, 0.04) !important;
+}
+
+.dangerCard:hover {
+    border-color: rgba(231, 76, 60, 0.35) !important;
+    box-shadow: 0 4px 16px rgba(231, 76, 60, 0.1);
+}
+
+.settingInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.settingInfo h4 {
+    margin: 0;
+    color: #e8eaff;
+    font-size: .88rem;
+    font-weight: 650;
+    line-height: 1.2;
+}
+
+.settingInfo p {
+    margin: .2rem 0 0;
+    color: #8282a4;
+    font-size: .76rem;
+    line-height: 1.3;
+}
+
+.settingControl {
+    flex-shrink: 0;
+}
+
+/* ── Toggle Switch ──────────────────────────────────────── */
+.toggleSwitch {
+    position: relative;
+    display: inline-flex;
+    width: 44px;
+    height: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background: rgba(26, 26, 51, 0.7);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    padding: 2px;
+}
+
+.toggleKnob {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #8282a4;
+    transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toggleOn {
+    background: rgba(108, 92, 231, 0.25);
+    border-color: rgba(108, 92, 231, 0.4);
+    box-shadow: 0 0 16px rgba(108, 92, 231, 0.15);
+}
+
+.toggleOn .toggleKnob {
+    transform: translateX(20px);
+    background: #6c5ce7;
+    box-shadow: 0 0 12px rgba(108, 92, 231, 0.4);
+}
+
+.toggleDanger {
+    background: rgba(231, 76, 60, 0.2);
+    border-color: rgba(231, 76, 60, 0.4);
+    box-shadow: 0 0 16px rgba(231, 76, 60, 0.15);
+}
+
+.toggleDanger .toggleKnob {
+    transform: translateX(20px);
+    background: #e74c3c;
+    box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+}
+
+/* ── Inputs ─────────────────────────────────────────────── */
+.settingSelect,
+.settingInput {
+    min-width: 140px;
+    max-width: 180px;
+    height: 36px;
+    padding: 0 .65rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: rgba(6, 6, 26, 0.45);
+    backdrop-filter: blur(8px);
+    color: #e8eaff;
+    font-size: .82rem;
+    outline: 0;
+    transition: all 0.2s ease;
+}
+
+.settingSelect:focus,
+.settingInput:focus {
+    border-color: rgba(108, 92, 231, 0.5);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.12);
+}
+
+/* ── Warning Banner ─────────────────────────────────────── */
+.warningBanner {
+    display: flex;
+    align-items: flex-start;
+    gap: .85rem;
+    padding: 1rem 1.15rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(231, 76, 60, 0.25);
+    border-radius: 16px;
+    background: rgba(231, 76, 60, 0.06);
+    backdrop-filter: blur(16px);
+    color: #ffb3b3;
+}
+
+.warningBanner svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #e74c3c;
+}
+
+.warningBanner strong {
+    display: block;
+    color: #ffb3b3;
+    font-size: .88rem;
+    margin-bottom: .25rem;
+}
+
+.warningBanner p {
+    margin: 0;
+    color: #b2a0a0;
+    font-size: .8rem;
+    line-height: 1.45;
+}
+
+/* ── Loading State ──────────────────────────────────────── */
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 1rem;
+    color: #8282a4;
+    font-size: .9rem;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255, 255, 255, 0.08);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .heroSection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .heroActions {
+        width: 100%;
+    }
+
+    .settingsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabBar {
+        overflow-x: auto;
+    }
+}
