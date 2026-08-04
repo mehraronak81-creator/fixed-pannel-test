@@ -78,8 +78,14 @@ class Vantablack extends Command
         $this->copyDirectory($sourcePath, base_path(), $excludedFiles);
 
         $this->info('Running database migrations...');
-        Artisan::call('migrate', ['--force' => true]);
+        $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
         $this->output->write(Artisan::output());
+
+        if ($migrationExitCode !== self::SUCCESS) {
+            $this->error('Database migrations failed. The VantaHost install was stopped before assets or caches were changed.');
+
+            return self::FAILURE;
+        }
 
         $this->info('Installing frontend dependencies from the committed manifest...');
         $hasPackageLock = File::exists(base_path('package-lock.json'));
@@ -108,10 +114,17 @@ class Vantablack extends Command
         }
 
         $this->info('Optimizing the application...');
-        Artisan::call('optimize:clear');
+        $clearExitCode = Artisan::call('optimize:clear');
         $this->output->write(Artisan::output());
-        Artisan::call('optimize');
+        if ($clearExitCode !== self::SUCCESS) {
+            return self::FAILURE;
+        }
+
+        $optimizeExitCode = Artisan::call('optimize');
         $this->output->write(Artisan::output());
+        if ($optimizeExitCode !== self::SUCCESS) {
+            return self::FAILURE;
+        }
 
         $this->info($isUpdate ? 'VantaHost theme updated successfully.' : 'VantaHost theme installed successfully.');
 

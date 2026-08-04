@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Earlier VantaHost releases already created this table under a
+        // different migration timestamp. Keep upgrades safe when that table
+        // is already present, while still creating it for clean installs.
+        if (Schema::hasTable('announcements')) {
+            return;
+        }
+
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
