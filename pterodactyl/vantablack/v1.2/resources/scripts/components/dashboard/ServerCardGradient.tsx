@@ -6,6 +6,7 @@ import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
 import Spinner from '@/components/elements/Spinner';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.css';
+import { getEggBanner } from './eggBanner';
 
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 type Timer = ReturnType<typeof setInterval>;
@@ -37,8 +38,7 @@ export default ({ server }: { server: Server }) => {
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : t('unlimited');
     const cpuLimit = server.limits.cpu !== 0 ? `${server.limits.cpu}%` : t('unlimited');
     const currentStatus = isSuspended ? 'suspended' : stats?.status;
-    const usesDefaultBanner = !server.eggImage || server.eggImage.includes('minecraft-banner.png');
-    const artwork = server.name.toLowerCase().includes('mongo') ? 'mongoDB' : server.name.toLowerCase().includes('node') ? 'Node.js' : 'VantaHost';
+    const banner = getEggBanner(server);
     const statusLabel = currentStatus === 'running' ? t('online', { defaultValue: 'Online' })
         : currentStatus === 'offline' ? t('offline', { defaultValue: 'Offline' })
             : currentStatus === 'starting' ? t('starting', { defaultValue: 'Starting' })
@@ -49,8 +49,7 @@ export default ({ server }: { server: Server }) => {
 
     return (
         <article className={styles.reference_card}>
-            <div className={`${styles.reference_visual} ${usesDefaultBanner ? styles.reference_default_art : ''}`} css={usesDefaultBanner ? undefined : `background-image:url(${server.eggImage})`}>
-                {usesDefaultBanner && <span className={styles.reference_watermark}>{artwork}</span>}
+            <div className={styles.reference_visual} css={`background-image:url(${banner})`}>
                 <div className={styles.reference_overlay} />
                 <div className={styles.reference_header}>
                     <p>{server.name}</p>

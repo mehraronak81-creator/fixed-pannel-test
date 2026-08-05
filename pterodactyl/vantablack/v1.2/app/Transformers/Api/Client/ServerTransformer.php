@@ -47,6 +47,7 @@ class ServerTransformer extends BaseClientTransformer
             'daemon_text' => $server->node->daemon_text,
             'container_text' => $server->node->container_text,
             'egg_image' => $server->egg->image,
+            'egg_name' => $server->egg->name,
             'nest_id' => $server->nest_id,
             'egg_id' => $server->egg_id,
             'is_node_under_maintenance' => $server->node->isUnderMaintenance(),

@@ -21,6 +21,7 @@ export interface Server {
     daemonText: string;
     containerText: string;
     eggImage: string;
+    eggName: string;
     eggId: number;
     nestId: number;
     isNodeUnderMaintenance: boolean;
@@ -61,6 +62,7 @@ export const rawDataToServerObject = ({ attributes: data }: FractalResponseData)
     daemonText: data.daemon_text,
     containerText: data.container_text,
     eggImage: data.egg_image,
+    eggName: data.egg_name,
     nestId: data.nest_id,
     eggId: data.egg_id,
     isNodeUnderMaintenance: data.is_node_under_maintenance,
