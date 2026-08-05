@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { ApplicationStore } from '@/state';
 import { useStoreState } from 'easy-peasy';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
@@ -7,7 +7,7 @@ import ServerDetailsBlock from '@/components/server/console/ServerDetailsBlock';
 import StatGraphs from '@/components/server/console/StatGraphs';
 import SideGraphs from '@/components/server/console/SideGraphs';
 import Can from '@/components/elements/Can';
-import { ArchiveIcon, CalendarIcon, EyeIcon, FolderOpenIcon, TerminalIcon, ViewGridIcon, UsersIcon, GlobeIcon } from '@heroicons/react/outline';
+import { ArchiveIcon, CalendarIcon, CubeTransparentIcon, EyeIcon, FolderOpenIcon, TerminalIcon, ViewGridIcon, UsersIcon, GlobeIcon } from '@heroicons/react/outline';
 import Sftp from '@/components/server/dashboard/SFTP';
 import Banner from '@/components/server/dashboard/Banner';
 import InfoCardAdvanced from '@/components/server/dashboard/InfoCardAdvanced';
@@ -15,24 +15,25 @@ import InfoCard from '@/components/server/dashboard/InfoCard';
 import { useTranslation } from 'react-i18next';
 import Console from '@/components/server/console/Console';
 import { LuArrowUpRight } from 'react-icons/lu';
+import styles from './premium.module.css';
 
 interface QuickActionProps {
-    to: string;
+    href: string;
     label: string;
     description: string;
     icon: React.ComponentType<{ className?: string }>;
 }
 
-const QuickAction = ({ to, label, description, icon: Icon }: QuickActionProps) => (
-    <Link to={to} className={'group flex items-center gap-3 rounded-component border border-gray-500 bg-gray-800 px-4 py-3 duration-200 hover:border-vantablack hover:bg-gray-600'}>
-        <div css={'background-color:color-mix(in srgb, var(--primary) 16%, transparent);'} className={'flex h-9 w-9 shrink-0 items-center justify-center rounded-component text-vantablack'}>
+const QuickAction = ({ href, label, description, icon: Icon }: QuickActionProps) => (
+    <Link to={href} className={styles.quickAction}>
+        <div className={styles.quickActionIcon}>
             <Icon className={'w-5'} />
         </div>
         <div className={'min-w-0'}>
-            <p className={'truncate text-sm font-semibold text-gray-100'}>{label}</p>
-            <p className={'truncate text-xs text-gray-300'}>{description}</p>
+            <p className={styles.quickActionLabel}>{label}</p>
+            <p className={styles.quickActionDescription}>{description}</p>
         </div>
-        <LuArrowUpRight className={'ml-auto w-4 shrink-0 text-gray-400 duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-vantablack'} />
+        <LuArrowUpRight className={styles.quickActionArrow} />
     </Link>
 );
 
@@ -75,6 +76,9 @@ const Component = ({ type }: Props) => {
 
 const DashboardContainer = () => {
     const { t } = useTranslation('vantablack/server/dashboard');
+    const match = useRouteMatch();
+    const serverPath = match.url.replace(/\/$/, '');
+    const toolPath = (path: string) => `${serverPath}/${path}`;
     const slot1 = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.slot1);
     const slot2 = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.slot2);
     const slot3 = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.slot3);
@@ -86,8 +90,8 @@ const DashboardContainer = () => {
     return(
         <ServerContentBlock title={t('dashboard')} icon={ViewGridIcon}>
             {/* Live console embed */}
-            <section className={'mb-6 overflow-hidden rounded-box border border-gray-500 bg-gray-700 backdrop shadow-2xl'}>
-                <div className={'flex flex-wrap items-center justify-between gap-3 border-b border-gray-500 px-5 py-4'}>
+            <section className={styles.consolePreview}>
+                <div className={styles.consolePreviewHeader}>
                     <div className={'flex items-center gap-3'}>
                         <div css={'background-color:color-mix(in srgb, var(--primary) 20%, transparent);'} className={'flex h-10 w-10 items-center justify-center rounded-component text-vantablack'}>
                             <TerminalIcon className={'w-5'} />
@@ -97,35 +101,35 @@ const DashboardContainer = () => {
                             <p className={'text-xs text-gray-300'}>Monitor output and send commands without leaving your dashboard.</p>
                         </div>
                     </div>
-                    <Link to={'console'} className={'group flex items-center gap-1 rounded-component border border-gray-500 px-3 py-2 text-sm text-gray-200 duration-200 hover:border-vantablack hover:text-gray-50'}>
+                    <Link to={toolPath('console')} className={styles.consoleLink}>
                         Open full console
                         <LuArrowUpRight className={'w-4 duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5'} />
                     </Link>
                 </div>
-                <div className={'p-3 sm:p-4'}>
+                <div className={styles.consolePreviewBody}>
                     <Console />
                 </div>
             </section>
 
             {/* Quick actions */}
-            <section className={'mb-6 rounded-box border border-gray-500 bg-gray-700 p-4 backdrop'}>
-                <div className={'mb-3 flex items-center justify-between gap-3'}>
+            <section className={styles.quickActions}>
+                <div className={styles.quickActionsHeader}>
                     <div>
-                        <p className={'font-semibold text-gray-50'}>Quick actions</p>
+                        <p className={'font-semibold text-gray-50'}>Command center</p>
                         <p className={'text-xs text-gray-300'}>Jump straight into the tools you use most.</p>
                     </div>
-                    <TerminalIcon className={'w-5 text-vantablack'} />
+                    <span className={styles.quickActionsBadge}>WORKSPACE</span>
                 </div>
-                <div className={'grid gap-3 sm:grid-cols-2 lg:grid-cols-4'}>
-                    <Can action={'file.*'}><QuickAction to={'files'} label={'File manager'} description={'Upload and edit files'} icon={FolderOpenIcon} /></Can>
-                    <Can action={'backup.*'}><QuickAction to={'backups'} label={'Backups'} description={'Protect server data'} icon={ArchiveIcon} /></Can>
-                    <Can action={'schedule.*'}><QuickAction to={'schedules'} label={'Schedules'} description={'Automate commands'} icon={CalendarIcon} /></Can>
-                    <Can action={'activity.*'}><QuickAction to={'activity'} label={'Activity log'} description={'Review server events'} icon={EyeIcon} /></Can>
-                    <Can action={'allocation.*'}><QuickAction to={'network'} label={'Network'} description={'Manage allocations'} icon={GlobeIcon} /></Can>
-                    <Can action={'user.*'}><QuickAction to={'users'} label={'Subusers'} description={'Manage user access'} icon={UsersIcon} /></Can>
+                <div className={styles.quickActionsGrid}>
+                    <Can action={'file.*'}><QuickAction href={toolPath('files')} label={'File manager'} description={'Upload and edit files'} icon={FolderOpenIcon} /></Can>
+                    <Can action={'backup.*'}><QuickAction href={toolPath('backups')} label={'Backups'} description={'Protect server data'} icon={ArchiveIcon} /></Can>
+                    <Can action={'schedule.*'}><QuickAction href={toolPath('schedules')} label={'Schedules'} description={'Automate commands'} icon={CalendarIcon} /></Can>
+                    <Can action={'activity.*'}><QuickAction href={toolPath('activity')} label={'Activity log'} description={'Review server events'} icon={EyeIcon} /></Can>
+                    <Can action={'allocation.*'}><QuickAction href={toolPath('network')} label={'Network'} description={'Manage allocations'} icon={GlobeIcon} /></Can>
+                    <Can action={'user.*'}><QuickAction href={toolPath('users')} label={'Subusers'} description={'Manage user access'} icon={UsersIcon} /></Can>
+                    <Can action={'file.*'}><QuickAction href={toolPath('minecraft')} label={'Minecraft manager'} description={'Players, world, and server rules'} icon={CubeTransparentIcon} /></Can>
                 </div>
             </section>
-
             {/* Configurable component slots */}
             <div className={'grid lg:grid-cols-2 grid-cols-1 gap-4'}>
                 <Component type={slot1} />

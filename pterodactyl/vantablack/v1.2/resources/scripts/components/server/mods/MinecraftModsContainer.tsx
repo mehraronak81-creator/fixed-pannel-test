@@ -131,7 +131,7 @@ export default () => {
                 await createDirectory(uuid, '/', 'mods');
             } catch (error) {
                 const status = (error as { response?: { status?: number } }).response?.status;
-                if (status !== 409) throw error;
+                if (status !== 400 && status !== 409) throw error;
             }
 
             await http.post(`/api/client/servers/${uuid}/files/pull`, {

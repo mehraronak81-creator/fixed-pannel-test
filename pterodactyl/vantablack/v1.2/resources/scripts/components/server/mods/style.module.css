@@ -39,3 +39,11 @@
 .emptyState p { margin: 0; }
 @media (max-width: 860px) { .filters { grid-template-columns: 1fr 1fr; } .searchField { grid-column: 1 / -1; } }
 @media (max-width: 520px) { .page { padding: 1rem .75rem 2rem; } .hero { align-items: flex-start; } .heroIcon { display: none; } .filters { grid-template-columns: 1fr; } .searchField { grid-column: auto; } .searchButton { width: 100%; } }
+/* Premium client surface: intentionally scoped to the Modrinth workspace. */
+.hero,.filters,.modCard,.noResults,.emptyState { backdrop-filter: blur(18px) saturate(1.14); }
+.hero { border-color: color-mix(in srgb, var(--primary) 43%, rgba(255,255,255,.16)); background: radial-gradient(circle at 92% 0%, color-mix(in srgb, var(--primary) 25%, transparent), transparent 38%), linear-gradient(135deg, color-mix(in srgb, var(--gray700) 78%, transparent), color-mix(in srgb, var(--gray800) 76%, transparent)); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 22px 54px rgba(0,0,0,.2); }
+.filters { border-color: color-mix(in srgb, var(--gray400) 44%, transparent); background: color-mix(in srgb, var(--gray700) 68%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 14px 30px rgba(0,0,0,.12); }
+.searchField,.filters input,.filters select { border-color: color-mix(in srgb, var(--gray400) 48%, transparent); background: color-mix(in srgb, var(--gray900) 58%, transparent); }
+.modCard { border-color: color-mix(in srgb, var(--gray400) 42%, transparent); background: linear-gradient(145deg, color-mix(in srgb, var(--gray700) 73%, transparent), color-mix(in srgb, var(--gray800) 80%, transparent)); box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 15px 34px rgba(0,0,0,.15); }
+.modCard:hover { border-color: color-mix(in srgb, var(--primary) 62%, var(--gray400)); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 22px 42px rgba(0,0,0,.22); }
+.searchButton,.cardFooter button { border-color: color-mix(in srgb, var(--primary) 62%, white); background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 92%, white), var(--primary)); box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 10px 20px color-mix(in srgb, var(--primary) 20%, transparent); }

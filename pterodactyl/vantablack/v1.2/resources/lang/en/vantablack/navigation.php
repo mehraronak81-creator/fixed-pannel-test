@@ -17,6 +17,7 @@ return [
     'activity' => 'Activity',
     'files' => 'Files',
     'mods' => 'Mods',
+    'minecraft' => 'Minecraft',
     'databases' => 'Databases',
     'backups' => 'Backups',
     'network' => 'Network',
