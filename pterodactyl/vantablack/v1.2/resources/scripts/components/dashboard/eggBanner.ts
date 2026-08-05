@@ -4,7 +4,7 @@ type BannerServer = {
     dockerImage?: string | null;
 };
 
-const bundledBanner = (name: string): string => {
+const bundledBanner = (name: string): string | undefined => {
     if (/minecraft|paper|purpur|spigot|forge|fabric|bedrock/.test(name)) return '/vantablack/banners/minecraft.webp';
     if (/lavalink/.test(name)) return '/vantablack/banners/lavalink.webp';
     if (/python|pycord|discord\.py/.test(name)) return '/vantablack/banners/python.png';
@@ -12,12 +12,15 @@ const bundledBanner = (name: string): string => {
     if (/node(?:\.js|js)?|npm|yarn|bun/.test(name)) return '/vantablack/banners/nodejs.jpg';
     if (/website|webserver|nginx|apache|caddy|php|wordpress|html/.test(name)) return '/vantablack/banners/website.avif';
 
-    return '/vantablack/banners/minecraft.webp';
+    return undefined;
 };
 
-/** An egg image has priority; bundled art covers stock eggs without one. */
+/**
+ * Use the bundled service artwork for known eggs. This avoids a stale database
+ * egg-image URL masking the banner selected for the actual server runtime.
+ */
 export const getEggBanner = ({ eggImage, eggName, dockerImage }: BannerServer): string => {
-    if (eggImage?.trim()) return eggImage;
+    const bundled = bundledBanner(`${eggName || ''} ${dockerImage || ''}`.toLowerCase());
 
-    return bundledBanner(`${eggName || ''} ${dockerImage || ''}`.toLowerCase());
+    return bundled || eggImage?.trim() || '/vantablack/banners/minecraft.webp';
 };
