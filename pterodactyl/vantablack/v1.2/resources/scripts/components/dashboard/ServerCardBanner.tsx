@@ -54,9 +54,8 @@ export default ({ server }: { server: Server }) => {
 
     return (
         <>
-        <div className={styles.server_card}>
-            <div className={`${styles.server_card_visual} flex z-10 items-center justify-between bg-center bg-cover bg-no-repeat px-6 pt-5 pb-10 relative`} css={`background-image:url(${banner})`}>
-                <div className={`${styles.server_card_overlay} z-[-1] absolute inset-0`} css={'background-color:color-mix(in srgb, var(--gray700-default) 65%, transparent);backdrop-filter:blur(1px);'}/>
+        <div className={styles.server_card} css={`background-image:linear-gradient(90deg, rgba(21, 21, 52, 0.84) 0%, rgba(21, 21, 52, 0.69) 58%, rgba(21, 21, 52, 0.8) 100%), url(${banner});background-size:cover;background-position:center;`}>
+            <div className={`${styles.server_card_visual} flex items-center justify-between px-6 pt-5 pb-10 relative`}>
                 <p className="text-lg font-semibold text-gray-50">{server.name}</p>
                 <span className={`${styles.server_card_status} py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
                     ${stats?.status === 'offline'
