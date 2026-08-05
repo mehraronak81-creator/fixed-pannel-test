@@ -156,11 +156,7 @@
                                 <i data-lucide="archive"></i> <span>Backup Manager</span>
                             </a>
                         </li>
-                        <li class="{{ Route::currentRouteName() !== 'admin.activity' ?: 'active' }}">
-                            <a href="{{ route('admin.activity') }}">
-                                <i data-lucide="list-tree"></i> <span>Audit Logs</span>
-                            </a>
-                        </li>
+
                         <li class="header">SERVICE MANAGEMENT</li>
                         <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.mounts') ?: 'active' }}">
                             <a href="{{ route('admin.mounts') }}">

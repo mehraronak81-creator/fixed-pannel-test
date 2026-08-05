@@ -7,29 +7,11 @@ import tw from 'twin.macro';
 import Spinner from '@/components/elements/Spinner';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.css';
+import { getEggBanner } from './eggBanner';
 
 const isAlarmState = (current: number, limit: number): boolean => limit > 0 && current / (limit * 1024 * 1024) >= 0.9;
 
 type Timer = ReturnType<typeof setInterval>;
-
-const EGG_IMAGES: Record<string, string> = {
-    minecraft: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png',
-    rust: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/rust.png',
-    valheim: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/valheim.png',
-    terraria: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/terraria.png',
-    csgo: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/counter-strike-2.png',
-    cs2: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/counter-strike-2.png',
-    ark: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/ark-survival-evolved.png',
-};
-
-const getEggIcon = (name: string, eggImage?: string | null): string | null => {
-    if (eggImage) return eggImage;
-    const lower = name.toLowerCase();
-    for (const [key, url] of Object.entries(EGG_IMAGES)) {
-        if (lower.includes(key)) return url;
-    }
-    return null;
-};
 
 export default ({ server }: { server: Server }) => {
     const { t } = useTranslation(['vantablack/utilities', 'vantablack/dashboard']);
@@ -68,18 +50,21 @@ export default ({ server }: { server: Server }) => {
     const diskLimit = server.limits.disk !== 0 ? bytesToString(mbToBytes(server.limits.disk)) : t('unlimited');
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : t('unlimited');
     const cpuLimit = server.limits.cpu !== 0 ? server.limits.cpu + '%' : t('unlimited');
-    const eggIcon = getEggIcon(server.name, server.eggImage);
+    const banner = getEggBanner(server);
     
     return (
         <>
-        <div className={`${styles.server_card} px-6 py-5`}>
+        <div
+            className={`${styles.server_card} px-6 py-5`}
+            style={{
+                backgroundImage: `linear-gradient(135deg, rgba(21, 21, 52, 0.92) 0%, rgba(21, 21, 52, 0.78) 50%, rgba(21, 21, 52, 0.85) 100%), url("${banner}")`,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+            }}
+        >
             <div className="flex items-center justify-between">
                 <div className={'flex items-center gap-3'}>
-                    {eggIcon && (
-                        <div className={'flex h-10 w-10 shrink-0 items-center justify-center rounded-component overflow-hidden'} css={'background-color:color-mix(in srgb, var(--primary) 16%, transparent);'}>
-                            <img src={eggIcon} alt="" className={'w-6 h-6 object-contain'} loading="lazy" />
-                        </div>
-                    )}
                     <div>
                         <p className="text-lg font-semibold text-gray-50">{server.name}</p>
                     </div>

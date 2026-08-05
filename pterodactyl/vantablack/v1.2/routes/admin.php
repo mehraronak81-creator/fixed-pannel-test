@@ -35,7 +35,7 @@ Route::get('/ddos', [Admin\DdosController::class, 'index'])->name('admin.ddos');
 Route::post('/ddos', [Admin\DdosController::class, 'update'])->name('admin.ddos.update');
 Route::post('/ddos/node/{id}', [Admin\DdosController::class, 'toggleNode'])->name('admin.ddos.node');
 
-Route::get('/activity', [Admin\ActivityLogController::class, 'index'])->name('admin.activity');
+// Admin activity logging removed for privacy
 
 Route::get('/announcements', [Admin\AnnouncementController::class, 'index'])->name('admin.announcements');
 Route::post('/announcements', [Admin\AnnouncementController::class, 'store'])->name('admin.announcements.store');
