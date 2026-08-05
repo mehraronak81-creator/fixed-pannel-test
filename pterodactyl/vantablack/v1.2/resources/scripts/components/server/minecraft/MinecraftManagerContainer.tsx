@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     CubeTransparentIcon,
     UsersIcon,
@@ -41,6 +41,8 @@ export default () => {
     const { connected, instance } = ServerContext.useStoreState((state) => state.socket);
     const { clearFlashes, clearAndAddHttpError } = useFlashKey('minecraft-manager');
     const { addFlash } = useFlash();
+    const flashActions = useRef({ clearFlashes, clearAndAddHttpError, addFlash });
+    flashActions.current = { clearFlashes, clearAndAddHttpError, addFlash };
 
     const isOnline = status === 'running';
     const [canControlConsole] = usePermissions(['control.console']);
@@ -92,7 +94,8 @@ export default () => {
     const loadProperties = useCallback(() => {
         setLoadingProps(true);
         setPropsMissing(false);
-        clearFlashes();
+        flashActions.current.clearFlashes();
+
         getFileContents(uuid, PROPERTIES_PATH)
             .then((content) => {
                 const next = parseProperties(content);
@@ -105,12 +108,11 @@ export default () => {
                     setPropsMissing(true);
                     setParsed(null);
                 } else {
-                    clearAndAddHttpError(error);
+                    flashActions.current.clearAndAddHttpError(error);
                 }
             })
             .then(() => setLoadingProps(false));
-    }, [uuid, clearFlashes, clearAndAddHttpError]);
-
+    }, [uuid]);
     useEffect(() => {
         loadProperties();
     }, [loadProperties]);
