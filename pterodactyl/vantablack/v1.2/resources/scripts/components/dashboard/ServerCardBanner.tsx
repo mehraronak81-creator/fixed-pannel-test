@@ -54,7 +54,15 @@ export default ({ server }: { server: Server }) => {
 
     return (
         <>
-        <div className={styles.server_card} css={`background-image:linear-gradient(90deg, rgba(21, 21, 52, 0.84) 0%, rgba(21, 21, 52, 0.69) 58%, rgba(21, 21, 52, 0.8) 100%), url(${banner});background-size:cover;background-position:center;`}>
+        <div
+            className={styles.server_card}
+            style={{
+                backgroundImage: `linear-gradient(90deg, rgba(21, 21, 52, 0.84) 0%, rgba(21, 21, 52, 0.69) 58%, rgba(21, 21, 52, 0.8) 100%), url("${banner}")`,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+            }}
+        >
             <div className={`${styles.server_card_visual} flex items-center justify-between px-6 pt-5 pb-10 relative`}>
                 <p className="text-lg font-semibold text-gray-50">{server.name}</p>
                 <span className={`${styles.server_card_status} py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
