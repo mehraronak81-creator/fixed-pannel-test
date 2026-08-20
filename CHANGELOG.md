@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased - Login & Mod/Plugin installer fixes
+
+- Fixed the login (and forgot-password) forms silently hanging when the invisible Google reCAPTCHA failed to appear. The widget's load state is now tracked and `onLoad`/`onError` are handled; if the reCAPTCHA script is blocked, times out, errors, or the configured site key is empty/invalid, the form now falls back to submitting without a captcha token instead of trapping the user on an unresponsive button. Expired challenges reset the widget correctly so a retry works.
+- Fixed the Minecraft mod installer only ever searching for and installing *mods*, which meant Paper/Spigot/Bukkit/Purpur/Velocity/BungeeCord/Waterfall **plugins** never downloaded. The installer now searches both mods and plugins, installs mods to `/mods` and plugins to `/plugins` automatically based on the project type, and exposes the plugin platforms in the server-type selector.
+- Made mod/plugin installs resilient: version resolution now fetches the full Modrinth version list and picks the best match client-side with graceful fallback (exact loader+version → loader → version → any safe jar), so a single over-strict filter no longer causes an install to fail with "no compatible jar". Each result card shows whether it installs as a mod or a plugin.
+
 ## Unreleased - Phase 3 Operations Suite & Admin Features
 
 - Completed Node Health Center with authenticated Wings system calls, memory/disk allocation tracking, and configurable alert threshold policies.

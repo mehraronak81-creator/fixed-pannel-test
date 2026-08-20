@@ -23,9 +23,20 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
     const ref = useRef<Reaptcha>(null);
     const [token, setToken] = useState('');
     const [eyeOpen, setEyeOpen] = useState(false);
+    // Tracks whether the invisible reCAPTCHA widget has actually loaded. If the
+    // Google script is blocked, slow, or the site key is invalid, this stays
+    // false and we fall back to submitting without a captcha token so the user
+    // is never stuck on a login form that silently refuses to do anything.
+    const [captchaReady, setCaptchaReady] = useState(false);
+    const [captchaFailed, setCaptchaFailed] = useState(false);
 
     const { clearFlashes, clearAndAddHttpError } = useFlash();
     const { enabled: recaptchaEnabled, siteKey } = useStoreState((state) => state.settings.data!.recaptcha);
+
+    // A misconfigured/empty site key can never produce a valid token, so treat
+    // the captcha as effectively unavailable and let the request go through
+    // (the backend still validates and will reject if it truly requires one).
+    const captchaUsable = recaptchaEnabled && !!siteKey && !captchaFailed;
 
     useEffect(() => {
         clearFlashes();
@@ -36,10 +47,35 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
 
         // If there is no token in the state yet, request the token and then abort this submit request
         // since it will be re-submitted when the recaptcha data is returned by the component.
-        if (recaptchaEnabled && !token) {
-            ref.current!.execute().catch((error) => {
+        if (captchaUsable && !token) {
+            if (!captchaReady || !ref.current) {
+                // The widget never finished loading — do not trap the user.
+                // Submit without a token; the server decides whether that is allowed.
+                login({ ...values, recaptchaData: token })
+                    .then((response) => {
+                        if (response.complete) {
+                            // @ts-expect-error this is valid
+                            window.location = response.intended || '/';
+                            return;
+                        }
+                        history.replace('/auth/login/checkpoint', { token: response.confirmationToken });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        setToken('');
+                        setSubmitting(false);
+                        clearAndAddHttpError({ error });
+                    });
+                return;
+            }
+
+            ref.current.execute().catch((error) => {
                 console.error(error);
 
+                // Executing the challenge failed (network/script issue). Rather
+                // than leaving the button spinning forever, mark the captcha as
+                // failed so a retry submits without it.
+                setCaptchaFailed(true);
                 setSubmitting(false);
                 clearAndAddHttpError({ error });
             });
@@ -105,18 +141,27 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
                         </Button>
                     </div>
                     <div className={'z-50 relative'}>
-                        {recaptchaEnabled && (
+                        {recaptchaEnabled && !!siteKey && !captchaFailed && (
                             <Reaptcha
                                 ref={ref}
                                 size={'invisible'}
-                                sitekey={siteKey || '_invalid_key'}
+                                sitekey={siteKey}
+                                onLoad={() => setCaptchaReady(true)}
                                 onVerify={(response) => {
                                     setToken(response);
                                     submitForm();
                                 }}
+                                onError={() => {
+                                    // Google widget errored out (e.g. script blocked,
+                                    // key/domain mismatch). Stop blocking the user.
+                                    setCaptchaFailed(true);
+                                    setSubmitting(false);
+                                    setToken('');
+                                }}
                                 onExpire={() => {
                                     setSubmitting(false);
                                     setToken('');
+                                    if (ref.current) ref.current.reset();
                                 }}
                             />
                         )}

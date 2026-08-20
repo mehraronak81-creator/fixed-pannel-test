@@ -23,9 +23,13 @@ export default () => {
     const { t } = useTranslation('vantablack/auth');
     const ref = useRef<Reaptcha>(null);
     const [token, setToken] = useState('');
+    const [captchaReady, setCaptchaReady] = useState(false);
+    const [captchaFailed, setCaptchaFailed] = useState(false);
 
     const { clearFlashes, addFlash } = useFlash();
     const { enabled: recaptchaEnabled, siteKey } = useStoreState((state) => state.settings.data!.recaptcha);
+
+    const captchaUsable = recaptchaEnabled && !!siteKey && !captchaFailed;
 
     useEffect(() => {
         clearFlashes();
@@ -36,10 +40,30 @@ export default () => {
 
         // If there is no token in the state yet, request the token and then abort this submit request
         // since it will be re-submitted when the recaptcha data is returned by the component.
-        if (recaptchaEnabled && !token) {
-            ref.current!.execute().catch((error) => {
+        if (captchaUsable && !token) {
+            if (!captchaReady || !ref.current) {
+                // Widget never loaded — fall through and submit without a token
+                // instead of trapping the user on a dead form.
+                requestPasswordResetEmail(email, token)
+                    .then((response) => {
+                        resetForm();
+                        addFlash({ type: 'success', title: 'Success', message: response });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        addFlash({ type: 'error', title: 'Error', message: httpErrorToHuman(error) });
+                    })
+                    .then(() => {
+                        setToken('');
+                        setSubmitting(false);
+                    });
+                return;
+            }
+
+            ref.current.execute().catch((error) => {
                 console.error(error);
 
+                setCaptchaFailed(true);
                 setSubmitting(false);
                 addFlash({ type: 'error', title: 'Error', message: httpErrorToHuman(error) });
             });
@@ -90,18 +114,25 @@ export default () => {
                         </Button>
                     </div>
                     <div className={'z-50 relative'}>
-                        {recaptchaEnabled && (
+                        {recaptchaEnabled && !!siteKey && !captchaFailed && (
                             <Reaptcha
                                 ref={ref}
                                 size={'invisible'}
-                                sitekey={siteKey || '_invalid_key'}
+                                sitekey={siteKey}
+                                onLoad={() => setCaptchaReady(true)}
                                 onVerify={(response) => {
                                     setToken(response);
                                     submitForm();
                                 }}
+                                onError={() => {
+                                    setCaptchaFailed(true);
+                                    setSubmitting(false);
+                                    setToken('');
+                                }}
                                 onExpire={() => {
                                     setSubmitting(false);
                                     setToken('');
+                                    if (ref.current) ref.current.reset();
                                 }}
                             />
                         )}

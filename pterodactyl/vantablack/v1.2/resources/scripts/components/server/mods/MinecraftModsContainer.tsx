@@ -8,7 +8,13 @@ import FlashMessageRender from '@/components/FlashMessageRender';
 import useFlash, { useFlashKey } from '@/plugins/useFlash';
 import styles from './style.module.css';
 
-type Loader = 'fabric' | 'forge' | 'neoforge' | 'quilt' | '';
+type Loader = 'fabric' | 'forge' | 'neoforge' | 'quilt' | 'paper' | 'spigot' | 'bukkit' | 'purpur' | 'velocity' | 'bungeecord' | 'waterfall' | '';
+// A "content kind" maps to a Modrinth project_type and the folder the file is
+// installed into. Paper/Spigot/Bukkit servers use PLUGINS (in /plugins), while
+// Fabric/Forge use MODS (in /mods). Only searching for mods was the reason
+// plugin downloads never appeared for most Minecraft servers.
+type ContentKind = 'mod' | 'plugin';
+const PLUGIN_LOADERS: Loader[] = ['paper', 'spigot', 'bukkit', 'purpur', 'velocity', 'bungeecord', 'waterfall'];
 
 interface ModrinthHit {
     project_id: string;
@@ -45,6 +51,8 @@ const MODRINTH_API = 'https://api.modrinth.com/v2';
 const isSafeModrinthDownload = (file: ModrinthFile): boolean =>
     /^https:\/\/cdn\.modrinth\.com\//.test(file.url) && /\.jar$/i.test(file.filename);
 const formatDownloads = (downloads: number): string => new Intl.NumberFormat().format(downloads);
+const kindForLoader = (loader: Loader): ContentKind => (PLUGIN_LOADERS.includes(loader) ? 'plugin' : 'mod');
+const installDirForKind = (kind: ContentKind): string => (kind === 'plugin' ? 'plugins' : 'mods');
 
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
@@ -67,13 +75,27 @@ export default () => {
     const [isSearching, setSearching] = useState(false);
     const [installingProject, setInstallingProject] = useState<string | null>(null);
 
+    // The kind of content we are searching for is derived from the selected
+    // loader: plugin loaders (Paper/Spigot/etc.) look for plugins, everything
+    // else looks for mods. With no loader selected we search BOTH so nothing
+    // is silently hidden.
+    const contentKind: ContentKind | null = loader ? kindForLoader(loader) : null;
+
     const facets = useMemo(() => {
-        const values: string[][] = [['project_type:mod']];
+        const values: string[][] = [];
+        // project_type facet: an OR-group of the types we accept.
+        if (contentKind === 'plugin') values.push(['project_type:plugin']);
+        else if (contentKind === 'mod') values.push(['project_type:mod']);
+        else values.push(['project_type:mod', 'project_type:plugin']);
+
+        // Loader facet. On the Modrinth search API loaders are indexed under
+        // the `categories` facet, so this is correct for both mod loaders
+        // (fabric/forge/…) and plugin platforms (paper/spigot/…).
         if (loader) values.push([`categories:${loader}`]);
         if (gameVersion.trim()) values.push([`versions:${gameVersion.trim()}`]);
 
         return JSON.stringify(values);
-    }, [gameVersion, loader]);
+    }, [contentKind, gameVersion, loader]);
 
     const search = useCallback(async () => {
         clearFlashes();
@@ -86,10 +108,16 @@ export default () => {
                 index: 'relevance',
             });
             const response = await fetch(`${MODRINTH_API}/search?${params.toString()}`);
-            if (!response.ok) throw new Error('Modrinth could not load the mod catalog. Please try again.');
+            if (!response.ok) throw new Error('Modrinth could not load the catalog. Please try again.');
 
             const data = (await response.json()) as ModrinthSearchResponse;
-            setResults(data.hits.filter((project) => project.project_type === 'mod'));
+            // Keep both mods and plugins; only drop unrelated project types
+            // (resourcepacks, shaders, datapacks, modpacks).
+            setResults(
+                data.hits.filter(
+                    (project) => project.project_type === 'mod' || project.project_type === 'plugin'
+                )
+            );
         } catch (error) {
             addError(error instanceof Error ? error.message : 'Unable to load the Modrinth catalog.', 'Catalog unavailable');
             setResults([]);
@@ -111,24 +139,46 @@ export default () => {
         clearFlashes();
         setInstallingProject(project.project_id);
         try {
-            const params = new URLSearchParams();
-            if (loader) params.set('loaders', JSON.stringify([loader]));
-            if (gameVersion.trim()) params.set('game_versions', JSON.stringify([gameVersion.trim()]));
+            // A plugin project always installs to /plugins even if the current
+            // loader filter is "any"; likewise a mod project goes to /mods.
+            const kind: ContentKind = project.project_type === 'plugin' ? 'plugin' : 'mod';
+            const targetDir = installDirForKind(kind);
 
-            const response = await fetch(`${MODRINTH_API}/project/${project.project_id}/version?${params.toString()}`);
-            if (!response.ok) throw new Error('No compatible version could be loaded from Modrinth.');
+            // Fetch the FULL version list unfiltered, then pick the best match
+            // ourselves. Passing loaders/game_versions to the API is brittle:
+            // one over-strict filter (e.g. a loader the project doesn't tag)
+            // makes Modrinth return an empty list and the install "silently"
+            // fails. Client-side filtering with graceful fallback fixes that.
+            const response = await fetch(`${MODRINTH_API}/project/${project.project_id}/version`);
+            if (!response.ok) throw new Error('No versions could be loaded from Modrinth.');
 
             const versions = (await response.json()) as ModrinthVersion[];
-            const version = versions.find((entry) => entry.files.some(isSafeModrinthDownload));
+            const wantLoader = loader ? loader.toLowerCase() : '';
+            const wantVersion = gameVersion.trim();
+
+            const matchesLoader = (v: ModrinthVersion) =>
+                !wantLoader || v.loaders.map((l) => l.toLowerCase()).includes(wantLoader);
+            const matchesVersion = (v: ModrinthVersion) =>
+                !wantVersion || v.game_versions.includes(wantVersion);
+            const hasSafeFile = (v: ModrinthVersion) => v.files.some(isSafeModrinthDownload);
+
+            // Prefer an exact loader+version match, then loosen progressively so
+            // a mod still installs even when the user left a filter blank.
+            const version =
+                versions.find((v) => matchesLoader(v) && matchesVersion(v) && hasSafeFile(v)) ??
+                versions.find((v) => matchesLoader(v) && hasSafeFile(v)) ??
+                versions.find((v) => matchesVersion(v) && hasSafeFile(v)) ??
+                versions.find(hasSafeFile);
+
             const file = version?.files.find((entry) => entry.primary && isSafeModrinthDownload(entry))
                 ?? version?.files.find(isSafeModrinthDownload);
 
             if (!version || !file) {
-                throw new Error('No compatible .jar file was found. Select the server loader and Minecraft version, then try again.');
+                throw new Error('No compatible .jar file was found. Adjust the loader or Minecraft version and try again.');
             }
 
             try {
-                await createDirectory(uuid, '/', 'mods');
+                await createDirectory(uuid, '/', targetDir);
             } catch (error) {
                 const status = (error as { response?: { status?: number } }).response?.status;
                 if (status !== 400 && status !== 409) throw error;
@@ -136,7 +186,7 @@ export default () => {
 
             await http.post(`/api/client/servers/${uuid}/files/pull`, {
                 url: file.url,
-                directory: 'mods',
+                directory: targetDir,
                 filename: file.filename,
             });
 
@@ -144,7 +194,7 @@ export default () => {
                 key: 'minecraft-mods',
                 type: 'success',
                 title: 'Install queued',
-                message: `${project.title} (${version.version_number}) is being downloaded into /mods.`,
+                message: `${project.title} (${version.version_number}) is being downloaded into /${targetDir}.`,
             });
         } catch (error) {
             if (error instanceof Error && !('response' in error)) {
@@ -173,8 +223,8 @@ export default () => {
             <section className={styles.hero}>
                 <div>
                     <span className={styles.eyebrow}>VantaHost Studio</span>
-                    <h2>Minecraft mod installer</h2>
-                    <p>Browse trusted Modrinth projects and install a compatible mod directly to <code>/mods</code> on {serverName}.</p>
+                    <h2>Minecraft mod &amp; plugin installer</h2>
+                    <p>Browse trusted Modrinth projects and install a compatible mod or plugin directly to <code>/mods</code> or <code>/plugins</code> on {serverName}.</p>
                 </div>
                 <div className={styles.heroIcon}><CubeIcon /></div>
             </section>
@@ -185,18 +235,29 @@ export default () => {
                     <input
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
-                        placeholder={'Search mods — e.g. Sodium, Essentials, Create'}
-                        aria-label={'Search Modrinth mods'}
+                        placeholder={'Search mods & plugins — e.g. Sodium, EssentialsX, Create'}
+                        aria-label={'Search Modrinth mods and plugins'}
                     />
                 </label>
                 <label>
-                    <span>Loader</span>
+                    <span>Server type</span>
                     <select value={loader} onChange={(event) => setLoader(event.target.value as Loader)}>
-                        <option value="">Any loader</option>
-                        <option value="fabric">Fabric</option>
-                        <option value="forge">Forge</option>
-                        <option value="neoforge">NeoForge</option>
-                        <option value="quilt">Quilt</option>
+                        <option value="">Any (mods &amp; plugins)</option>
+                        <optgroup label="Mods">
+                            <option value="fabric">Fabric</option>
+                            <option value="forge">Forge</option>
+                            <option value="neoforge">NeoForge</option>
+                            <option value="quilt">Quilt</option>
+                        </optgroup>
+                        <optgroup label="Plugins">
+                            <option value="paper">Paper</option>
+                            <option value="purpur">Purpur</option>
+                            <option value="spigot">Spigot</option>
+                            <option value="bukkit">Bukkit</option>
+                            <option value="velocity">Velocity</option>
+                            <option value="bungeecord">BungeeCord</option>
+                            <option value="waterfall">Waterfall</option>
+                        </optgroup>
                     </select>
                 </label>
                 <label>
@@ -208,7 +269,7 @@ export default () => {
                 </button>
             </form>
 
-            <p className={styles.helper}>Only Modrinth CDN <code>.jar</code> files are eligible. Check your server software, loader, and Minecraft version before installing.</p>
+            <p className={styles.helper}>Only Modrinth CDN <code>.jar</code> files are eligible. Mods install to <code>/mods</code> and plugins install to <code>/plugins</code>. Pick your server type and Minecraft version for the best match before installing.</p>
 
             <div className={styles.grid} aria-busy={isSearching}>
                 {results.map((project) => (
@@ -222,7 +283,8 @@ export default () => {
                         </div>
                         <p className={styles.description}>{project.description}</p>
                         <div className={styles.tags}>
-                            {project.categories.slice(0, 4).map((category) => <span key={category}>{category}</span>)}
+                            <span>{project.project_type === 'plugin' ? 'plugin \u2192 /plugins' : 'mod \u2192 /mods'}</span>
+                            {project.categories.slice(0, 3).map((category) => <span key={category}>{category}</span>)}
                         </div>
                         <div className={styles.cardFooter}>
                             <span><DownloadIcon className={'w-4 h-4'} /> {formatDownloads(project.downloads)}</span>
@@ -240,7 +302,7 @@ export default () => {
                 ))}
             </div>
 
-            {!isSearching && results.length === 0 && <div className={styles.noResults}>No mods matched those filters. Try a different search or remove a compatibility filter.</div>}
+            {!isSearching && results.length === 0 && <div className={styles.noResults}>No mods or plugins matched those filters. Try a different search or remove a compatibility filter.</div>}
         </div>
     );
 };
