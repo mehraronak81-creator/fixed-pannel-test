@@ -16,6 +16,28 @@
 
 @section('content')
     @include('admin.servers.partials.navigation')
+    <section class="vh-server-meta" aria-label="Server metadata">
+        <div class="vh-server-meta-item">
+            <span class="vh-server-meta-label"><i class="fa fa-calendar-plus-o"></i> Created</span>
+            <strong title="{{ $server->created_at }}">{{ $server->created_at?->format('M j, Y g:i A') ?? 'Unknown' }}</strong>
+            <em>{{ $server->created_at?->diffForHumans() }}</em>
+        </div>
+        <div class="vh-server-meta-item">
+            <span class="vh-server-meta-label"><i class="fa fa-clock-o"></i> Last updated</span>
+            <strong title="{{ $server->updated_at }}">{{ $server->updated_at?->format('M j, Y g:i A') ?? 'Unknown' }}</strong>
+            <em>{{ $server->updated_at?->diffForHumans() }}</em>
+        </div>
+        <div class="vh-server-meta-item">
+            <span class="vh-server-meta-label"><i class="fa fa-hashtag"></i> Server UUID</span>
+            <strong>{{ $server->uuidShort }}</strong>
+            <em>{{ $server->uuid }}</em>
+        </div>
+        <div class="vh-server-meta-item">
+            <span class="vh-server-meta-label"><i class="fa fa-user"></i> Owner</span>
+            <strong>{{ $server->user?->username ?? '—' }}</strong>
+            <em>{{ $server->user?->email }}</em>
+        </div>
+    </section>
     <section class="vh-suspension-summary {{ $server->isSuspended() ? 'is-suspended' : 'is-active' }}" aria-labelledby="vh-suspension-title">
         <div class="vh-suspension-icon" aria-hidden="true">
             <i class="fa {{ $server->isSuspended() ? 'fa-pause-circle' : 'fa-check-circle' }}"></i>

@@ -41,21 +41,73 @@ export default ({ className }: WithClassname) => {
         (actions) => actions.files
     );
 
+    // Track how many nested dragenter/dragleave pairs are active so the overlay
+    // does not flicker when the cursor moves across child elements.
+    const dragCounter = useSignal(0);
+
     useEventListener(
         'dragenter',
         (e) => {
+            if (!isFileOrDirectory(e)) return;
             e.preventDefault();
             e.stopPropagation();
-            if (isFileOrDirectory(e)) {
-                visible.value = true;
+            dragCounter.value += 1;
+            visible.value = true;
+        },
+        { capture: true }
+    );
+
+    // `dragover` must be prevented on the window otherwise the browser blocks the
+    // subsequent `drop` event entirely (this is the root cause of drag & drop
+    // "not working" in modern Chromium/Firefox builds).
+    useEventListener(
+        'dragover',
+        (e) => {
+            if (!isFileOrDirectory(e)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            visible.value = true;
+        },
+        { capture: true }
+    );
+
+    useEventListener(
+        'dragleave',
+        (e) => {
+            if (!isFileOrDirectory(e)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter.value = Math.max(0, dragCounter.value - 1);
+            if (dragCounter.value === 0) {
+                visible.value = false;
             }
         },
         { capture: true }
     );
 
-    useEventListener('dragexit', () => (visible.value = false), { capture: true });
+    // A drop anywhere in the window should reset the counter regardless of where
+    // it landed so a subsequent drag works correctly.
+    useEventListener(
+        'drop',
+        (e) => {
+            dragCounter.value = 0;
+            if (!isFileOrDirectory(e)) return;
+            e.preventDefault();
+        },
+        { capture: true }
+    );
 
-    useEventListener('keydown', () => (visible.value = false));
+    // `dragexit` is deprecated and no longer fires in modern browsers; keep it as
+    // a defensive fallback for very old engines only.
+    useEventListener('dragexit', () => {
+        dragCounter.value = 0;
+        visible.value = false;
+    });
+
+    useEventListener('keydown', () => {
+        dragCounter.value = 0;
+        visible.value = false;
+    });
 
     useEffect(() => {
         return () => timeouts.value.forEach(clearTimeout);
@@ -116,6 +168,7 @@ export default ({ className }: WithClassname) => {
                             e.stopPropagation();
 
                             visible.value = false;
+                            dragCounter.value = 0;
                             if (!e.dataTransfer?.files.length) return;
 
                             onFileSubmission(e.dataTransfer.files);
