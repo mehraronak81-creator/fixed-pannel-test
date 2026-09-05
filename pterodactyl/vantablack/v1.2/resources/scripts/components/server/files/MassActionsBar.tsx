@@ -8,6 +8,7 @@ import useFlash from '@/plugins/useFlash';
 import compressFiles from '@/api/server/files/compressFiles';
 import { ServerContext } from '@/state/server';
 import deleteFiles from '@/api/server/files/deleteFiles';
+import recordTrash from '@/api/server/files/recordTrash';
 import Tooltip from '@/components/elements/tooltip/Tooltip';
 import { LuTrash2, LuFolderInput, LuFileArchive } from "react-icons/lu";
 import RenameFileModal from '@/components/server/files/RenameFileModal';
@@ -51,8 +52,10 @@ const MassActionsBar = () => {
         clearFlashes('files');
         setLoadingMessage('Deleting files...');
 
+        const removed = [...selectedFiles];
         deleteFiles(uuid, directory, selectedFiles)
             .then(() => {
+                void recordTrash(uuid, directory, removed);
                 mutate((files) => files.filter((f) => selectedFiles.indexOf(f.name) < 0), false);
                 setSelectedFiles([]);
             })

@@ -141,6 +141,11 @@
                                 <i data-lucide="shield-ban"></i> <span>IP Blocklist</span>
                             </a>
                         </li>
+                        <li class="{{ Route::currentRouteName() !== 'admin.bandwidth' ?: 'active' }}">
+                            <a href="{{ route('admin.bandwidth') }}">
+                                <i data-lucide="gauge"></i> <span>Bandwidth Limiter</span>
+                            </a>
+                        </li>
                         <li class="{{ Route::currentRouteName() !== 'admin.announcements' ?: 'active' }}">
                             <a href="{{ route('admin.announcements') }}">
                                 <i data-lucide="megaphone"></i> <span>Announcements</span>

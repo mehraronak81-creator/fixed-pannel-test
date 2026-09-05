@@ -50,7 +50,7 @@ class FileRecycleBinController extends Controller
             $item = DB::table('file_trash_items')->where('id', $id)->first();
             if ($item) {
                 DB::table('file_trash_items')->where('id', $id)->delete();
-                $this->alert->success("File record {$item->original_path} marked for restoration.")->flash();
+                $this->alert->success("Cleared recycle-bin record for {$item->original_path}.")->flash();
             }
         }
 

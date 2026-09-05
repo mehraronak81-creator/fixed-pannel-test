@@ -58,7 +58,7 @@
                                     <td>
                                         <form action="{{ route('admin.servers.trash.restore', $item->id) }}" method="POST" style="display:inline;">
                                             {!! csrf_field() !!}
-                                            <button type="submit" class="btn btn-xs btn-success"><i data-lucide="rotate-ccw"></i> Restore</button>
+                                            <button type="submit" class="btn btn-xs btn-default" title="Acknowledge and clear this record from the recycle bin"><i data-lucide="rotate-ccw"></i> Clear</button>
                                         </form>
                                         <form action="{{ route('admin.servers.trash.purge', $item->id) }}" method="POST" style="display:inline;">
                                             {!! csrf_field() !!}
@@ -75,6 +75,9 @@
                         </tbody>
                     </table>
                 </div>
+                @if($trashItems instanceof \Illuminate\Contracts\Pagination\Paginator)
+                    <div class="box-footer">{!! $trashItems->appends(['server_id' => $selectedServer])->render() !!}</div>
+                @endif
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ import RenameFileModal from '@/components/server/files/RenameFileModal';
 import { ServerContext } from '@/state/server';
 import { join } from 'pathe';
 import deleteFiles from '@/api/server/files/deleteFiles';
+import recordTrash from '@/api/server/files/recordTrash';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import copyFile from '@/api/server/files/copyFile';
 import Can from '@/components/elements/Can';
@@ -73,10 +74,14 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
         // If the delete actually fails, we'll fetch the current directory contents again automatically.
         mutate((files) => files.filter((f) => f.key !== file.key), false);
 
-        deleteFiles(uuid, directory, [file.name]).catch((error) => {
-            mutate();
-            clearAndAddHttpError({ key: 'files', error });
-        });
+        deleteFiles(uuid, directory, [file.name])
+            .then(() => {
+                void recordTrash(uuid, directory, [file.name]);
+            })
+            .catch((error) => {
+                mutate();
+                clearAndAddHttpError({ key: 'files', error });
+            });
     };
 
     const doCopy = () => {
