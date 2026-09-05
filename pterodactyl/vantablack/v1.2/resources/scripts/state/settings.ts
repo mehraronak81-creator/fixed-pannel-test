@@ -11,6 +11,16 @@ export interface SiteSettings {
         announcementType: string,
         announcementCloseable: boolean,
         announcementMessage: string,
+
+        /* BROADCAST ANNOUNCEMENTS (multi, admin-managed) */
+        broadcasts: {
+            id: number,
+            title: string,
+            content: string,
+            type: 'info' | 'warning' | 'danger' | 'success' | string,
+            nodeId: number | null,
+            dismissible: boolean,
+        }[],
       
         /* COMPONENTS */
         serverRow: number,

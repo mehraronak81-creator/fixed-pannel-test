@@ -5,6 +5,7 @@ import NavigationBar from '@/components/NavigationBar';
 import WebsocketHandler from '@/components/server/WebsocketHandler';
 import { ApplicationStore } from '@/state';
 import Alert from '@/components/elements/VantaAnnouncement';
+import BroadcastAnnouncements from '@/components/elements/BroadcastAnnouncements';
 import { ServerContext } from '@/state/server';
 import SubNavigation from '@/components/Navigation';
 import Spinner from '@/components/elements/Spinner';
@@ -179,6 +180,7 @@ export default () => {
                                     <LowResourcesAlert />
                                     <NodeAlert />
                                     <Alert />
+                                    <BroadcastAnnouncements />
                                     <ComponentLoader />
                                 </ErrorBoundary>
                             )}

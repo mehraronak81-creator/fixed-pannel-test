@@ -41,6 +41,11 @@ Route::get('/announcements', [Admin\AnnouncementController::class, 'index'])->na
 Route::post('/announcements', [Admin\AnnouncementController::class, 'store'])->name('admin.announcements.store');
 Route::delete('/announcements/{id}', [Admin\AnnouncementController::class, 'destroy'])->name('admin.announcements.delete');
 
+Route::get('/bandwidth', [Admin\BandwidthController::class, 'index'])->name('admin.bandwidth');
+Route::post('/bandwidth/default', [Admin\BandwidthController::class, 'updateDefault'])->name('admin.bandwidth.default');
+Route::post('/bandwidth/server/{server}', [Admin\BandwidthController::class, 'updateServer'])->name('admin.bandwidth.server');
+Route::get('/bandwidth/policy.json', [Admin\BandwidthController::class, 'policy'])->name('admin.bandwidth.policy');
+
 Route::get('/security/blocklist', [Admin\BlocklistController::class, 'index'])->name('admin.security.blocklist');
 Route::post('/security/blocklist', [Admin\BlocklistController::class, 'store'])->name('admin.security.blocklist.store');
 Route::delete('/security/blocklist/{id}', [Admin\BlocklistController::class, 'destroy'])->name('admin.security.blocklist.delete');

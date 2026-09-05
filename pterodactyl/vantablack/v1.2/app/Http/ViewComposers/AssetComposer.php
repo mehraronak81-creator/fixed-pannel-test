@@ -3,6 +3,8 @@
 namespace Pterodactyl\Http\ViewComposers;
 
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Pterodactyl\Services\Helpers\AssetHashService;
 use Pterodactyl\Contracts\Repository\SettingsRepositoryInterface;
 
@@ -13,6 +15,42 @@ class AssetComposer
      */
     public function __construct(private AssetHashService $assetHashService, private SettingsRepositoryInterface $settings)
     {
+    }
+
+    /**
+     * Collect active broadcast announcements to surface in the client panel.
+     *
+     * Kept intentionally defensive: if the table is missing (migrations not
+     * yet run) or the query fails, an empty list is returned so the panel keeps
+     * rendering normally.
+     */
+    private function broadcasts(): array
+    {
+        try {
+            if (!Schema::hasTable('announcements')) {
+                return [];
+            }
+
+            return DB::table('announcements')
+                ->where('is_active', true)
+                ->orderByDesc('id')
+                ->limit(5)
+                ->get()
+                ->map(function ($row) {
+                    return [
+                        'id' => (int) $row->id,
+                        'title' => (string) $row->title,
+                        'content' => (string) $row->content,
+                        'type' => (string) $row->type,
+                        'nodeId' => $row->node_id !== null ? (int) $row->node_id : null,
+                        'dismissible' => (bool) $row->is_dismissible,
+                    ];
+                })
+                ->values()
+                ->all();
+        } catch (\Throwable) {
+            return [];
+        }
     }
 
     /**
@@ -37,6 +75,9 @@ class AssetComposer
                 'announcementType' => $this->settings->get('settings::vantablack:announcementType', 'party'),
                 'announcementCloseable' => $this->settings->get('settings::vantablack:announcementCloseable', false),
                 'announcementMessage' => $this->settings->get('settings::vantablack:announcementMessage', 'We have a brand new game panel design!'),
+
+                /* BROADCAST ANNOUNCEMENTS (multi, admin-managed) */
+                'broadcasts' => $this->broadcasts(),
 
                 /* MAIL */
                 'mail_color' => $this->settings->get('settings::vantablack:mail_color', '#4a35cf'),

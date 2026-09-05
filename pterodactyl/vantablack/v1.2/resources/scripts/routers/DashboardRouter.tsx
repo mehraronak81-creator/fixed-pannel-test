@@ -6,6 +6,7 @@ import NavigationBar from '@/components/NavigationBar';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import Alert from '@/components/elements/VantaAnnouncement';
+import BroadcastAnnouncements from '@/components/elements/BroadcastAnnouncements';
 import TransitionRouter from '@/TransitionRouter';
 import SideBarIcon from '@/components/SideBarIcon';
 import { useLocation } from 'react-router-dom';
@@ -26,6 +27,7 @@ export default () => {
             <div className="w-full">
                 <NavigationBar />
                 <Alert />
+                <BroadcastAnnouncements />
                 <TransitionRouter>
                     <React.Suspense fallback={<Spinner centered />}>
                         <Switch location={location}>
