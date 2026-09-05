@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased - Fixes pack: drag&drop, health UI, recycle bin, bandwidth limiter, broadcasts, polish
+
+- **Drag & drop uploads fixed.** The file-manager drop overlay relied on the deprecated `dragexit` event (dead in modern Chrome/Firefox) and never called `preventDefault()` on `dragover`, which made browsers cancel the drop. Rewrote the handlers to use `dragenter`/`dragover`/`dragleave`/`drop` with a nesting counter so the overlay no longer flickers and files actually drop and upload.
+- **Node Health Center UI bug fixed.** The `.vh-health-node-grid` used a rigid 2-column grid that left an empty gap when cards had different heights (visible as a blank top-left cell). Switched to a responsive `auto-fill minmax(340px, 1fr)` grid with equal-height cards (footer pinned to the bottom) so nodes always pack tightly and line up.
+- **Server creation date in admin.** The admin server → Manage page now shows a metadata strip: Created (with human-friendly relative time), Last updated, Server UUID, and Owner.
+- **File Recycle Bin now records deletions.** Previously nothing ever populated `file_trash_items`, so the bin was always empty. Deletes from the file manager (single and mass) now write a best-effort audit record via a new client endpoint (`POST /api/client/servers/{server}/files/trash-record`). The bin's "Restore" was renamed to "Clear" to accurately reflect that it clears the tracking record. Added pagination footer.
+- **Bandwidth Limiter (new).** New admin page (Security & Operations → Bandwidth Limiter) with a global default cap applied to **every** server plus per-server overrides (custom rate / follow default / unlimited-remove). Policy is exposed at `/admin/bandwidth/policy.json` and enforced on each node host by the new `scripts/vantablack-bandwidth.sh` traffic shaper (`tc`/HTB + IFB), so a single server can no longer saturate a node's uplink.
+- **Broadcast Banners & Announcements now display.** Admins could create announcements but nothing rendered them to users. Active announcements are now injected into every page via `AssetComposer` and rendered by a new `BroadcastAnnouncements` React banner on the dashboard and server pages, with per-banner dismissal remembered in localStorage.
+- **Premium UI polish.** Refined admin buttons (gradient primary, GPU-accelerated hover/active), smoother card/input/table transitions, pill labels, and `prefers-reduced-motion` support for a snappier, less "cheap" feel.
+
 ## Unreleased - Login & Mod/Plugin installer fixes
 
 - Fixed the login (and forgot-password) forms silently hanging when the invisible Google reCAPTCHA failed to appear. The widget's load state is now tracked and `onLoad`/`onError` are handled; if the reCAPTCHA script is blocked, times out, errors, or the configured site key is empty/invalid, the form now falls back to submitting without a captcha token instead of trapping the user on an unresponsive button. Expired challenges reset the widget correctly so a retry works.

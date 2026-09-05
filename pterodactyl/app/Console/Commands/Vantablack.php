@@ -77,6 +77,8 @@ class Vantablack extends Command
 
         $this->copyDirectory($sourcePath, base_path(), $excludedFiles);
 
+        $this->registerClientRoutes();
+
         $this->info('Running database migrations...');
         $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
         $this->output->write(Artisan::output());
@@ -129,6 +131,31 @@ class Vantablack extends Command
         $this->info($isUpdate ? 'VantaHost theme updated successfully.' : 'VantaHost theme installed successfully.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Idempotently wire the theme's extra client API routes into the base
+     * routes/api-client.php so features like the file recycle-bin recorder work.
+     */
+    private function registerClientRoutes(): void
+    {
+        $base = base_path('routes/api-client.php');
+        $overlay = base_path('routes/api-client-vantablack.php');
+
+        if (!File::exists($base) || !File::exists($overlay)) {
+            return;
+        }
+
+        $contents = File::get($base);
+        if (str_contains($contents, 'api-client-vantablack.php')) {
+            return; // Already registered.
+        }
+
+        $snippet = PHP_EOL . "// VantaHost theme client routes (auto-registered by 'php artisan vantablack install')."
+            . PHP_EOL . "require __DIR__ . '/api-client-vantablack.php';" . PHP_EOL;
+
+        File::append($base, $snippet);
+        $this->info('Registered VantaHost client API routes in routes/api-client.php.');
     }
 
     private function uninstall(): int

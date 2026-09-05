@@ -1347,3 +1347,44 @@ body.skin-vantahost {
 @media (max-width: 720px) { .vh-health-node-grid { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .vh-health-summary { grid-template-columns: 1fr; } .vh-health-runtime { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vh-health-live-metrics { grid-template-columns: 1fr; } .vh-health-settings { position: static; } }
 @media (prefers-reduced-motion: reduce) { .vh-health-node, .vh-capacity-track i { transition-duration: .01ms; } #vh-health-refresh.is-refreshing svg { animation: none; } }
+
+/* ============================================================
+   VantaHost premium polish (additive, admin panel)
+   Smoother, less "cheap" feel: refined buttons, cards, inputs,
+   tables and labels. Purely cosmetic — no layout structure change.
+   ============================================================ */
+.btn {
+    border-radius: var(--vh-button-radius, 8px);
+    font-weight: var(--vh-button-weight, 600);
+    letter-spacing: .01em;
+    transition: transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s ease, filter .15s ease, background-color .15s ease, border-color .15s ease;
+    will-change: transform;
+}
+.btn:not(.disabled):not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.18); filter: saturate(1.05); }
+.btn:not(.disabled):not(:disabled):active { transform: translateY(0) scale(.985); box-shadow: 0 2px 8px rgba(0,0,0,.16); transition-duration: 70ms; }
+.btn-primary { background-image: linear-gradient(135deg, color-mix(in srgb, var(--vh-primary, #4a35cf) 92%, white), var(--vh-primary, #4a35cf)); border-color: transparent; }
+.btn-xs { border-radius: calc(var(--vh-button-radius, 8px) - 2px); }
+
+.box, .vh-control-card {
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.vh-control-card:hover { box-shadow: var(--vh-card-shadow-hover, 0 16px 40px rgba(0,0,0,.22)); }
+
+.form-control {
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.form-control:focus {
+    border-color: color-mix(in srgb, var(--vh-primary, #4a35cf) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--vh-primary, #4a35cf) 18%, transparent);
+}
+
+.table.table-hover > tbody > tr { transition: background-color .12s ease; }
+
+.label { border-radius: 999px; padding: .28em .7em; font-weight: 600; letter-spacing: .02em; }
+
+/* Snappier page transitions without heavy repaints */
+.content-wrapper { will-change: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+    .btn, .box, .vh-control-card, .form-control, .table.table-hover > tbody > tr { transition-duration: .01ms !important; }
+}
