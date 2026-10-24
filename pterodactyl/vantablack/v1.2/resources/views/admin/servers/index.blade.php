@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="vh-metric-card {{ $kpiSuspended > 0 ? 'vh-metric-violet' : 'vh-metric-cyan' }}">
+        <div class="vh-metric-card {{ $kpiSuspended > 0 ? 'vh-metric-amber' : 'vh-metric-cyan' }}">
             <span class="vh-metric-icon"><i data-lucide="pause-circle"></i></span>
             <div class="vh-metric-copy">
                 <small>Suspended</small>
@@ -151,7 +151,7 @@
                             <td>
                                 <span class="vh-copy-pill" data-copy="{{ $server->uuid }}" title="Click to copy full UUID: {{ $server->uuid }}">
                                     {{ $server->uuidShort }}
-                                    <i data-lucide="copy"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 </span>
                             </td>
 
@@ -178,7 +178,7 @@
                             <td>
                                 <span class="vh-copy-pill" data-copy="{{ $connAddress }}" title="Click to copy connection address">
                                     {{ $connAddress }}
-                                    <i data-lucide="copy"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.7;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 </span>
                             </td>
 
@@ -186,9 +186,9 @@
                                 <span style="font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
                                     <span style="color: #10b981;" title="RAM limit">{{ $server->memory == 0 ? '∞' : number_format($server->memory) . ' MiB' }}</span>
                                     <span style="color: #52525b;">/</span>
-                                    <span style="color: #06b6d4;" title="CPU limit">{{ $server->cpu == 0 ? '∞' : $server->cpu . '%' }}</span>
+                                    <span style="color: #e4e4e7;" title="CPU limit">{{ $server->cpu == 0 ? '∞' : $server->cpu . '%' }}</span>
                                     <span style="color: #52525b;">/</span>
-                                    <span style="color: #a78bfa;" title="Disk limit">{{ $server->disk == 0 ? '∞' : number_format($server->disk) . ' MiB' }}</span>
+                                    <span style="color: #d4d4d4;" title="Disk limit">{{ $server->disk == 0 ? '∞' : number_format($server->disk) . ' MiB' }}</span>
                                 </span>
                             </td>
 
@@ -203,23 +203,27 @@
                             </td>
 
                             <td style="text-align: right;">
-                                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                <div style="display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end;">
                                     <!-- Open in User Panel -->
-                                    <a href="/server/{{ $server->uuidShort }}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-xs" title="Open in User Panel" style="padding: 5px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff;">
-                                        <i data-lucide="external-link" style="width: 13px; height: 13px;"></i>
+                                    <a href="/server/{{ $server->uuidShort }}" target="_blank" rel="noopener noreferrer" title="Open in User Panel" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #e5e5e5; transition: all 150ms ease;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                     </a>
 
                                     <!-- Manage Server -->
-                                    <a href="{{ route('admin.servers.view.manage', $server->id) }}" class="btn btn-default btn-xs" title="Manage Server" style="padding: 5px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff;">
-                                        <i data-lucide="wrench" style="width: 13px; height: 13px;"></i>
+                                    <a href="{{ route('admin.servers.view.manage', $server->id) }}" title="Manage Server" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #e5e5e5; transition: all 150ms ease;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
                                     </a>
 
                                     <!-- Suspend / Unsuspend -->
                                     <form action="{{ route('admin.servers.view.manage.suspension', $server->id) }}" method="POST" style="display: inline-block; margin: 0;" onsubmit="return confirm('Are you sure you want to {{ $server->isSuspended() ? 'unsuspend' : 'suspend' }} server \'{{ addslashes($server->name) }}\'?')">
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="action" value="{{ $server->isSuspended() ? 'unsuspend' : 'suspend' }}" />
-                                        <button type="submit" class="btn {{ $server->isSuspended() ? 'btn-success' : 'btn-warning' }} btn-xs" title="{{ $server->isSuspended() ? 'Unsuspend Server Access' : 'Suspend Server Access' }}" style="padding: 5px 8px;">
-                                            <i data-lucide="{{ $server->isSuspended() ? 'play' : 'pause' }}" style="width: 13px; height: 13px;"></i>
+                                        <button type="submit" title="{{ $server->isSuspended() ? 'Unsuspend Server Access' : 'Suspend Server Access' }}" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: {{ $server->isSuspended() ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)' }}; border: 1px solid {{ $server->isSuspended() ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)' }}; color: {{ $server->isSuspended() ? '#10b981' : '#f87171' }}; cursor: pointer; transition: all 150ms ease;">
+                                            @if($server->isSuspended())
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                                            @endif
                                         </button>
                                     </form>
                                 </div>

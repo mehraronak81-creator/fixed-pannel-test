@@ -112,7 +112,7 @@ function getEmptyData(label: string, sets = 1, borderColor = '#10b981', callback
                     {
                         fill: true,
                         label: label,
-                        data: Array(20).fill(-5),
+                        data: Array(20).fill(0),
                         borderColor: borderColor,
                         backgroundColor: 'transparent',
                     },
@@ -154,7 +154,7 @@ function useChart(label: string, opts?: UseChartOptions) {
             merge(state, {
                 datasets: state.datasets.map((value) => ({
                     ...value,
-                    data: Array(20).fill(-5),
+                    data: Array(20).fill(0),
                 })),
             })
         );

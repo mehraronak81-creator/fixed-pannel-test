@@ -90,8 +90,8 @@
 
         &:focus {
             background-color: rgba(255, 255, 255, 0.05);
-            border-color: rgba(99, 102, 241, 0.65);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            border-color: rgba(16, 185, 129, 0.65);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
 
         &:disabled {
@@ -111,9 +111,9 @@
 
 .console_hint {
     @apply text-[10px] font-semibold tracking-[0.12em] px-2 py-0.5 rounded-full;
-    color: var(--gray200);
-    background: color-mix(in srgb, var(--gray600) 78%, transparent);
-    border: 1px solid color-mix(in srgb, var(--gray400) 35%, transparent);
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .console_shortcut {
@@ -123,29 +123,29 @@
 
 .live_indicator {
     @apply h-2 w-2 rounded-full;
-    background: var(--successBackground);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--successBackground) 18%, transparent);
+    background: #10b981;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
     animation: live-pulse 2.2s ease-in-out infinite;
 }
 
 .search_controls {
     @apply flex items-center gap-2 rounded-component px-2 py-1;
-    background: color-mix(in srgb, var(--gray700) 92%, black);
-    border: 1px solid color-mix(in srgb, var(--gray400) 38%, transparent);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    background: rgba(10, 10, 12, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     animation: search-controls-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .search_input {
     @apply w-36 rounded border px-2 py-1 text-xs text-gray-100 outline-none;
-    background: color-mix(in srgb, var(--gray900) 72%, transparent);
-    border-color: color-mix(in srgb, var(--gray500) 72%, transparent);
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.12);
     transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
 
     &:focus {
         @apply w-44;
-        border-color: color-mix(in srgb, var(--primary) 72%, white);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+        border-color: rgba(16, 185, 129, 0.7);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
     }
 }
 
@@ -156,7 +156,7 @@
 
     &:hover {
         @apply text-white;
-        background: color-mix(in srgb, var(--gray500) 35%, transparent);
+        background: rgba(255, 255, 255, 0.08);
         transform: translateY(-1px);
     }
 
@@ -165,7 +165,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid color-mix(in srgb, var(--primary) 76%, white);
+        outline: 2px solid rgba(16, 185, 129, 0.7);
         outline-offset: 2px;
     }
 }
@@ -257,9 +257,15 @@
 .console_action {
     @apply h-8 w-8 px-0 gap-0.5;
     position: relative;
-    border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent);
-    background: color-mix(in srgb, var(--gray700) 68%, transparent);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+.console_action:hover {
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    background: rgba(16, 185, 129, 0.12) !important;
+    color: #10b981 !important;
 }
 
 .console_action_icon {

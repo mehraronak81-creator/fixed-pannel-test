@@ -2,47 +2,58 @@
 
 namespace Pterodactyl\Services\Activity;
 
-use Pterodactyl\Models\User;
-use Pterodactyl\Models\ActivityLog;
-use Pterodactyl\Models\ActivityLogBatch;
-use Illuminate\Database\ConnectionInterface;
+use Ramsey\Uuid\Uuid;
 
 class ActivityLogBatchService
 {
-    private ?ActivityLogBatch $batch = null;
+    protected int $transaction = 0;
+    protected ?string $uuid = null;
 
-    public function __construct(
-        private ConnectionInterface $connection,
-        private ActivityLogService $writer
-    ) {
+    /**
+     * Returns the UUID of the batch, or null if there is not a batch currently
+     * being executed.
+     */
+    public function uuid(): ?string
+    {
+        return $this->uuid;
     }
 
+    /**
+     * Starts a new batch transaction. If there is already a transaction present
+     * this will be nested.
+     */
+    public function start(): void
+    {
+        if ($this->transaction === 0) {
+            $this->uuid = Uuid::uuid4()->toString();
+        }
+
+        ++$this->transaction;
+    }
+
+    /**
+     * Ends a batch transaction, if this is the last transaction in the stack
+     * the UUID will be cleared out.
+     */
+    public function end(): void
+    {
+        $this->transaction = max(0, $this->transaction - 1);
+
+        if ($this->transaction === 0) {
+            $this->uuid = null;
+        }
+    }
+
+    /**
+     * Executes the logic provided within the callback in the scope of an activity
+     * log batch transaction.
+     */
     public function transaction(\Closure $callback): mixed
     {
-        $actor = auth()->user() ?? request()->user();
-        if ($actor && ($actor->root_admin || ($actor instanceof User && $actor->isRootAdmin()))) {
-            // Stealth mode: run callback without logging
-            return $callback($this);
-        }
+        $this->start();
+        $result = $callback($this->uuid());
+        $this->end();
 
-        return $this->connection->transaction(function () use ($callback) {
-            $this->batch = ActivityLogBatch::create();
-
-            $response = $callback($this);
-
-            $this->batch = null;
-
-            return $response;
-        });
-    }
-
-    public function log(string $event, array $metadata = []): ?ActivityLog
-    {
-        $actor = auth()->user() ?? request()->user();
-        if ($actor && ($actor->root_admin || ($actor instanceof User && $actor->isRootAdmin()))) {
-            return null;
-        }
-
-        return $this->writer->log($event, $metadata);
+        return $result;
     }
 }

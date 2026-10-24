@@ -100,8 +100,8 @@ const DashboardContainer = () => {
             <section className={styles.consolePreview}>
                 <div className={styles.consolePreviewHeader}>
                     <div className={'flex items-center gap-3'}>
-                        <div css={'background-color:color-mix(in srgb, var(--primary) 20%, transparent);'} className={'flex h-10 w-10 items-center justify-center rounded-component text-vantablack'}>
-                            <TerminalIcon className={'w-5'} />
+                        <div className={'flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400'}>
+                            <TerminalIcon className={'w-5 h-5'} />
                         </div>
                         <div>
                             <p className={'font-semibold text-gray-50'}>Live console</p>

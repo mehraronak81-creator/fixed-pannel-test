@@ -80,10 +80,22 @@ export default () => {
     
     return (
         <>
-            <ChartBlock title={t('cpu-usage')} type={'cpu'} limit={limits.cpu ? limits.cpu + '%' : '∞'} usage={`${stats.cpu.toFixed(2)}%`}>
+            <ChartBlock
+                title={t('cpu-usage') || 'CPU Load'}
+                type={'cpu'}
+                prominentValue={`${stats.cpu.toFixed(2)}%`}
+                limit={limits.cpu ? limits.cpu + '%' : '∞'}
+                usage={`${stats.cpu.toFixed(2)}%`}
+            >
                 <Line {...cpu.props} />
             </ChartBlock>
-            <ChartBlock title={t('memory-usage')} type={'memory'} limit={limits.memory ? bytesToString(mbToBytes(limits.memory)) : '∞'} usage={bytesToString(stats.memory)}>
+            <ChartBlock
+                title={t('memory-usage') || 'Memory Usage'}
+                type={'memory'}
+                prominentValue={bytesToString(stats.memory)}
+                limit={limits.memory ? bytesToString(mbToBytes(limits.memory)) : '∞'}
+                usage={bytesToString(stats.memory)}
+            >
                 <Line {...memory.props} />
             </ChartBlock>
         </>
