@@ -21,6 +21,13 @@ const NavItem = ({ route }: Props) => {
 
   const nestId = ServerContext.useStoreState((state) => state.server.data?.nestId);
   const eggId = ServerContext.useStoreState((state) => state.server.data?.eggId);
+  const server = ServerContext.useStoreState((state) => state.server.data);
+
+  if (route.path === '/lavalink') {
+    const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''}`.toLowerCase();
+    const isLavalink = s.includes('lavalink') || s.includes('java');
+    if (!isLavalink) return null;
+  }
 
   const to = (value: string, url = false) => {
     return `${(url ? match.url : match.path).replace(/\/*$/, '')}/${value.replace(/^\/+/, '')}`;

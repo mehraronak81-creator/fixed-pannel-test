@@ -21,6 +21,89 @@
             {!! Theme::css('css/pterodactyl.css?t={cache-version}') !!}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+            <style>
+                body, body.skin-vantahost, .wrapper, .skin-vantahost .wrapper, .content-wrapper, .skin-vantahost .content-wrapper {
+                    background: #000000 !important;
+                    background-color: #000000 !important;
+                    background-image: none !important;
+                    color: #f5f5f5 !important;
+                }
+                .skin-vantahost .main-header,
+                .skin-vantahost .navbar,
+                .skin-vantahost .main-sidebar,
+                .skin-vantahost .main-header .logo {
+                    background: rgba(6, 6, 8, 0.8) !important;
+                    backdrop-filter: blur(20px) !important;
+                    -webkit-backdrop-filter: blur(20px) !important;
+                    border-color: rgba(255, 255, 255, 0.07) !important;
+                }
+                .skin-vantahost .box,
+                .skin-vantahost .info-box,
+                .skin-vantahost .small-box,
+                .skin-vantahost .nav-tabs-custom,
+                .vh-metric-card,
+                .vh-health-stat,
+                .vh-health-node,
+                .vh-control-card {
+                    background: rgba(12, 12, 14, 0.7) !important;
+                    backdrop-filter: blur(16px) !important;
+                    -webkit-backdrop-filter: blur(16px) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+                }
+                .table-striped > tbody > tr:nth-of-type(odd),
+                .skin-vantahost .table-striped > tbody > tr:nth-of-type(odd),
+                .skin-vantahost .table > tbody > tr,
+                table.table tbody tr {
+                    background: transparent !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                }
+                .table-hover > tbody > tr:hover,
+                .skin-vantahost .table-hover > tbody > tr:hover,
+                table.table tbody tr:hover {
+                    background: rgba(255, 255, 255, 0.03) !important;
+                }
+                .table > thead > tr > th,
+                .skin-vantahost .table > thead > tr > th {
+                    background: transparent !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    color: #a1a1aa !important;
+                }
+                .skin-vantahost a:not(.btn):not(.label):not(.logo):not(.sidebar-toggle):not(.vh-header-action) {
+                    color: #f5f5f5 !important;
+                    transition: color 150ms ease;
+                }
+                .skin-vantahost a:not(.btn):not(.label):not(.logo):not(.sidebar-toggle):not(.vh-header-action):hover {
+                    color: #10b981 !important;
+                }
+                .skin-vantahost code,
+                .vh-copy-pill {
+                    background: rgba(255, 255, 255, 0.05) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    color: #a3a3a3 !important;
+                    border-radius: 6px;
+                    padding: 3px 8px;
+                    font-size: 11px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    cursor: pointer;
+                    transition: all 180ms ease;
+                }
+                .vh-copy-pill:hover {
+                    background: rgba(255, 255, 255, 0.09) !important;
+                    border-color: rgba(255, 255, 255, 0.16) !important;
+                    color: #ffffff !important;
+                }
+                .vh-copy-pill i {
+                    font-size: 10px;
+                    opacity: 0.6;
+                }
+                .vh-copy-pill:hover i {
+                    opacity: 1;
+                    color: #10b981;
+                }
+            </style>
 
             <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>

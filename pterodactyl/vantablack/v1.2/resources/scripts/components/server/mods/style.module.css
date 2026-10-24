@@ -13,9 +13,9 @@
     padding: 1.75rem 2rem;
     margin-bottom: 1.5rem;
     border-radius: 1.25rem;
-    background-color: rgba(15, 23, 42, 0.55);
-    background-image: radial-gradient(circle at 85% 10%, rgba(99, 102, 241, 0.18), transparent 45%),
-                      linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.3) 100%);
+    background-color: rgba(8, 8, 10, 0.72);
+    background-image: radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.12), transparent 45%),
+                      linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.5) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
@@ -84,8 +84,8 @@
     align-items: end;
     padding: 1.25rem;
     border-radius: 1rem;
-    background-color: rgba(15, 23, 42, 0.55);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.25) 100%);
+    background-color: rgba(8, 8, 10, 0.72);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.5) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-top: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -204,8 +204,8 @@
     min-height: 270px;
     padding: 1.25rem;
     border-radius: 1rem;
-    background-color: rgba(15, 23, 42, 0.55);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.3) 100%);
+    background-color: rgba(8, 8, 10, 0.72);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.5) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-top: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -231,7 +231,7 @@
     height: 46px;
     border-radius: 0.75rem;
     object-fit: cover;
-    background: #1e293b;
+    background: #08080a;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -337,7 +337,7 @@
     border-radius: 1rem;
     color: #94a3b8;
     text-align: center;
-    background: rgba(15, 23, 42, 0.4);
+    background: rgba(8, 8, 10, 0.72);
     backdrop-filter: blur(16px);
 }
 

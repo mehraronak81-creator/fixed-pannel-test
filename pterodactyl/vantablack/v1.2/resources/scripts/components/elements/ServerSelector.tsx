@@ -38,7 +38,25 @@ export default () => {
 
     return (
         <div className={'w-[250px]'}>
-            <Select onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleChange(event.target.value)} value={(window.location.pathname.split('/',3).join('/'))} className={'selection-container'}>
+            <Select
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleChange(event.target.value)}
+                value={(window.location.pathname.split('/',3).join('/'))}
+                className={'selection-container'}
+                css={`
+                    background-color: rgba(10, 10, 12, 0.9) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                    color: #ffffff !important;
+                    backdrop-filter: blur(16px) !important;
+                    -webkit-backdrop-filter: blur(16px) !important;
+                    border-radius: 0.5rem !important;
+                    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+
+                    & option {
+                        background: #08080a !important;
+                        color: #ffffff !important;
+                    }
+                `}
+            >
                 <option value={`/`} css="display:none;">
                     {t('select-a-server')}
                 </option>

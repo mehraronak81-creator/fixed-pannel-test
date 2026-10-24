@@ -57,7 +57,7 @@ const ServerDetailsBlock = () => {
     return (
         <>
         <div className={'grid md:grid-cols-3 gap-4'}>
-            <div className={'bg-gray-700 backdrop rounded-box px-6 py-5 flex justify-between items-center border border-transparent hover:border-gray-500 duration-300 group'}>
+            <div className={'liquid-glass backdrop rounded-box px-6 py-5 flex justify-between items-center border border-white/10 hover:border-white/20 duration-300 group'}>
                 <div className={'flex-1'}>
                     <span className={'text-gray-300 text-sm'}>{t('cpu-usage')}:</span>
                     <div className={'flex items-center gap-x-1'}>
@@ -69,7 +69,7 @@ const ServerDetailsBlock = () => {
                         <span className={'text-gray-300 font-medium text-sm'}>/ {textLimits.cpu}</span>
                     </div>
                     {status !== 'offline' && limits?.cpu ? (
-                        <div className={'mt-2 h-1.5 w-full rounded-full bg-gray-600 overflow-hidden'}>
+                        <div className={'mt-2 h-1.5 w-full rounded-full bg-white/10 overflow-hidden'}>
                             <div className={'h-full rounded-full duration-500 ease-out'} css={`width:${cpuPercent}%; background:${cpuPercent > 90 ? 'var(--dangerBackground)' : 'var(--primary)'};`} />
                         </div>
                     ) : null}
@@ -78,7 +78,7 @@ const ServerDetailsBlock = () => {
                     <ChipIcon className={'w-8'}/>
                 </div>
             </div>
-            <div className={'bg-gray-700 backdrop rounded-box px-6 py-5 flex justify-between items-center border border-transparent hover:border-gray-500 duration-300 group'}>
+            <div className={'liquid-glass backdrop rounded-box px-6 py-5 flex justify-between items-center border border-white/10 hover:border-white/20 duration-300 group'}>
                 <div className={'flex-1'}>
                     <span className={'text-gray-300 text-sm'}>{t('memory-usage')}:</span>
                     <div className={'flex items-center gap-x-1'}>
@@ -86,7 +86,7 @@ const ServerDetailsBlock = () => {
                         <span className={'text-gray-300 font-medium text-sm'}>/ {textLimits.memory}</span>
                     </div>
                     {limits?.memory ? (
-                        <div className={'mt-2 h-1.5 w-full rounded-full bg-gray-600 overflow-hidden'}>
+                        <div className={'mt-2 h-1.5 w-full rounded-full bg-white/10 overflow-hidden'}>
                             <div className={'h-full rounded-full duration-500 ease-out'} css={`width:${memPercent}%; background:${memPercent > 90 ? 'var(--dangerBackground)' : 'var(--primary)'};`} />
                         </div>
                     ) : null}
@@ -95,7 +95,7 @@ const ServerDetailsBlock = () => {
                     <LuMemoryStick className={'text-[2rem]'}/>
                 </div>
             </div>
-            <div className={'bg-gray-700 backdrop rounded-box px-6 py-5 flex justify-between items-center border border-transparent hover:border-gray-500 duration-300 group'}>
+            <div className={'liquid-glass backdrop rounded-box px-6 py-5 flex justify-between items-center border border-white/10 hover:border-white/20 duration-300 group'}>
                 <div className={'flex-1'}>
                     <span className={'text-gray-300 text-sm'}>{t('disk-usage')}:</span>
                     <div className={'flex items-center gap-x-1'}>
@@ -103,7 +103,7 @@ const ServerDetailsBlock = () => {
                         <span className={'text-gray-300 font-medium text-sm'}>/ {textLimits.disk}</span>
                     </div>
                     {limits?.disk ? (
-                        <div className={'mt-2 h-1.5 w-full rounded-full bg-gray-600 overflow-hidden'}>
+                        <div className={'mt-2 h-1.5 w-full rounded-full bg-white/10 overflow-hidden'}>
                             <div className={'h-full rounded-full duration-500 ease-out'} css={`width:${diskPercent}%; background:${diskPercent > 90 ? 'var(--dangerBackground)' : 'var(--primary)'};`} />
                         </div>
                     ) : null}

@@ -87,6 +87,12 @@ const DashboardContainer = () => {
     const slot6 = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.slot6);
     const slot7 = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.slot7);
 
+    const server = ServerContext.useStoreState((state) => state.server.data);
+    const isLavalink = React.useMemo(() => {
+        const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''}`.toLowerCase();
+        return s.includes('lavalink') || s.includes('java');
+    }, [server]);
+
     return(
         <ServerContentBlock title={t('dashboard')} icon={ViewGridIcon}>
             {/* Live console embed */}
@@ -128,7 +134,7 @@ const DashboardContainer = () => {
                     <Can action={'allocation.*'}><QuickAction href={toolPath('network')} label={'Network'} description={'Manage allocations'} icon={GlobeIcon} /></Can>
                     <Can action={'user.*'}><QuickAction href={toolPath('users')} label={'Subusers'} description={'Manage user access'} icon={UsersIcon} /></Can>
                     <Can action={'file.*'}><QuickAction href={toolPath('minecraft')} label={'Minecraft manager'} description={'Players, world, and server rules'} icon={CubeTransparentIcon} /></Can>
-                    <QuickAction href={toolPath('lavalink')} label={'Lavalink manager'} description={'Analyzer, bot connections & credentials'} icon={VolumeUpIcon} />
+                    {isLavalink && <QuickAction href={toolPath('lavalink')} label={'Lavalink manager'} description={'Analyzer, bot connections & credentials'} icon={VolumeUpIcon} />}
                 </div>
             </section>
             {/* Configurable component slots */}

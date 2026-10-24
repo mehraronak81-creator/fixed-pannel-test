@@ -22,15 +22,15 @@
     --gray400: #5e5e7f;
     --gray500: #42425b;
     --gray600: #2b2b40;
-    --gray700: #1d1d37;
-    --gray800: #0b0d2a;
-    --gray900: #040519;
+    --gray700: #121215;
+    --gray800: #08080a;
+    --gray900: #000000;
 }
 
 body{
     font-size:1.7rem;
-    background-color: var(--gray800);
-    color:var(--gray200);
+    background-color: #000000 !important;
+    color: #d4d4d8;
 }
 .button{
     padding:10px 15px;

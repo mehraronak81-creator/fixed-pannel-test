@@ -29,6 +29,7 @@ Route::get('/system-health.json', function () {
 
 Route::get('/health', [Admin\HealthController::class, 'index'])->name('admin.health');
 Route::get('/health/status.json', [Admin\HealthController::class, 'status'])->name('admin.health.json');
+Route::post('/health/test/{node}', [Admin\HealthController::class, 'testNode'])->name('admin.health.test');
 Route::post('/health/settings', [Admin\HealthController::class, 'store'])->name('admin.health.settings');
 
 Route::get('/ddos', [Admin\DdosController::class, 'index'])->name('admin.ddos');

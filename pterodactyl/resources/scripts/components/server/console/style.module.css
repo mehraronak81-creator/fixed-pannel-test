@@ -20,21 +20,21 @@
 
 .terminal {
     @apply flex flex-col w-full h-full py-3 md:px-3 px-6;
-    background-color: rgba(9, 13, 24, 0.45);
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 40%, rgba(0, 0, 0, 0.35) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    background-color: rgba(8, 8, 10, 0.72) !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 40%, rgba(0, 0, 0, 0.5) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: var(--radiusBox);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
     isolation: isolate;
     transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, box-shadow 260ms ease;
     will-change: transform, box-shadow;
 
     &:focus-within {
-        border-color: rgba(99, 102, 241, 0.65);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18), 0 28px 76px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        border-color: rgba(16, 185, 129, 0.45);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12), 0 28px 76px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     & .overflows_container {
@@ -180,10 +180,12 @@
     position: relative;
     overflow: hidden;
     min-height: 13rem;
-    border: 1px solid color-mix(in srgb, var(--gray500) 62%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: var(--radiusBox);
-    background: radial-gradient(circle at 92% 5%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 32%), var(--gray700);
-    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255,255,255,.025);
+    background: rgba(8, 8, 10, 0.72) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,.04);
     transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms ease, box-shadow 220ms ease;
 }
 .chart_header { display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem; padding: 1.1rem 1.15rem .3rem; }

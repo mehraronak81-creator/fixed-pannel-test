@@ -130,16 +130,34 @@ export default () => {
             icon: CogIcon,
             path: `/server/${id}/settings`,
             permission: ['settings.*', 'file.sftp'],
-            accentColor: 'text-slate-300',
-            accentBg: 'bg-slate-500/10 border-slate-500/20 group-hover:border-slate-500/40',
+            accentColor: 'text-neutral-300',
+            accentBg: 'bg-white/5 border-white/10 group-hover:border-white/20',
         },
     ];
+
+    const server = ServerContext.useStoreState((state) => state.server.data);
+    const isLavalink = React.useMemo(() => {
+        const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''}`.toLowerCase();
+        return s.includes('lavalink') || s.includes('java');
+    }, [server]);
+
+    if (isLavalink) {
+        actions.push({
+            name: 'Lavalink Manager',
+            description: 'Analyzer, bot connections & credentials',
+            icon: ViewGridIcon,
+            path: `/server/${id}/lavalink`,
+            permission: null,
+            accentColor: 'text-emerald-400',
+            accentBg: 'bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/40',
+        });
+    }
 
     return (
         <section className={'mt-6 mb-4'} aria-label={'Server Command Center'}>
             <div className={'flex items-center justify-between mb-3 px-1'}>
                 <div className={'flex items-center gap-2'}>
-                    <ViewGridIcon className={'w-5 h-5 text-indigo-400'} />
+                    <ViewGridIcon className={'w-5 h-5 text-emerald-400'} />
                     <h2 className={'text-base font-semibold text-white tracking-wide'}>
                         Workspace Command Center
                     </h2>
@@ -157,7 +175,7 @@ export default () => {
                             key={action.name}
                             to={action.path}
                             className={
-                                'liquid-glass rounded-xl p-3.5 flex items-center justify-between gap-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400/40 hover:shadow-lg group no-underline'
+                                'liquid-glass rounded-xl p-3.5 flex items-center justify-between gap-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-lg group no-underline'
                             }
                         >
                             <div className={'flex items-center gap-3 min-w-0'}>
@@ -167,7 +185,7 @@ export default () => {
                                     <Icon className={'w-5 h-5'} />
                                 </div>
                                 <div className={'min-w-0'}>
-                                    <p className={'text-sm font-semibold text-white truncate group-hover:text-indigo-200 transition-colors'}>
+                                    <p className={'text-sm font-semibold text-white truncate group-hover:text-emerald-300 transition-colors'}>
                                         {action.name}
                                     </p>
                                     <p className={'text-xs text-neutral-400 truncate mt-0.5'}>
@@ -176,7 +194,7 @@ export default () => {
                                 </div>
                             </div>
                             <ChevronRightIcon
-                                className={'w-4 h-4 text-neutral-500 group-hover:text-indigo-300 group-hover:translate-x-1 transition-all shrink-0'}
+                                className={'w-4 h-4 text-neutral-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all shrink-0'}
                             />
                         </Link>
                     );

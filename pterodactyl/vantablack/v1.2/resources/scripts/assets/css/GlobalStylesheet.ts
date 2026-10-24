@@ -3,61 +3,60 @@ import { createGlobalStyle } from 'styled-components/macro';
 
 export default createGlobalStyle`
     :root {
-        --liquid-glass-bg: rgba(15, 23, 42, 0.55);
+        --liquid-glass-bg: rgba(8, 8, 10, 0.72);
         --liquid-glass-border: rgba(255, 255, 255, 0.08);
         --liquid-glass-border-highlight: rgba(255, 255, 255, 0.15);
-        --liquid-glass-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        --sidebar-glass-bg: rgba(10, 14, 26, 0.45);
-        --terminal-glass-bg: rgba(8, 12, 22, 0.52);
+        --liquid-glass-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        --sidebar-glass-bg: rgba(6, 6, 8, 0.8);
+        --terminal-glass-bg: rgba(8, 8, 10, 0.72);
     }
 
-    body {
+    body,
+    #app {
         ${tw`text-neutral-200`};
         font-family: var(--fontFamily), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         letter-spacing: 0.015em;
         min-height: 100vh;
-        background-color: #050505 !important;
-        background-image: radial-gradient(circle at 12% 15%, rgba(6, 78, 59, 0.15) 0%, transparent 45%),
-                          radial-gradient(circle at 88% 85%, rgba(69, 10, 10, 0.12) 0%, transparent 45%),
-                          radial-gradient(circle at 50% 50%, rgba(10, 10, 12, 0.95) 0%, #050505 100%) !important;
-        background-attachment: fixed !important;
+        background-color: #000000 !important;
+        background: #000000 !important;
+        background-image: none !important;
     }
 
     /* High-End Liquid Glass utility for Sidebar, Console, and Cards */
     .liquid-glass,
     .backdrop,
     body[data-card-style='glass'] .backdrop {
-        background-color: rgba(12, 12, 14, 0.65) !important;
+        background-color: rgba(8, 8, 10, 0.72) !important;
         backdrop-filter: blur(16px) !important;
         -webkit-backdrop-filter: blur(16px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.07) !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
         border-radius: 0.75rem !important;
         transition: all 250ms ease !important;
     }
 
     .liquid-glass:hover {
-        background-color: rgba(18, 18, 22, 0.75) !important;
-        border-color: rgba(255, 255, 255, 0.15) !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+        background-color: rgba(14, 14, 18, 0.82) !important;
+        border-color: rgba(255, 255, 255, 0.16) !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85) !important;
     }
 
     /* Transparent Navigation Sidebar with Liquid Glass effect */
     .sidebar-glass {
-        background-color: rgba(0, 0, 0, 0.40) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
-        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5) !important;
+        background-color: rgba(6, 6, 8, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.7) !important;
     }
 
     /* Transparent Terminal & Console Area with Liquid Glass effect */
     .terminal-glass {
-        background-color: rgba(10, 10, 12, 0.75) !important;
-        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 40%, rgba(0, 0, 0, 0.5) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.07) !important;
+        background-color: rgba(8, 8, 10, 0.72) !important;
+        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 40%, rgba(0, 0, 0, 0.6) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
         border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
         backdrop-filter: blur(24px) saturate(160%) !important;
         -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
     }

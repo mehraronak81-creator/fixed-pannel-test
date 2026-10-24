@@ -5,7 +5,7 @@ import Console from '@/components/server/console/Console';
 const FullConsoleContainer = () => {
 
     return (
-        <div className={'min-h-screen bg-gray-900'}>
+        <div className={'min-h-screen bg-black'}>
             <Spinner.Suspense>
                 <Console fullConsole/>
             </Spinner.Suspense>
