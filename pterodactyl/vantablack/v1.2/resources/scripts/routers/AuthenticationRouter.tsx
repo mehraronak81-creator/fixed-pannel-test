@@ -92,7 +92,7 @@ const AuthContainer = () => {
     )
 
     return (
-        <div className={'min-h-screen h-full bg-center bg-no-repeat bg-cover z-10 relative'} css={`background-image:url(${loginLayout == 1 ? loginBackground : ''});`}>
+        <div className={'min-h-screen h-full bg-transparent z-10 relative'}>
             {loginLayout == 1 ?
             <>
             <div className={'min-h-screen flex flex-col'}>
@@ -107,7 +107,7 @@ const AuthContainer = () => {
                     <TopBar />
                     <Switches />
                 </div>
-                <div className={'h-full bg-center bg-no-repeat bg-cover bg-vantablack z-10 relative'} css={`background-image:url(${loginBackground});`}>
+                <div className={'h-full liquid-glass z-10 relative hidden lg:block'}>
                     <Gradient />
                 </div>
             </div>
@@ -117,8 +117,8 @@ const AuthContainer = () => {
                     <TopBar />
                     <Switches />
                 </div>
-                <div className={'h-full lg:p-5'}>
-                    <div className={'h-full bg-center bg-no-repeat bg-cover bg-vantablack rounded-box overflow-hidden relative z-10'} css={`background-image:url(${loginBackground});`}>
+                <div className={'h-full lg:p-5 hidden lg:block'}>
+                    <div className={'h-full liquid-glass rounded-box overflow-hidden relative z-10'}>
                         <Gradient />
                     </div>
                 </div>

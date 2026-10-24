@@ -94,7 +94,7 @@ export default () => {
 
     return (
         <React.Fragment key={'server-router'}>
-            <div className={'min-h-screen h-full bg-center bg-no-repeat bg-cover bg-gray-800'} css={`background-image:var(--image);`}>
+            <div className={'min-h-screen h-full bg-transparent'}>
                 <PanelSounds />
                 {!uuid || !id ? (
                     error ? (

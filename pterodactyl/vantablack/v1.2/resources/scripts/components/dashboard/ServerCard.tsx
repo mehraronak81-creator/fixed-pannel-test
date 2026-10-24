@@ -51,118 +51,135 @@ export default ({ server }: { server: Server }) => {
     const memoryLimit = server.limits.memory !== 0 ? bytesToString(mbToBytes(server.limits.memory)) : t('unlimited');
     const cpuLimit = server.limits.cpu !== 0 ? server.limits.cpu + '%' : t('unlimited');
     const banner = getEggBanner(server);
-    
+    const defaultAllocation = server.allocations.find((alloc) => alloc.isDefault);
+    const ipString = defaultAllocation ? `${defaultAllocation.alias || ip(defaultAllocation.ip)}:${defaultAllocation.port}` : 'n/a';
+
+    const cpuPercent = server.limits.cpu > 0 && stats ? Math.min(100, (stats.cpuUsagePercent / server.limits.cpu) * 100) : 0;
+    const memPercent = server.limits.memory > 0 && stats ? Math.min(100, (stats.memoryUsageInBytes / mbToBytes(server.limits.memory)) * 100) : 0;
+    const diskPercent = server.limits.disk > 0 && stats ? Math.min(100, (stats.diskUsageInBytes / mbToBytes(server.limits.disk)) * 100) : 0;
+
     return (
-        <>
         <div
-            className={`${styles.server_card} px-6 py-5`}
-            style={{
-                backgroundImage: `linear-gradient(135deg, rgba(21, 21, 52, 0.92) 0%, rgba(21, 21, 52, 0.78) 50%, rgba(21, 21, 52, 0.85) 100%), url("${banner}")`,
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-            }}
+            className={'liquid-glass rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.45)] flex flex-col justify-between group relative overflow-hidden'}
         >
-            <div className="flex items-center justify-between">
-                <div className={'flex items-center gap-3'}>
-                    <div>
-                        <p className="text-lg font-semibold text-gray-50">{server.name}</p>
-                    </div>
+            {/* Ambient top light refraction */}
+            <div className={'absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none'} />
+
+            {/* Card Header: Server Name & Status Badge */}
+            <div className="flex items-center justify-between gap-3 mb-4">
+                <div className={'min-w-0'}>
+                    <p className="text-lg font-bold text-white tracking-wide truncate group-hover:text-indigo-200 transition-colors">
+                        {server.name}
+                    </p>
+                    <p className="text-xs text-neutral-400 font-mono flex items-center gap-1.5 mt-0.5">
+                        <span className={'px-2 py-0.5 rounded bg-black/40 border border-white/5'}>
+                            {ipString}
+                        </span>
+                    </p>
                 </div>
-                <span className={`${styles.server_card_status} py-1 px-3 rounded-full text-xs font-medium flex items-center gap-1.5
-                    ${stats?.status === 'offline'
-                        ? 'text-danger-50'
-                        : stats?.status === 'running' 
-                        ? 'text-success-50'
-                        : stats?.status === 'starting' 
-                        ? 'text-yellow-50 bg-yellow-500/40'
-                        : stats?.status === 'stopping'
-                        ? 'text-red-50 bg-red-500/40'
-                        : ''
-                    }
-                `}
-                css={`${stats?.status === 'offline'
-                        ? 'background-color: color-mix(in srgb, var(--dangerBackground) 40%, transparent);'
-                        : stats?.status === 'running'
-                        ? 'background-color: color-mix(in srgb, var(--successBackground) 40%, transparent);'
-                        : ''
-                    }`}
-                >
-                    {stats?.status === 'running' && <span className={'w-1.5 h-1.5 rounded-full bg-success-50 animate-pulse'} />}
-                    {stats?.status === 'offline' && <span className={'w-1.5 h-1.5 rounded-full bg-danger-50'} />}
-                    {stats?.status === 'offline' 
-                        ? t('offline')
-                        : stats?.status === 'running'
-                        ? t('online')
-                        : stats?.status === 'starting'
-                        ? t('starting')
-                        : stats?.status === 'stopping'
-                        ? t('stopping')
-                        : ''
-                    }
-                </span>
-            </div>
-            <div className={`${styles.server_card_metrics} grid lg:grid-cols-2 gap-2 my-4`}>
-                <div className="flex items-center gap-1">
-                    <span className="text-sm text-gray-300 font-light">IP:</span>
-                    {server.allocations
-                        .filter((alloc) => alloc.isDefault)
-                        .map((allocation) => (
-                            <React.Fragment key={allocation.ip + allocation.port.toString()}>
-                                {allocation.alias || ip(allocation.ip)}:{allocation.port}
-                            </React.Fragment>
-                        ))}
-                </div>
-                {!stats || isSuspended ? (
-                    isSuspended ? (
-                        <div className="flex items-center gap-1">
-                            <span className="text-sm text-gray-300 font-light">{t('status')}:</span>
-                            <span css={tw`bg-danger-200 rounded px-2 py-1 text-danger-50`}>
-                                {server.status === 'suspended' ? t('suspended') : t('connection-error')}
-                            </span>
-                        </div>
-                    ) : server.isTransferring || server.status ? (
-                        <div className="flex items-center gap-1">
-                            <span className="text-sm text-gray-300 font-light">{t('status')}:</span>
-                            <span css={tw`bg-gray-400 rounded px-2 py-1 text-gray-200`}>
-                                {server.isTransferring
-                                    ? t('transferring')
-                                    : server.status === 'installing'
-                                    ? t('installing')
-                                    : server.status === 'restoring_backup'
-                                    ? t('restoring-backup')
-                                    : t('unavailable')}
-                            </span>
-                        </div>
+
+                {/* Status Badges */}
+                <div className={'shrink-0'}>
+                    {stats?.status === 'running' ? (
+                        <span className={'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm'}>
+                            <span className={'w-2 h-2 rounded-full bg-emerald-400 animate-pulse'} />
+                            {t('online')}
+                        </span>
+                    ) : stats?.status === 'starting' ? (
+                        <span className={'bg-amber-500/15 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 animate-pulse shadow-sm'}>
+                            <span className={'w-2 h-2 rounded-full bg-amber-400'} />
+                            {t('starting')}
+                        </span>
+                    ) : stats?.status === 'stopping' ? (
+                        <span className={'bg-red-500/15 text-red-300 border border-red-500/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm'}>
+                            <span className={'w-2 h-2 rounded-full bg-red-400'} />
+                            {t('stopping')}
+                        </span>
                     ) : (
-                        <Spinner size={'small'} />
-                    )
-                ) : (
-                <React.Fragment>
-                    <div className="flex items-center gap-1">
-                        <span className="text-sm text-gray-300 font-light uppercase">{t('CPU')}:</span>
-                        <p className={alarms.cpu ? 'text-danger-50' : ''}>{stats.cpuUsagePercent.toFixed(2)}%</p>
-                        <span className="text-sm text-gray-300">/ {cpuLimit}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <span className="text-sm text-gray-300 font-light">{t('memory')}:</span>
-                        <p className={alarms.memory ? 'text-danger-50' : ''}>{bytesToString(stats.memoryUsageInBytes)}</p>
-                        <span className="text-sm text-gray-300">/ {memoryLimit}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <span className="text-sm text-gray-300 font-light">{t('disk')}:</span>
-                        <p className={alarms.disk ? 'text-danger-50' : ''}>{bytesToString(stats.diskUsageInBytes)}</p>
-                        <span className="text-sm text-gray-300">/ {diskLimit}</span>
-                    </div>
-                </React.Fragment>
-                )}
+                        <span className={'bg-rose-500/15 text-rose-300 border border-rose-500/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm'}>
+                            <span className={'w-2 h-2 rounded-full bg-rose-400'} />
+                            {t('offline')}
+                        </span>
+                    )}
+                </div>
             </div>
-            <div className={styles.server_card_actions}>
-                <Link to={`/server/${server.id}`} className={styles.server_card_primary}>
-                    {t('manage-server', { ns: 'vantablack/dashboard'})}
+
+            {/* Metrics Overview Grid */}
+            <div className={'bg-black/25 rounded-xl p-3.5 border border-white/5 my-3 grid grid-cols-1 sm:grid-cols-3 gap-3'}>
+                {/* CPU Metric */}
+                <div>
+                    <div className={'flex items-center justify-between text-xs mb-1'}>
+                        <span className={'text-neutral-400 font-medium'}>CPU</span>
+                        <span className={`font-mono font-semibold ${alarms.cpu ? 'text-rose-400' : 'text-neutral-200'}`}>
+                            {stats ? `${stats.cpuUsagePercent.toFixed(1)}%` : '0%'}
+                        </span>
+                    </div>
+                    <div className={'h-1.5 w-full bg-white/5 rounded-full overflow-hidden'}>
+                        <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                                alarms.cpu ? 'bg-rose-500' : 'bg-indigo-500'
+                            }`}
+                            style={{ width: `${Math.min(100, cpuPercent)}%` }}
+                        />
+                    </div>
+                    <span className={'text-[10px] text-neutral-400 font-mono mt-0.5 block truncate'}>
+                        Max: {cpuLimit}
+                    </span>
+                </div>
+
+                {/* Memory Metric */}
+                <div>
+                    <div className={'flex items-center justify-between text-xs mb-1'}>
+                        <span className={'text-neutral-400 font-medium'}>RAM</span>
+                        <span className={`font-mono font-semibold ${alarms.memory ? 'text-rose-400' : 'text-neutral-200'}`}>
+                            {stats ? bytesToString(stats.memoryUsageInBytes) : '0 B'}
+                        </span>
+                    </div>
+                    <div className={'h-1.5 w-full bg-white/5 rounded-full overflow-hidden'}>
+                        <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                                alarms.memory ? 'bg-rose-500' : 'bg-emerald-500'
+                            }`}
+                            style={{ width: `${Math.min(100, memPercent)}%` }}
+                        />
+                    </div>
+                    <span className={'text-[10px] text-neutral-400 font-mono mt-0.5 block truncate'}>
+                        Max: {memoryLimit}
+                    </span>
+                </div>
+
+                {/* Disk Metric */}
+                <div>
+                    <div className={'flex items-center justify-between text-xs mb-1'}>
+                        <span className={'text-neutral-400 font-medium'}>Disk</span>
+                        <span className={`font-mono font-semibold ${alarms.disk ? 'text-rose-400' : 'text-neutral-200'}`}>
+                            {stats ? bytesToString(stats.diskUsageInBytes) : '0 B'}
+                        </span>
+                    </div>
+                    <div className={'h-1.5 w-full bg-white/5 rounded-full overflow-hidden'}>
+                        <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                                alarms.disk ? 'bg-rose-500' : 'bg-amber-500'
+                            }`}
+                            style={{ width: `${Math.min(100, diskPercent)}%` }}
+                        />
+                    </div>
+                    <span className={'text-[10px] text-neutral-400 font-mono mt-0.5 block truncate'}>
+                        Max: {diskLimit}
+                    </span>
+                </div>
+            </div>
+
+            {/* Action Bar */}
+            <div className={'mt-3 pt-2'}>
+                <Link
+                    to={`/server/${server.id}`}
+                    className={'w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-white bg-indigo-600/30 hover:bg-indigo-600/60 border border-indigo-500/30 hover:border-indigo-400 flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-indigo-500/20'}
+                >
+                    <span>{t('manage-server', { ns: 'vantablack/dashboard'})}</span>
+                    <span className={'group-hover:translate-x-1 transition-transform'}>&rarr;</span>
                 </Link>
             </div>
         </div>
-        </>
     );
 };

@@ -10,6 +10,7 @@ import Spinner from '@/components/elements/Spinner';
 import Features from '@feature/Features';
 import Console from '@/components/server/console/Console';
 import ServerDetailsBlock from '@/components/server/console/ServerDetailsBlock';
+import ServerCommandCenter from '@/components/server/console/ServerCommandCenter';
 import { Alert } from '@/components/elements/alert';
 import { TerminalIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
@@ -63,6 +64,9 @@ const ServerConsoleContainer = () => {
                     </div>
                 } 
             </div>
+
+            {/* Modular Workspace Command Center Grid below the live console */}
+            <ServerCommandCenter />
 
             {statsCards == 3 &&
             <div className={'mt-4'}>

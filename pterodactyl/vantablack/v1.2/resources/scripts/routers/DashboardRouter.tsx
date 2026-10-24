@@ -21,7 +21,7 @@ export default () => {
 
     return (
         <>
-        <div className={'min-h-screen flex h-full bg-center bg-no-repeat bg-cover bg-gray-800'} css={`background-image:var(--image);`}>
+        <div className={'min-h-screen flex h-full bg-transparent'}>
             {(layout == 1 || layout == 2) && <SideBar />}
             {layout == 4 && <SideBarIcon/>}
             <div className="w-full">

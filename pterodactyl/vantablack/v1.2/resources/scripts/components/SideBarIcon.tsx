@@ -86,7 +86,7 @@ const SideBarIcon = ({ children }: Props) => {
     };
 
     return (
-    <div className={'w-[75px] shrink-0 bg-gray-700 h-screen overflow-y-auto lg:flex hidden flex-col sticky top-0 backdrop border-t-0 border-b-0 border-l-0 px-4 py-3'}>
+    <div className={'w-[75px] shrink-0 sidebar-glass h-screen overflow-y-auto lg:flex hidden flex-col sticky top-0 border-t-0 border-b-0 border-l-0 px-4 py-3'}>
         <SpinnerOverlay visible={isLoggingOut} />
         <NavigationLinks>
             <div className={'pb-2 border-b border-gray-400'}>

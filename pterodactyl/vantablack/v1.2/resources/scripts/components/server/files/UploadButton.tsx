@@ -22,7 +22,8 @@ function isFileOrDirectory(event: DragEvent): boolean {
         return false;
     }
 
-    return event.dataTransfer.types.some((value) => value.toLowerCase() === 'files');
+    const types = Array.from(event.dataTransfer.types);
+    return types.some((value) => value.toLowerCase() === 'files' || value === 'application/x-moz-file');
 }
 
 export default ({ className }: WithClassname) => {
@@ -162,7 +163,12 @@ export default ({ className }: WithClassname) => {
                 <Fade appear in={visible.value} timeout={75} key={'upload_modal_mask'} unmountOnExit>
                     <ModalMask
                         onClick={() => (visible.value = false)}
-                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => e.preventDefault()}
+                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
+                            e.preventDefault();
+                            if (e.dataTransfer) {
+                                e.dataTransfer.dropEffect = 'copy';
+                            }
+                        }}
                         onDrop={(e: React.DragEvent<HTMLDivElement>) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -174,15 +180,20 @@ export default ({ className }: WithClassname) => {
                             onFileSubmission(e.dataTransfer.files);
                         }}
                     >
-                        <div className={'w-full flex items-center justify-center pointer-events-none'}>
+                        <div className={'w-full flex items-center justify-center pointer-events-none p-6'}>
                             <div
                                 className={
-                                    'flex items-center space-x-4 bg-black w-full ring-4 ring-blue-200 ring-opacity-60 rounded p-6 mx-10 max-w-sm'
+                                    'flex flex-col items-center justify-center gap-3 liquid-glass rounded-2xl p-8 max-w-md w-full border-2 border-dashed border-indigo-400/50 shadow-[0_0_50px_rgba(99,102,241,0.25)]'
                                 }
                             >
-                                <CloudUploadIcon className={'w-10 h-10 flex-shrink-0'} />
-                                <p className={'font-header flex-1 text-lg text-neutral-100 text-center'}>
+                                <div className={'w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center animate-bounce shadow-inner'}>
+                                    <CloudUploadIcon className={'w-10 h-10'} />
+                                </div>
+                                <h3 className={'font-header text-xl font-semibold text-white text-center'}>
                                     {t('drag-and-drop')}
+                                </h3>
+                                <p className={'text-xs text-indigo-200/70 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5'}>
+                                    /{directory || ''}
                                 </p>
                             </div>
                         </div>
