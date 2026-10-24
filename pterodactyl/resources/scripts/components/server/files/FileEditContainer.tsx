@@ -248,13 +248,54 @@ export default () => {
                         </div>
                     </div>
 
+                    {/* VS Code Left File Tree Explorer */}
+                    <div className={'w-52 bg-[#0e121e] border-r border-white/5 flex flex-col shrink-0 select-none hidden md:flex'}>
+                        <div className={'px-3.5 py-2.5 flex items-center justify-between border-b border-white/5 text-[11px] font-bold text-gray-400 tracking-wider'}>
+                            <span className={'flex items-center gap-1.5'}>
+                                <FolderOpenIcon className={'w-3.5 h-3.5 text-indigo-400'} />
+                                EXPLORER
+                            </span>
+                            <span className={'text-[10px] text-gray-500 font-mono'}>WORKSPACE</span>
+                        </div>
+                        <div className={'p-2 flex flex-col gap-0.5 overflow-y-auto text-xs text-gray-300 font-mono'}>
+                            <div className={'flex items-center gap-1.5 px-2 py-1 text-gray-400 font-semibold text-[11px]'}>
+                                <FolderOpenIcon className={'w-3.5 h-3.5 text-indigo-400'} />
+                                <span className={'truncate'}>/home/container</span>
+                            </div>
+                            <div className={'pl-2 flex flex-col gap-0.5 mt-0.5'}>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
+                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-amber-400 shrink-0'} />
+                                    <span>logs/</span>
+                                </div>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
+                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-amber-400 shrink-0'} />
+                                    <span>config/</span>
+                                </div>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded bg-indigo-500/20 text-white border-l-2 border-indigo-400 font-medium text-xs'}>
+                                    <span className={'text-indigo-400 font-bold select-none text-[10px]'}>&lt;&thinsp;&gt;</span>
+                                    {getFileIcon(filename)}
+                                    <span className={'truncate'}>{filename}</span>
+                                </div>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
+                                    <CodeIcon className={'w-3.5 h-3.5 text-emerald-400 shrink-0'} />
+                                    <span>server.properties</span>
+                                </div>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
+                                    <CodeIcon className={'w-3.5 h-3.5 text-blue-400 shrink-0'} />
+                                    <span>ecosystem.config.cjs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Main Editor Work Area */}
                     <div className={'flex-1 flex flex-col min-w-0 bg-[#0d111c]/95'}>
                         {/* VS Code Tab Bar */}
                         <div className={'bg-[#0f1422] border-b border-white/5 flex items-center justify-between overflow-x-auto select-none px-2 h-10'}>
-                            {/* Active Tab */}
+                            {/* Active Tab with < > filename */}
                             <div className={'flex items-center'}>
                                 <div className={'flex items-center gap-2 bg-[#182035] border-t-2 border-indigo-500 border-r border-white/5 px-4 h-10 text-sm font-medium text-white shadow-inner cursor-pointer'}>
+                                    <span className={'text-indigo-400 font-mono font-bold text-xs select-none'}>&lt;&thinsp;&gt;</span>
                                     {getFileIcon(filename)}
                                     <span className={'truncate max-w-[200px]'}>{filename}</span>
                                     <button
@@ -347,9 +388,9 @@ export default () => {
                         <div className={'bg-[#0b1020] border-t border-white/5 px-3 py-1 flex items-center justify-between text-xs text-neutral-400 select-none'}>
                             {/* Left Side Status */}
                             <div className={'flex items-center gap-4'}>
-                                <div className={'flex items-center gap-1 text-indigo-400'}>
+                                <div className={'flex items-center gap-1.5 text-indigo-400 font-medium'}>
                                     <VscSourceControl className={'w-3.5 h-3.5'} />
-                                    <span>main*</span>
+                                    <span>Main branch</span>
                                 </div>
                                 <div className={'flex items-center gap-2'}>
                                     <span className={'flex items-center gap-0.5 hover:text-white cursor-pointer'}>

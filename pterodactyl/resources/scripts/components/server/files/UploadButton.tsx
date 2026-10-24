@@ -86,14 +86,18 @@ export default ({ className }: WithClassname) => {
         { capture: true }
     );
 
-    // A drop anywhere in the window should reset the counter regardless of where
-    // it landed so a subsequent drag works correctly.
+    // Drop event handling: captures dropped files anywhere in the file manager and submits them
     useEventListener(
         'drop',
         (e) => {
             dragCounter.value = 0;
+            visible.value = false;
             if (!isFileOrDirectory(e)) return;
             e.preventDefault();
+            e.stopPropagation();
+            if (e.dataTransfer?.files?.length) {
+                onFileSubmission(e.dataTransfer.files);
+            }
         },
         { capture: true }
     );

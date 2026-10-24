@@ -28,10 +28,16 @@
 .admin_filter span { color: var(--gray300); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .server_cards {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.25rem;
     width: 100%;
+}
+
+@media (max-width: 640px) {
+    .server_cards {
+        grid-template-columns: 1fr;
+    }
 }
 
 .reference_card,

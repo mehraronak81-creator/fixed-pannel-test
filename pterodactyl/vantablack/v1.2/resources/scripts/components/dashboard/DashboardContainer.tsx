@@ -55,6 +55,8 @@ export default () => {
         if (!error) clearFlashes('dashboard');
     }, [error]);
 
+    const [searchQuery, setSearchQuery] = React.useState('');
+
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
             <div className={styles.breadcrumb_bar}>
@@ -71,24 +73,61 @@ export default () => {
                 )}
             </div>
 
+            {/* Live Search Input Bar */}
+            <div className={'mb-6 w-full'}>
+                <div className={'liquid-glass p-2.5 flex items-center gap-3 px-4 shadow-md'}>
+                    <svg className={'w-5 h-5 text-gray-400 shrink-0'} fill={'none'} viewBox={'0 0 24 24'} stroke={'currentColor'} strokeWidth={2}>
+                        <path strokeLinecap={'round'} strokeLinejoin={'round'} d={'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'} />
+                    </svg>
+                    <input
+                        type={'text'}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={'Search servers by name, node, or address...'}
+                        className={'w-full bg-transparent border-none outline-none text-gray-100 text-sm placeholder-gray-400 font-medium'}
+                    />
+                    {searchQuery && (
+                        <button
+                            type={'button'}
+                            onClick={() => setSearchQuery('')}
+                            className={'text-xs text-gray-400 hover:text-white px-2 py-0.5 rounded bg-white/10 transition-colors'}
+                        >
+                            Clear
+                        </button>
+                    )}
+                </div>
+            </div>
+
             {!servers ? (
                 <Spinner centered size={'large'} />
             ) : (
                 <div className={styles.server_grid}>
                     <Pagination data={servers} onPageSelect={setPage}>
-                        {({ items }) => items.length > 0 ? (
-                            <div className={styles.server_cards}>
-                                {items.map((server) => (
-                                    serverRow === 1 ? <ServerCardGradient key={server.uuid} server={server} />
-                                        : serverRow === 2 ? <ServerCardBanner key={server.uuid} server={server} />
-                                            : <ServerCard key={server.uuid} server={server} />
-                                ))}
-                            </div>
-                        ) : (
-                            <p className={styles.empty_state}>
-                                {showOnlyAdmin ? t('there-are-no-servers') : t('there-are-no-servers-associated')}
-                            </p>
-                        )}
+                        {({ items }) => {
+                            const filteredServers = items.filter((s) => {
+                                if (!searchQuery.trim()) return true;
+                                const q = searchQuery.toLowerCase();
+                                return (
+                                    s.name.toLowerCase().includes(q) ||
+                                    (s.description ? s.description.toLowerCase().includes(q) : false) ||
+                                    s.allocations.some((a) => (a.alias || a.ip).toLowerCase().includes(q) || String(a.port).includes(q))
+                                );
+                            });
+
+                            return filteredServers.length > 0 ? (
+                                <div className={styles.server_cards}>
+                                    {filteredServers.map((server) => (
+                                        <ServerCard key={server.uuid} server={server} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className={'liquid-glass p-10 text-center col-span-full'}>
+                                    <p className={'text-base font-medium text-gray-200'}>
+                                        {searchQuery ? `No servers found matching "${searchQuery}"` : showOnlyAdmin ? t('there-are-no-servers') : t('there-are-no-servers-associated')}
+                                    </p>
+                                </div>
+                            );
+                        }}
                     </Pagination>
                 </div>
             )}

@@ -12,56 +12,40 @@ export default createGlobalStyle`
     }
 
     body {
-        ${tw`bg-neutral-800 text-neutral-200`};
+        ${tw`bg-neutral-900 text-neutral-200`};
         font-family: var(--fontFamily), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         letter-spacing: 0.015em;
         min-height: 100vh;
-        background-color: #0b0f19;
-        background-image:
-            radial-gradient(ellipse 90% 60% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
-            radial-gradient(circle at 5% 30%, rgba(56, 189, 248, 0.06), transparent 35%),
-            radial-gradient(circle at 95% 70%, rgba(139, 92, 246, 0.06), transparent 40%),
-            linear-gradient(180deg, #0b0f19 0%, #0d121f 45%, #080c14 100%);
-        background-attachment: fixed;
+        background-color: #0f111a !important;
+        background-image: none !important;
     }
 
-    /* Subtle ambient micro-mesh overlay for depth */
-    body::before {
-        position: fixed;
-        z-index: -1;
-        inset: 0;
-        pointer-events: none;
-        content: '';
-        opacity: .18;
-        background-image: 
-            linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px), 
-            linear-gradient(90deg, rgba(255, 255, 255, .012) 1px, transparent 1px);
-        background-size: 32px 32px;
-        mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
-    }
-
-    /* High-End Liquid Glass for containers, cards, and panels */
+    /* High-End Liquid Glass utility for Sidebar, Console, and Cards */
     .liquid-glass,
     .backdrop,
     body[data-card-style='glass'] .backdrop {
-        background-color: var(--liquid-glass-bg) !important;
-        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 45%, rgba(0, 0, 0, 0.25) 100%) !important;
-        border: 1px solid var(--liquid-glass-border) !important;
-        border-top: 1px solid var(--liquid-glass-border-highlight) !important;
-        box-shadow: var(--liquid-glass-shadow) !important;
-        backdrop-filter: blur(24px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-        transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
+        border-radius: 0.75rem !important;
+        transition: all 300ms ease !important;
+    }
+
+    .liquid-glass:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45) !important;
     }
 
     /* Transparent Navigation Sidebar with Liquid Glass effect */
     .sidebar-glass {
-        background-color: var(--sidebar-glass-bg) !important;
-        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+        background-color: rgba(255, 255, 255, 0.02) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
         box-shadow: 4px 0 30px rgba(0, 0, 0, 0.35) !important;
-        backdrop-filter: blur(24px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
     }
 
     /* Transparent Terminal & Console Area with Liquid Glass effect */
