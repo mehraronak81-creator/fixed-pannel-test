@@ -67,7 +67,7 @@
                                 <p class="text-muted small">A simple, human-readable name to use as an identifier for this Egg.</p>
                             </div>
                             <div class="form-group">
-                                <label for="pImage" class="control-label">Egg image <b style="background-color:#17078D;font-size:1rem;padding:2px 7px;border-radius:100px;font-weight:600;">VANTABLACK</b></label>
+                                <label for="pImage" class="control-label">Egg image <b style="background-color:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:0.75rem;padding:2px 8px;border-radius:100px;font-weight:700;">VANTABLACK</b></label>
                                 <input type="text" id="pImage" name="image" value="{{ $egg->image }}" class="form-control" />
                                 <p class="text-muted small">This is the image url of this specific egg which is shown on the theme.</p>
                             </div>

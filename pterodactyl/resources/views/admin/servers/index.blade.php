@@ -156,15 +156,23 @@
                             </td>
 
                             <td>
-                                <a href="{{ route('admin.users.view', $server->user_id) }}" style="color: #e4e4e7; font-weight: 550;">
-                                    {{ $server->user?->username ?? 'Unknown' }}
-                                </a>
+                                @if($server->user)
+                                    <a href="{{ route('admin.users.view', $server->owner_id) }}" style="color: #e4e4e7; font-weight: 550;">
+                                        {{ $server->user->username }}
+                                    </a>
+                                @else
+                                    <span style="color: #71717a;">Unknown</span>
+                                @endif
                             </td>
 
                             <td>
-                                <a href="{{ route('admin.nodes.view', $server->node_id) }}" style="color: #e4e4e7;">
-                                    {{ $server->node?->name ?? 'Unknown' }}
-                                </a>
+                                @if($server->node_id && $server->node)
+                                    <a href="{{ route('admin.nodes.view', $server->node_id) }}" style="color: #e4e4e7;">
+                                        {{ $server->node->name }}
+                                    </a>
+                                @else
+                                    <span style="color: #71717a;">Unknown</span>
+                                @endif
                             </td>
 
                             <td>

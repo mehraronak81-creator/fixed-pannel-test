@@ -44,21 +44,21 @@
                         </div>
                     </div>
                     <div class="form-group col-xs-12">
-                        <label for="alert" class="control-label">Node alert <b style="background-color:#17078D;font-size:1rem;padding:2px 7px;border-radius:100px;font-weight:600;">VANTABLACK</b></label>
+                        <label for="alert" class="control-label">Node alert <b style="background-color:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:0.75rem;padding:2px 8px;border-radius:100px;font-weight:700;">VANTABLACK</b></label>
                         <div>
                             <textarea type="text" autocomplete="off" name="alert" class="form-control" width="100%" rows="5">{{ old('alert', $node->alert) }}</textarea>
                             <p class="text-muted"><small>Character limits: min 1, max 200 characters, leave empty to remove alert. For styling use BBCode format.</small></p>
                         </div>
                     </div>
                     <div class="form-group col-xs-12">
-                        <label for="daemon_text" class="control-label">Daemon text <b style="background-color:#17078D;font-size:1rem;padding:2px 7px;border-radius:100px;font-weight:600;">VANTABLACK</b></label>
+                        <label for="daemon_text" class="control-label">Daemon text <b style="background-color:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:0.75rem;padding:2px 8px;border-radius:100px;font-weight:700;">VANTABLACK</b></label>
                         <div>
                             <input type="text" autocomplete="off" name="daemon_text" class="form-control" value="{{ old('daemon_text', $node->daemon_text) }}" />
                             <p class="text-muted"><small>Change the "[Pterodactyl Daemon]:" text.</small></p>
                         </div>
                     </div>
                     <div class="form-group col-xs-12">
-                        <label for="container_text" class="control-label">Container text <b style="background-color:#17078D;font-size:1rem;padding:2px 7px;border-radius:100px;font-weight:600;">VANTABLACK</b></label>
+                        <label for="container_text" class="control-label">Container text <b style="background-color:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:0.75rem;padding:2px 8px;border-radius:100px;font-weight:700;">VANTABLACK</b></label>
                         <div>
                             <input type="text" autocomplete="off" name="container_text" class="form-control" value="{{ old('container_text', $node->container_text) }}" />
                             <p class="text-muted"><small>Change the "container@pterodactyl~" text.</small></p>

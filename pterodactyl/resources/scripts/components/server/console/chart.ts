@@ -98,9 +98,8 @@ function getOptions(opts?: DeepPartial<ChartOptions<'line'>> | undefined): Chart
 
 type ChartDatasetCallback = (value: ChartDataset<'line'>, index: number) => ChartDataset<'line'>;
 
-function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback | undefined): ChartData<'line'> {
+function getEmptyData(label: string, sets = 1, borderColor = '#10b981', callback?: ChartDatasetCallback | undefined): ChartData<'line'> {
     const next = callback || ((value) => value);
-    const primary = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.primary);
 
     return {
         labels: Array(20)
@@ -114,7 +113,7 @@ function getEmptyData(label: string, sets = 1, callback?: ChartDatasetCallback |
                         fill: true,
                         label: label,
                         data: Array(20).fill(-5),
-                        borderColor: primary,
+                        borderColor: borderColor,
                         backgroundColor: 'transparent',
                     },
                     index
@@ -132,10 +131,11 @@ interface UseChartOptions {
 }
 
 function useChart(label: string, opts?: UseChartOptions) {
+    const primary = useStoreState((state: ApplicationStore) => state.settings.data?.vantablack?.primary || '#10b981');
     const options = getOptions(
         typeof opts?.options === 'number' ? { scales: { y: { min: 0, suggestedMax: opts.options } } } : opts?.options
     );
-    const [data, setData] = useState(getEmptyData(label, opts?.sets || 1, opts?.callback));
+    const [data, setData] = useState(() => getEmptyData(label, opts?.sets || 1, primary, opts?.callback));
 
     const push = (items: number | null | (number | null)[]) =>
         setData((state) =>
@@ -162,9 +162,10 @@ function useChart(label: string, opts?: UseChartOptions) {
     return { props: { data, options }, push, clear };
 }
 
-function useChartTickLabel(label: string, max: number, tickLabel: string, roundTo?: number) {
+function useChartTickLabel(label: string, max: number, tickLabel: string, roundTo?: number, callback?: ChartDatasetCallback) {
     return useChart(label, {
         sets: 1,
+        callback,
         options: {
             scales: {
                 y: {

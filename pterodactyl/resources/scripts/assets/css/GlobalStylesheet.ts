@@ -17,28 +17,28 @@ export default createGlobalStyle`
         font-family: var(--fontFamily), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         letter-spacing: 0.015em;
         min-height: 100vh;
-        background-color: #000000 !important;
-        background: #000000 !important;
-        background-image: none !important;
+        background-color: #030303 !important;
+        background: #030303 radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.035) 0%, rgba(3, 3, 3, 1) 75%) !important;
+        background-attachment: fixed !important;
     }
 
-    /* High-End Liquid Glass utility for Sidebar, Console, and Cards */
+    /* True Crystal Liquid Glass utility for Sidebar, Console, and Cards */
     .liquid-glass,
     .backdrop,
     body[data-card-style='glass'] .backdrop {
-        background-color: rgba(8, 8, 10, 0.72) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
         border-radius: 0.75rem !important;
         transition: all 250ms ease !important;
     }
 
     .liquid-glass:hover {
-        background-color: rgba(14, 14, 18, 0.82) !important;
-        border-color: rgba(255, 255, 255, 0.16) !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+        border-color: rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.2) !important;
     }
 
     /* Transparent Navigation Sidebar with Liquid Glass effect */

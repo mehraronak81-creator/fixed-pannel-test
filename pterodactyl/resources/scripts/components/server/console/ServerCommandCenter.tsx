@@ -67,8 +67,8 @@ export default () => {
             icon: EyeIcon,
             path: `/server/${id}/activity`,
             permission: 'activity.*',
-            accentColor: 'text-purple-400',
-            accentBg: 'bg-purple-500/10 border-purple-500/20 group-hover:border-purple-500/40',
+            accentColor: 'text-emerald-400',
+            accentBg: 'bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/40',
         },
         {
             name: 'Network & Ports',
@@ -103,8 +103,8 @@ export default () => {
             icon: CubeIcon,
             path: `/server/${id}/mods`,
             permission: 'file.create',
-            accentColor: 'text-indigo-400',
-            accentBg: 'bg-indigo-500/10 border-indigo-500/20 group-hover:border-indigo-500/40',
+            accentColor: 'text-emerald-400',
+            accentBg: 'bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/40',
         },
         {
             name: 'Minecraft Manager',

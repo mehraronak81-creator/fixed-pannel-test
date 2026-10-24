@@ -22,53 +22,290 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
             <style>
-                body, body.skin-vantahost, .wrapper, .skin-vantahost .wrapper, .content-wrapper, .skin-vantahost .content-wrapper {
+                /* PURE BLACK BACKGROUND ACROSS THE ENTIRE ADMIN SUITE */
+                body,
+                body.skin-vantahost,
+                .wrapper,
+                .skin-vantahost .wrapper,
+                .content-wrapper,
+                .skin-vantahost .content-wrapper,
+                .modal-content {
                     background: #000000 !important;
                     background-color: #000000 !important;
                     background-image: none !important;
                     color: #f5f5f5 !important;
                 }
+
+                /* GLASS NAVBAR & SIDEBAR */
                 .skin-vantahost .main-header,
                 .skin-vantahost .navbar,
                 .skin-vantahost .main-sidebar,
-                .skin-vantahost .main-header .logo {
+                .skin-vantahost .main-header .logo,
+                .main-header,
+                .main-sidebar,
+                .navbar-static-top {
                     background: rgba(6, 6, 8, 0.8) !important;
                     backdrop-filter: blur(20px) !important;
                     -webkit-backdrop-filter: blur(20px) !important;
                     border-color: rgba(255, 255, 255, 0.07) !important;
                 }
+
+                .main-footer {
+                    background: rgba(6, 6, 8, 0.9) !important;
+                    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+                    color: #71717a !important;
+                }
+
+                /* TRANSPARENT LIQUID GLASS CARDS ON ALL INNER ADMIN PAGES */
+                .box,
+                .box.box-primary,
+                .box.box-info,
+                .box.box-success,
+                .box.box-warning,
+                .box.box-danger,
+                .box.box-default,
                 .skin-vantahost .box,
                 .skin-vantahost .info-box,
                 .skin-vantahost .small-box,
-                .skin-vantahost .nav-tabs-custom,
+                .panel,
+                .panel-default,
+                .panel-primary,
+                .panel-info,
+                .panel-success,
+                .panel-warning,
+                .panel-danger,
+                .skin-vantahost .panel,
+                .vantablack-card,
+                .admin-card,
                 .vh-metric-card,
                 .vh-health-stat,
                 .vh-health-node,
-                .vh-control-card {
-                    background: rgba(12, 12, 14, 0.7) !important;
-                    backdrop-filter: blur(16px) !important;
-                    -webkit-backdrop-filter: blur(16px) !important;
-                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+                .vh-control-card,
+                .modal-content,
+                .callout {
+                    background: rgba(255, 255, 255, 0.03) !important;
+                    background-color: rgba(255, 255, 255, 0.03) !important;
+                    backdrop-filter: blur(20px) saturate(180%) !important;
+                    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+                    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+                    border-radius: 12px !important;
+                    color: #f5f5f5 !important;
                 }
-                .table-striped > tbody > tr:nth-of-type(odd),
-                .skin-vantahost .table-striped > tbody > tr:nth-of-type(odd),
-                .skin-vantahost .table > tbody > tr,
-                table.table tbody tr {
+
+                .box-header,
+                .box-body,
+                .box-footer,
+                .panel-heading,
+                .panel-body,
+                .panel-footer,
+                .modal-header,
+                .modal-body,
+                .modal-footer {
                     background: transparent !important;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                    background-color: transparent !important;
+                    color: #f5f5f5 !important;
+                    border-color: rgba(255, 255, 255, 0.07) !important;
                 }
+
+                .box-header .box-title,
+                .box-header h3,
+                .panel-heading h3,
+                .modal-title,
+                .content-header h1 {
+                    color: #ffffff !important;
+                    font-weight: 650 !important;
+                }
+
+                .content-header > .breadcrumb > li > a,
+                .content-header > .breadcrumb > li {
+                    color: #a1a1aa !important;
+                }
+
+                .content-header > .breadcrumb > li.active {
+                    color: #10b981 !important;
+                }
+
+                /* CLEAN GLASS TABLES ACROSS USERS, NODES, SERVERS */
+                .table,
+                .table-striped,
+                .table-hover,
+                .table-responsive {
+                    background: transparent !important;
+                }
+
+                .table > thead > tr > th,
+                .table > tbody > tr > th,
+                .table > tfoot > tr > th,
+                .table > thead > tr > td,
+                .table > tbody > tr > td,
+                .table > tfoot > tr > td,
+                .skin-vantahost .table > thead > tr > th,
+                .skin-vantahost .table > tbody > tr > td {
+                    background: transparent !important;
+                    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+                    color: #d4d4d8 !important;
+                }
+
+                .table > thead > tr > th,
+                .skin-vantahost .table > thead > tr > th {
+                    color: #a1a1aa !important;
+                    font-size: 11px !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 0.05em !important;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                }
+
                 .table-hover > tbody > tr:hover,
                 .skin-vantahost .table-hover > tbody > tr:hover,
                 table.table tbody tr:hover {
-                    background: rgba(255, 255, 255, 0.03) !important;
+                    background: rgba(255, 255, 255, 0.04) !important;
                 }
-                .table > thead > tr > th,
-                .skin-vantahost .table > thead > tr > th {
-                    background: transparent !important;
+
+                /* INPUTS, SELECTS, TEXTAREAS */
+                .form-control,
+                select.form-control,
+                textarea.form-control,
+                input[type="text"],
+                input[type="password"],
+                input[type="email"],
+                input[type="number"],
+                input[type="search"],
+                .select2-container--default .select2-selection--single,
+                .select2-container--default .select2-selection--multiple,
+                .input-group-addon {
+                    background: rgba(0, 0, 0, 0.5) !important;
+                    background-color: rgba(0, 0, 0, 0.5) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                    color: #ffffff !important;
+                    border-radius: 8px !important;
+                    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+                }
+
+                .form-control:focus,
+                select.form-control:focus,
+                textarea.form-control:focus,
+                input:focus,
+                .select2-container--default.select2-container--open .select2-selection--single {
+                    border-color: rgba(16, 185, 129, 0.6) !important;
+                    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18) !important;
+                    outline: none !important;
+                }
+
+                .select2-dropdown {
+                    background: #0a0a0c !important;
+                    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8) !important;
+                }
+
+                .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                    background-color: rgba(16, 185, 129, 0.25) !important;
+                    color: #10b981 !important;
+                }
+
+                .select2-container--default .select2-results__option[aria-selected=true] {
+                    background-color: rgba(255, 255, 255, 0.06) !important;
+                }
+
+                /* EMERALD BUTTONS — ZERO LEGACY BLUE/INDIGO BOXES */
+                .btn-primary,
+                .btn-success,
+                .btn-info {
+                    background: #10b981 !important;
+                    background-image: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+                    border-radius: 8px !important;
+                    transition: all 180ms ease !important;
+                }
+
+                .btn-primary:hover,
+                .btn-success:hover,
+                .btn-info:hover {
+                    background: #059669 !important;
+                    border-color: #10b981 !important;
+                    color: #ffffff !important;
+                    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+                    transform: translateY(-1px) !important;
+                }
+
+                .btn-default {
+                    background: rgba(255, 255, 255, 0.05) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                    color: #e4e4e7 !important;
+                    border-radius: 8px !important;
+                }
+
+                .btn-default:hover {
+                    background: rgba(255, 255, 255, 0.09) !important;
+                    border-color: rgba(255, 255, 255, 0.2) !important;
+                    color: #ffffff !important;
+                }
+
+                .btn-warning {
+                    background: #f59e0b !important;
+                    border-color: #d97706 !important;
+                    color: #ffffff !important;
+                }
+
+                .btn-danger {
+                    background: #ef4444 !important;
+                    border-color: #dc2626 !important;
+                    color: #ffffff !important;
+                }
+
+                /* TABS */
+                .nav-tabs,
+                .nav-tabs-custom,
+                .skin-vantahost .nav-tabs-custom {
                     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-                    color: #a1a1aa !important;
+                    background: transparent !important;
                 }
+
+                .nav-tabs-custom > .tab-content {
+                    background: rgba(255, 255, 255, 0.03) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+                    border-radius: 0 0 12px 12px !important;
+                }
+
+                .nav-tabs > li > a,
+                .nav-tabs-custom > .nav-tabs > li > a {
+                    color: #a1a1aa !important;
+                    background: transparent !important;
+                    border: none !important;
+                    border-radius: 8px 8px 0 0 !important;
+                }
+
+                .nav-tabs > li.active > a,
+                .nav-tabs-custom > .nav-tabs > li.active > a,
+                .nav-tabs > li.active:hover > a,
+                .nav-tabs-custom > .nav-tabs > li.active:hover > a {
+                    background: rgba(16, 185, 129, 0.15) !important;
+                    color: #10b981 !important;
+                    border-top: 2px solid #10b981 !important;
+                    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+                }
+
+                /* PAGINATION */
+                .pagination > li > a,
+                .pagination > li > span {
+                    background: rgba(255, 255, 255, 0.04) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    color: #d4d4d8 !important;
+                }
+
+                .pagination > .active > a,
+                .pagination > .active > span {
+                    background: rgba(16, 185, 129, 0.25) !important;
+                    border-color: #10b981 !important;
+                    color: #10b981 !important;
+                }
+
                 .skin-vantahost a:not(.btn):not(.label):not(.logo):not(.sidebar-toggle):not(.vh-header-action) {
                     color: #f5f5f5 !important;
                     transition: color 150ms ease;
@@ -102,6 +339,13 @@
                 .vh-copy-pill:hover i {
                     opacity: 1;
                     color: #10b981;
+                }
+
+                /* OVERRIDE INLINE VANTABLACK BLUE BADGES */
+                b[style*="background-color:#17078D"] {
+                    background-color: rgba(16, 185, 129, 0.18) !important;
+                    color: #34d399 !important;
+                    border: 1px solid rgba(16, 185, 129, 0.35) !important;
                 }
             </style>
 

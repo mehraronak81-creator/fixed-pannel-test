@@ -49,7 +49,7 @@ function getFileIcon(filename: string) {
         case 'ts':
             return <SiTypescript className={'text-blue-400 w-4 h-4 shrink-0'} />;
         case 'php':
-            return <SiPhp className={'text-indigo-400 w-4 h-4 shrink-0'} />;
+            return <SiPhp className={'text-sky-400 w-4 h-4 shrink-0'} />;
         case 'py':
             return <SiPython className={'text-blue-300 w-4 h-4 shrink-0'} />;
         case 'html':

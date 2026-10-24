@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { ApplicationStore } from '@/state';
 import { useStoreState } from 'easy-peasy';
+import { ServerContext } from '@/state/server';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import ServerDetailsBlock from '@/components/server/console/ServerDetailsBlock';
 import StatGraphs from '@/components/server/console/StatGraphs';
@@ -115,6 +116,11 @@ const DashboardContainer = () => {
                 <div className={styles.consolePreviewBody}>
                     <Console />
                 </div>
+            </section>
+
+            {/* Live Telemetry Graphs */}
+            <section className={'grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6'}>
+                <StatGraphs />
             </section>
 
             {/* Quick actions */}

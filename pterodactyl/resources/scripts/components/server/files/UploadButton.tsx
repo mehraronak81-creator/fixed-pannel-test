@@ -187,16 +187,16 @@ export default ({ className }: WithClassname) => {
                         <div className={'w-full flex items-center justify-center pointer-events-none p-6'}>
                             <div
                                 className={
-                                    'flex flex-col items-center justify-center gap-3 liquid-glass rounded-2xl p-8 max-w-md w-full border-2 border-dashed border-indigo-400/50 shadow-[0_0_50px_rgba(99,102,241,0.25)]'
+                                    'flex flex-col items-center justify-center gap-3 liquid-glass rounded-2xl p-8 max-w-md w-full border-2 border-dashed border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.25)]'
                                 }
                             >
-                                <div className={'w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center animate-bounce shadow-inner'}>
+                                <div className={'w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center animate-bounce shadow-inner'}>
                                     <CloudUploadIcon className={'w-10 h-10'} />
                                 </div>
                                 <h3 className={'font-header text-xl font-semibold text-white text-center'}>
                                     {t('drag-and-drop')}
                                 </h3>
-                                <p className={'text-xs text-indigo-200/70 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5'}>
+                                <p className={'text-xs text-emerald-200/70 font-mono bg-black/40 px-3 py-1.5 rounded-lg border border-white/5'}>
                                     /{directory || ''}
                                 </p>
                             </div>

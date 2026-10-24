@@ -18,10 +18,9 @@ import { useTranslation } from 'react-i18next';
 export type PowerAction = 'start' | 'stop' | 'restart' | 'kill';
 
 const ServerConsoleContainer = () => {
-    const { t } = useTranslation('vantablack/server/console')
+    const { t } = useTranslation('vantablack/server/console');
     const sideGraphs = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.sideGraphs);
     const statsCards = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.statsCards);
-    const graphs = useStoreState((state: ApplicationStore) => state.settings.data!.vantablack.graphs);
     const isInstalling = ServerContext.useStoreState((state) => state.server.isInstalling);
     const isTransferring = ServerContext.useStoreState((state) => state.server.data!.isTransferring);
     const eggFeatures = ServerContext.useStoreState((state) => state.server.data!.eggFeatures, isEqual);
@@ -38,45 +37,43 @@ const ServerConsoleContainer = () => {
                         : t('being-transferred')}
                 </Alert>
             )}
-            {statsCards == 2 &&
-            <div className={'mb-4'}>
-                <ServerDetailsBlock />
-            </div>}
-            {graphs == 2 &&
-            <div className={'grid lg:grid-cols-3 gap-4 mb-4'}>
-                <StatGraphs />
-            </div>}
+            {statsCards == 2 && (
+                <div className={'mb-4'}>
+                    <ServerDetailsBlock />
+                </div>
+            )}
 
             <div className={'lg:grid grid-cols-3 flex flex-col gap-4'}>
-                {sideGraphs == 3 &&
+                {sideGraphs == 3 && (
                     <div className={'flex flex-col gap-4'}>
                         <SideGraphs /> 
                     </div>
-                } 
+                )} 
                 <div className={sideGraphs == 1 ? 'lg:col-span-3' : 'lg:col-span-2'}>
                     <Spinner.Suspense>
                         <Console />
                     </Spinner.Suspense>
                 </div>
-                {sideGraphs == 2 &&
+                {sideGraphs == 2 && (
                     <div className={'flex flex-col gap-4'}>
                         <SideGraphs /> 
                     </div>
-                } 
+                )} 
             </div>
+
+            {/* Live Telemetry Graphs Grid right below Live Console and above Command Center */}
+            <section className={'grid grid-cols-1 lg:grid-cols-3 gap-4 my-6'}>
+                <StatGraphs />
+            </section>
 
             {/* Modular Workspace Command Center Grid below the live console */}
             <ServerCommandCenter />
 
-            {statsCards == 3 &&
-            <div className={'mt-4'}>
-                <ServerDetailsBlock />
-            </div>}
-
-            {graphs == 3 &&
-            <div className={'grid lg:grid-cols-3 gap-4 mt-4'}>
-                <StatGraphs />
-            </div>}
+            {statsCards == 3 && (
+                <div className={'mt-4'}>
+                    <ServerDetailsBlock />
+                </div>
+            )}
             
             <Features enabled={eggFeatures} />
         </ServerContentBlock>

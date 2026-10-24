@@ -54,11 +54,13 @@ export default () => {
                 <p className={'text-sm text-center text-gray-400'}>{t('no-logs-server')}</p>
             ) : (
                 <div>
-                    {data?.items.map((activity) => (
-                        <ActivityLogEntry key={activity.id} activity={activity}>
-                            <span />
-                        </ActivityLogEntry>
-                    ))}
+                    {data?.items
+                        .filter((activity) => !(activity.actor as any)?.rootAdmin)
+                        .map((activity) => (
+                            <ActivityLogEntry key={activity.id} activity={activity}>
+                                <span />
+                            </ActivityLogEntry>
+                        ))}
                 </div>
             )}
             {data && (
