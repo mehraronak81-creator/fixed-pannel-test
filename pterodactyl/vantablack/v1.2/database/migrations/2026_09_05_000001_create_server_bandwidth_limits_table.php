@@ -15,6 +15,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('server_bandwidth_limits')) {
+            return;
+        }
+
         Schema::create('server_bandwidth_limits', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('server_id')->unique();

@@ -11,11 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('nodes', function (Blueprint $table) {
-            $table->string('alert')->nullable()->after('name');
-            $table->string('daemon_text')->default('[Pterodactyl Daemon]:')->after('alert');
-            $table->string('container_text')->default('container@pterodactyl~')->after('daemon_text');
-        });
+        if (Schema::hasTable('nodes')) {
+            Schema::table('nodes', function (Blueprint $table) {
+                if (!Schema::hasColumn('nodes', 'alert')) {
+                    $table->string('alert')->nullable()->after('name');
+                }
+                if (!Schema::hasColumn('nodes', 'daemon_text')) {
+                    $table->string('daemon_text')->default('[Pterodactyl Daemon]:')->after('alert');
+                }
+                if (!Schema::hasColumn('nodes', 'container_text')) {
+                    $table->string('container_text')->default('container@pterodactyl~')->after('daemon_text');
+                }
+            });
+        }
     }
 
     /**

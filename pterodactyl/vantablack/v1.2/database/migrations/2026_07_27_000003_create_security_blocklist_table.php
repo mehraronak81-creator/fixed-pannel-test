@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('security_blocklist')) {
+            return;
+        }
+
         Schema::create('security_blocklist', function (Blueprint $table) {
             $table->id();
             $table->string('ip_address')->nullable();

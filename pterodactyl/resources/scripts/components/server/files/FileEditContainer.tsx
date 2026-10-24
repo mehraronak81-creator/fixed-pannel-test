@@ -170,11 +170,34 @@ export default () => {
             </ErrorBoundary>
 
             {hash.replace(/^#/, '').endsWith('.pteroignore') && (
-                <div css={tw`mb-4 p-4 border-l-4 bg-amber-950/40 border-amber-500 rounded-lg text-amber-200 text-sm`}>
+                <div
+                    className={'mb-4 p-4 border-l-4 rounded-lg text-yellow-200 text-sm'}
+                    style={{ backgroundColor: 'rgba(120, 53, 15, 0.4)', borderColor: '#f59e0b' }}
+                >
                     <p>
-                        {t('edit.youre-editing')} <code css={tw`font-mono bg-black/60 rounded px-1.5 py-0.5 text-amber-300`}>.pteroignore</code>{' '}
-                        {t('edit.will-be-exluded')} (<code css={tw`font-mono bg-black/60 rounded px-1.5 py-0.5 text-amber-300`}>*</code>).
-                        {t('edit.you-can-negate')} (<code css={tw`font-mono bg-black/60 rounded px-1.5 py-0.5 text-amber-300`}>!</code>).
+                        {t('edit.youre-editing')}{' '}
+                        <code
+                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+                        >
+                            .pteroignore
+                        </code>{' '}
+                        {t('edit.will-be-exluded')} (
+                        <code
+                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+                        >
+                            *
+                        </code>
+                        ).
+                        {t('edit.you-can-negate')} (
+                        <code
+                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+                        >
+                            !
+                        </code>
+                        ).
                     </p>
                 </div>
             )}

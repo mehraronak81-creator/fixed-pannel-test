@@ -4,6 +4,7 @@ namespace Pterodactyl\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 
@@ -81,7 +82,51 @@ class Vantablack extends Command
 
         $this->info('Running database migrations...');
         $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
-        $this->output->write(Artisan::output());
+        $output = Artisan::output();
+        $this->output->write($output);
+
+        // If migration failed because a table/view already exists (common on existing panels with addons like server_orders)
+        if ($migrationExitCode !== self::SUCCESS) {
+            $maxRetries = 5;
+            while ($migrationExitCode !== self::SUCCESS && $maxRetries > 0) {
+                if (preg_match("/Table '([^']+)' already exists/i", $output, $matches)) {
+                    $tableName = $matches[1];
+                    $this->warn("Table '{$tableName}' already exists in database. Reconciling migration state...");
+
+                    $migrationFiles = File::glob(database_path("migrations/*{$tableName}*.php"));
+                    if (empty($migrationFiles)) {
+                        $migrationFiles = File::glob(database_path('migrations/*.php'));
+                    }
+
+                    $reconciled = false;
+                    $currentBatch = (DB::table('migrations')->max('batch') ?? 0) + 1;
+
+                    foreach ($migrationFiles as $file) {
+                        $content = File::get($file);
+                        if (str_contains($content, "create('{$tableName}'") || str_contains($content, "create(\"{$tableName}\"")) {
+                            $migrationName = pathinfo($file, PATHINFO_FILENAME);
+                            DB::table('migrations')->insertOrIgnore([
+                                'migration' => $migrationName,
+                                'batch' => $currentBatch,
+                            ]);
+                            $this->info("Reconciled existing migration: {$migrationName}");
+                            $reconciled = true;
+                            break;
+                        }
+                    }
+
+                    if ($reconciled) {
+                        $this->info('Retrying database migrations...');
+                        $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
+                        $output = Artisan::output();
+                        $this->output->write($output);
+                        $maxRetries--;
+                        continue;
+                    }
+                }
+                break;
+            }
+        }
 
         if ($migrationExitCode !== self::SUCCESS) {
             $this->error('Database migrations failed. The VantaHost install was stopped before assets or caches were changed.');

@@ -11,20 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin_roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->json('permissions')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('admin_roles')) {
+            Schema::create('admin_roles', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('description')->nullable();
+                $table->json('permissions')->nullable();
+                $table->timestamps();
+            });
+        }
 
-        Schema::create('admin_role_user', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('role_id');
-            $table->unsignedInteger('user_id');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('admin_role_user')) {
+            Schema::create('admin_role_user', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedInteger('role_id');
+                $table->unsignedInteger('user_id');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
