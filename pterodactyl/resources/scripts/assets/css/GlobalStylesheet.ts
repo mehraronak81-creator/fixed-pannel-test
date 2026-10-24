@@ -12,7 +12,7 @@ export default createGlobalStyle`
     }
 
     body {
-        ${tw`bg-neutral-950 text-neutral-200`};
+        ${tw`text-neutral-200`};
         font-family: var(--fontFamily), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         letter-spacing: 0.015em;
         min-height: 100vh;

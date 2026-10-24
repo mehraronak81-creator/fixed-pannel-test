@@ -254,7 +254,7 @@ export default () => {
                         onClick={() => setActiveTab('analyzer')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                             activeTab === 'analyzer'
-                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-950/40'
+                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-900/40'
                                 : 'text-neutral-400 hover:text-neutral-100 hover:bg-white/5'
                         }`}
                     >
@@ -267,7 +267,7 @@ export default () => {
                         onClick={() => setActiveTab('console')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                             activeTab === 'console'
-                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-950/40'
+                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-900/40'
                                 : 'text-neutral-400 hover:text-neutral-100 hover:bg-white/5'
                         }`}
                     >
@@ -280,7 +280,7 @@ export default () => {
                         onClick={() => setActiveTab('credentials')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                             activeTab === 'credentials'
-                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-950/40'
+                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-900/40'
                                 : 'text-neutral-400 hover:text-neutral-100 hover:bg-white/5'
                         }`}
                     >
@@ -293,7 +293,7 @@ export default () => {
                         onClick={() => setActiveTab('settings')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                             activeTab === 'settings'
-                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-950/40'
+                                ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-900/40'
                                 : 'text-neutral-400 hover:text-neutral-100 hover:bg-white/5'
                         }`}
                     >
@@ -714,7 +714,7 @@ export default () => {
                         <button
                             type="button"
                             onClick={handleCopyConfig}
-                            className="w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 transition-all"
+                            className="w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/50 transition-all"
                         >
                             <ClipboardCopyIcon className="w-4 h-4" />
                             {isCopiedConfig ? 'Copied Node Config to Clipboard!' : 'Copy application.yml Config'}
