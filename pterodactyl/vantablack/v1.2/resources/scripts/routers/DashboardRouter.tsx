@@ -4,7 +4,6 @@ import { useStoreState } from 'easy-peasy';
 import { Route, Switch } from 'react-router-dom';
 import NavigationBar from '@/components/NavigationBar';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
-import LavalinkContainer from '@/components/lavalink/LavalinkContainer';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import Alert from '@/components/elements/VantaAnnouncement';
 import BroadcastAnnouncements from '@/components/elements/BroadcastAnnouncements';
@@ -34,9 +33,6 @@ export default () => {
                         <Switch location={location}>
                             <Route path={'/'} exact>
                                 <DashboardContainer />
-                            </Route>
-                            <Route path={'/lavalink'} exact>
-                                <LavalinkContainer />
                             </Route>
                             {routes.account.map(({ path, component: Component }) => (
                                 <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>

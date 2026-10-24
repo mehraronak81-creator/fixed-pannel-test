@@ -113,6 +113,7 @@ export interface Props {
     onModeChanged: (mode: string) => void;
     fetchContent: (callback: () => Promise<string>) => void;
     onContentSaved: () => void;
+    onEditor?: (editor: CodeMirror.Editor) => void;
 }
 
 const findModeByFilename = (filename: string) => {
@@ -143,7 +144,7 @@ const findModeByFilename = (filename: string) => {
     return undefined;
 };
 
-export default ({ style, initialContent, filename, mode, fetchContent, onContentSaved, onModeChanged }: Props) => {
+export default ({ style, initialContent, filename, mode, fetchContent, onContentSaved, onModeChanged, onEditor }: Props) => {
     const [editor, setEditor] = useState<CodeMirror.Editor>();
 
     const ref = useCallback((node) => {
@@ -176,6 +177,7 @@ export default ({ style, initialContent, filename, mode, fetchContent, onContent
         });
 
         setEditor(e);
+        onEditor?.(e);
     }, []);
 
     useEffect(() => {

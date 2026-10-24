@@ -94,12 +94,6 @@ const SideBarIcon = ({ children }: Props) => {
                     <img src={logo} alt={name + 'logo'} css={`height:${logoHeight};`} />
                     <span>{t('servers')}</span>
                 </NavLink>
-                <NavLink to={'/lavalink'} exact>
-                    <svg className={'w-6 h-6 text-gray-200 duration-300'} fill={'none'} viewBox={'0 0 24 24'} stroke={'currentColor'}>
-                        <path strokeLinecap={'round'} strokeLinejoin={'round'} strokeWidth={1.8} d={'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3'} />
-                    </svg>
-                    <span>Lavalink Nodes</span>
-                </NavLink>
                 <NavLink to={'/account'} exact>
                     <UserCircleIcon/>
                     <span>{t('account')}</span>

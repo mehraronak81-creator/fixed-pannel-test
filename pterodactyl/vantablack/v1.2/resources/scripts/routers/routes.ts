@@ -15,10 +15,11 @@ import SettingsContainer from '@/components/server/settings/SettingsContainer';
 import AccountOverviewContainer from '@/components/dashboard/AccountOverviewContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
-import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, CubeTransparentIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon } from '@heroicons/react/outline'
+import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, CubeTransparentIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon, VolumeUpIcon } from '@heroicons/react/outline'
 
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
+const LavalinkContainer = lazy(() => import('@/components/server/lavalink/LavalinkContainer'));
 
 /*
         ██╗██╗  ░██╗░░░░░░░██╗░█████╗░██████╗░███╗░░██╗  ██╗██╗
@@ -138,6 +139,14 @@ export default {
                 icon: TerminalIcon,
                 name: undefined,
                 component: FullConsoleContainer,
+            },
+            {
+                path: '/lavalink',
+                permission: null,
+                name: 'Lavalink',
+                icon: VolumeUpIcon,
+                component: LavalinkContainer,
+                exact: true,
             },
             {
                 path: '/settings',

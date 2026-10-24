@@ -105,12 +105,6 @@ const SideBar = ({ children, type }: Props) => {
                 <NavLink to={'/'} exact>
                     <ServerIcon/> {t('servers')}
                 </NavLink>
-                <NavLink to={'/lavalink'} exact>
-                    <svg className={'w-5 shrink-0'} fill={'none'} viewBox={'0 0 24 24'} stroke={'currentColor'}>
-                        <path strokeLinecap={'round'} strokeLinejoin={'round'} strokeWidth={1.8} d={'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3'} />
-                    </svg>
-                    Lavalink Nodes
-                </NavLink>
                 <NavLink to={'/account'} exact>
                     <UserCircleIcon/> {t('account')}
                 </NavLink>
@@ -122,7 +116,7 @@ const SideBar = ({ children, type }: Props) => {
             {children}
         </NavigationLinks>
         }
-        <div className="sticky bottom-0 bg-slate-900/40 pb-4 px-5 z-20 mt-auto backdrop-blur-2xl border-t border-white/[0.06]">
+        <div className="sticky bottom-0 bg-black/60 pb-4 px-5 z-20 mt-auto backdrop-blur-2xl border-t border-white/[0.06]">
             <hr className={'border-b border-transparent mb-4'}/>
             <div className="flex w-full justify-between items-center">
                 <Link to="/account" className="flex items-center gap-x-2 group">

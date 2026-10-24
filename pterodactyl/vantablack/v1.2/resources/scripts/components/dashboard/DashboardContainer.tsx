@@ -115,7 +115,7 @@ export default () => {
                             });
 
                             return filteredServers.length > 0 ? (
-                                <div className={styles.server_cards}>
+                                <div className={'flex flex-col space-y-2.5 w-full'}>
                                     {filteredServers.map((server) => (
                                         <ServerCard key={server.uuid} server={server} />
                                     ))}

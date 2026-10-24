@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import getFileContents from '@/api/server/files/getFileContents';
 import { httpErrorToHuman } from '@/api/http';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
@@ -17,6 +17,8 @@ import { ServerContext } from '@/state/server';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { encodePathSegments, hashToPath } from '@/helpers';
 import { dirname } from 'pathe';
+import useFileManagerSwr from '@/plugins/useFileManagerSwr';
+import CodeMirror from 'codemirror';
 import {
     FolderOpenIcon,
     DocumentTextIcon,
@@ -25,7 +27,6 @@ import {
     XIcon,
     CheckIcon,
     SearchIcon,
-    CogIcon,
     ChevronRightIcon,
 } from '@heroicons/react/outline';
 import { VscSourceControl, VscFiles, VscSettingsGear, VscCheck, VscWarning, VscError } from 'react-icons/vsc';
@@ -43,6 +44,7 @@ function getFileIcon(filename: string) {
             return <SiYaml className={'text-red-400 w-4 h-4 shrink-0'} />;
         case 'js':
         case 'mjs':
+        case 'cjs':
             return <SiJavascript className={'text-yellow-300 w-4 h-4 shrink-0'} />;
         case 'ts':
             return <SiTypescript className={'text-blue-400 w-4 h-4 shrink-0'} />;
@@ -64,7 +66,7 @@ function getFileIcon(filename: string) {
         case 'ini':
             return <DocumentTextIcon className={'text-emerald-400 w-4 h-4 shrink-0'} />;
         default:
-            return <CodeIcon className={'text-indigo-300 w-4 h-4 shrink-0'} />;
+            return <CodeIcon className={'text-neutral-400 w-4 h-4 shrink-0'} />;
     }
 }
 
@@ -77,15 +79,20 @@ export default () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [mode, setMode] = useState('text/plain');
     const [isSavedRecently, setIsSavedRecently] = useState(false);
+    const [showExplorer, setShowExplorer] = useState(true);
 
     const history = useHistory();
     const { hash } = useLocation();
 
     const id = ServerContext.useStoreState((state) => state.server.data!.id);
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
+    const directory = ServerContext.useStoreState((state) => state.files.directory);
     const setDirectory = ServerContext.useStoreActions((actions) => actions.files.setDirectory);
     const { addError, clearFlashes } = useFlash();
 
+    const { data: fileData } = useFileManagerSwr();
+
+    const editorRef = useRef<CodeMirror.Editor | null>(null);
     let fetchFileContent: null | (() => Promise<string>) = null;
 
     const rawPath = hash.replace(/^#\/?/, '');
@@ -155,6 +162,35 @@ export default () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [action, save]);
 
+    const handleTriggerSearch = () => {
+        if (editorRef.current) {
+            editorRef.current.focus();
+            try {
+                // @ts-expect-error CodeMirror commands
+                CodeMirror.commands.find(editorRef.current);
+            } catch (err) {
+                console.error('Failed to trigger find:', err);
+            }
+        }
+    };
+
+    const handleCloseTab = () => {
+        const currentPath = hashToPath(hash);
+        const parentDir = dirname(currentPath);
+        const cleanDir = parentDir === '.' ? '' : parentDir;
+        history.push(`/server/${id}/files#/${encodePathSegments(cleanDir)}`);
+    };
+
+    const handleOpenFile = (targetFile: string) => {
+        const fullPath = directory ? `${directory}/${targetFile}` : targetFile;
+        history.push(`/server/${id}/files/edit#/${encodePathSegments(fullPath)}`);
+    };
+
+    const handleOpenFolder = (folderName: string) => {
+        const fullDir = directory ? `${directory}/${folderName}` : folderName;
+        setDirectory(fullDir);
+    };
+
     if (error) {
         return <ServerError message={error} onBack={() => history.goBack()} />;
     }
@@ -162,45 +198,12 @@ export default () => {
     return (
         <ServerContentBlock title={t('file-manager')} icon={FolderOpenIcon}>
             <FlashMessageRender byKey={'files:view'} css={tw`mb-4`} />
-            
+
             <ErrorBoundary>
                 <div css={tw`mb-3`}>
                     <FileManagerBreadcrumbs withinFileEditor isNewFile={action !== 'edit'} />
                 </div>
             </ErrorBoundary>
-
-            {hash.replace(/^#/, '').endsWith('.pteroignore') && (
-                <div
-                    className={'mb-4 p-4 border-l-4 rounded-lg text-yellow-200 text-sm'}
-                    style={{ backgroundColor: 'rgba(120, 53, 15, 0.4)', borderColor: '#f59e0b' }}
-                >
-                    <p>
-                        {t('edit.youre-editing')}{' '}
-                        <code
-                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
-                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
-                        >
-                            .pteroignore
-                        </code>{' '}
-                        {t('edit.will-be-exluded')} (
-                        <code
-                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
-                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
-                        >
-                            *
-                        </code>
-                        ).
-                        {t('edit.you-can-negate')} (
-                        <code
-                            className={'font-mono rounded px-1.5 py-0.5 text-yellow-300'}
-                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
-                        >
-                            !
-                        </code>
-                        ).
-                    </p>
-                </div>
-            )}
 
             <FileNameModal
                 visible={modalVisible}
@@ -211,29 +214,35 @@ export default () => {
                 }}
             />
 
-            {/* VS Code Window Container */}
-            <div className={'liquid-glass rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col min-h-[580px]'}>
-                <div className={'flex flex-1'}>
+            {/* VS Code Dark Window Container */}
+            <div className={'liquid-glass rounded-xl overflow-hidden border border-white/10 shadow-2xl flex flex-col min-h-[580px]'}>
+                <div className={'flex flex-1 min-h-[520px]'}>
                     {/* VS Code Left Activity Bar */}
-                    <div className={'w-12 bg-[#121624]/90 border-r border-white/5 flex flex-col items-center py-3 shrink-0 gap-5 select-none hidden sm:flex'}>
+                    <div className={'w-12 bg-[#0a0a0c] border-r border-white/5 flex flex-col items-center py-3 shrink-0 gap-4 select-none hidden sm:flex'}>
                         <button
                             type={'button'}
-                            title={'Explorer'}
-                            className={'w-8 h-8 rounded-lg flex items-center justify-center text-white bg-white/10 border-l-2 border-indigo-400'}
+                            title={'Explorer (Toggle)'}
+                            onClick={() => setShowExplorer((prev) => !prev)}
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                                showExplorer
+                                    ? 'text-white bg-white/10 border-l-2 border-emerald-400'
+                                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                            }`}
                         >
                             <VscFiles className={'w-5 h-5'} />
                         </button>
                         <button
                             type={'button'}
-                            title={'Search'}
-                            className={'w-8 h-8 rounded-lg flex items-center justify-center text-neutral-400 hover:text-white transition-colors'}
+                            title={'Search Code (Ctrl+F)'}
+                            onClick={handleTriggerSearch}
+                            className={'w-8 h-8 rounded-lg flex items-center justify-center text-neutral-400 hover:text-white hover:bg-white/5 transition-colors'}
                         >
                             <SearchIcon className={'w-5 h-5'} />
                         </button>
                         <button
                             type={'button'}
                             title={'Source Control'}
-                            className={'w-8 h-8 rounded-lg flex items-center justify-center text-neutral-400 hover:text-white transition-colors'}
+                            className={'w-8 h-8 rounded-lg flex items-center justify-center text-neutral-400 hover:text-white hover:bg-white/5 transition-colors'}
                         >
                             <VscSourceControl className={'w-5 h-5'} />
                         </button>
@@ -249,67 +258,95 @@ export default () => {
                     </div>
 
                     {/* VS Code Left File Tree Explorer */}
-                    <div className={'w-52 bg-[#0e121e] border-r border-white/5 flex flex-col shrink-0 select-none hidden md:flex'}>
-                        <div className={'px-3.5 py-2.5 flex items-center justify-between border-b border-white/5 text-[11px] font-bold text-gray-400 tracking-wider'}>
-                            <span className={'flex items-center gap-1.5'}>
-                                <FolderOpenIcon className={'w-3.5 h-3.5 text-indigo-400'} />
-                                EXPLORER
-                            </span>
-                            <span className={'text-[10px] text-gray-500 font-mono'}>WORKSPACE</span>
-                        </div>
-                        <div className={'p-2 flex flex-col gap-0.5 overflow-y-auto text-xs text-gray-300 font-mono'}>
-                            <div className={'flex items-center gap-1.5 px-2 py-1 text-gray-400 font-semibold text-[11px]'}>
-                                <FolderOpenIcon className={'w-3.5 h-3.5 text-indigo-400'} />
-                                <span className={'truncate'}>/home/container</span>
+                    {showExplorer && (
+                        <div className={'w-56 bg-[#09090b] border-r border-white/5 flex flex-col shrink-0 select-none hidden md:flex'}>
+                            <div className={'px-3.5 py-2.5 flex items-center justify-between border-b border-white/5 text-[11px] font-bold text-neutral-400 tracking-wider'}>
+                                <span className={'flex items-center gap-1.5'}>
+                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-emerald-400'} />
+                                    EXPLORER
+                                </span>
+                                <span className={'text-[10px] text-neutral-500 font-mono'}>WORKSPACE</span>
                             </div>
-                            <div className={'pl-2 flex flex-col gap-0.5 mt-0.5'}>
-                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
-                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-amber-400 shrink-0'} />
-                                    <span>logs/</span>
+
+                            <div className={'p-2 flex flex-col gap-0.5 overflow-y-auto text-xs text-neutral-300 font-mono max-h-[500px]'}>
+                                <div className={'flex items-center gap-1.5 px-2 py-1 text-neutral-400 font-semibold text-[11px]'}>
+                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-emerald-400 shrink-0'} />
+                                    <span className={'truncate'}>/{directory || 'container'}</span>
                                 </div>
-                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
-                                    <FolderOpenIcon className={'w-3.5 h-3.5 text-amber-400 shrink-0'} />
-                                    <span>config/</span>
-                                </div>
-                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded bg-indigo-500/20 text-white border-l-2 border-indigo-400 font-medium text-xs'}>
-                                    <span className={'text-indigo-400 font-bold select-none text-[10px]'}>&lt;&thinsp;&gt;</span>
-                                    {getFileIcon(filename)}
-                                    <span className={'truncate'}>{filename}</span>
-                                </div>
-                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
-                                    <CodeIcon className={'w-3.5 h-3.5 text-emerald-400 shrink-0'} />
-                                    <span>server.properties</span>
-                                </div>
-                                <div className={'flex items-center gap-1.5 px-2 py-1 rounded text-gray-400 hover:text-gray-200 hover:bg-white/5 cursor-pointer text-xs'}>
-                                    <CodeIcon className={'w-3.5 h-3.5 text-blue-400 shrink-0'} />
-                                    <span>ecosystem.config.cjs</span>
+
+                                <div className={'pl-2 flex flex-col gap-0.5 mt-0.5'}>
+                                    {/* Render dynamic directory files */}
+                                    {fileData && fileData.files && fileData.files.length > 0 ? (
+                                        fileData.files.map((item) => {
+                                            const isCurrentFile = item.name === filename;
+                                            if (item.isFile) {
+                                                return (
+                                                    <div
+                                                        key={item.name}
+                                                        onClick={() => handleOpenFile(item.name)}
+                                                        className={`flex items-center gap-1.5 px-2 py-1 rounded cursor-pointer text-xs transition-colors ${
+                                                            isCurrentFile
+                                                                ? 'bg-emerald-500/15 text-emerald-300 border-l-2 border-emerald-400 font-medium'
+                                                                : 'text-neutral-400 hover:text-neutral-100 hover:bg-white/5'
+                                                        }`}
+                                                    >
+                                                        <span className={'text-emerald-400 font-bold select-none text-[10px]'}>&lt;&thinsp;&gt;</span>
+                                                        {getFileIcon(item.name)}
+                                                        <span className={'truncate'}>{item.name}</span>
+                                                    </div>
+                                                );
+                                            } else {
+                                                return (
+                                                    <div
+                                                        key={item.name}
+                                                        onClick={() => handleOpenFolder(item.name)}
+                                                        className={'flex items-center gap-1.5 px-2 py-1 rounded text-neutral-400 hover:text-neutral-100 hover:bg-white/5 cursor-pointer text-xs transition-colors'}
+                                                    >
+                                                        <FolderOpenIcon className={'w-3.5 h-3.5 text-amber-400 shrink-0'} />
+                                                        <span className={'truncate'}>{item.name}/</span>
+                                                    </div>
+                                                );
+                                            }
+                                        })
+                                    ) : (
+                                        <>
+                                            <div
+                                                onClick={() => handleOpenFile(filename)}
+                                                className={'flex items-center gap-1.5 px-2 py-1 rounded bg-emerald-500/15 text-emerald-300 border-l-2 border-emerald-400 font-medium text-xs'}
+                                            >
+                                                <span className={'text-emerald-400 font-bold select-none text-[10px]'}>&lt;&thinsp;&gt;</span>
+                                                {getFileIcon(filename)}
+                                                <span className={'truncate'}>{filename}</span>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Main Editor Work Area */}
-                    <div className={'flex-1 flex flex-col min-w-0 bg-[#0d111c]/95'}>
+                    <div className={'flex-1 flex flex-col min-w-0 bg-[#070709]'}>
                         {/* VS Code Tab Bar */}
-                        <div className={'bg-[#0f1422] border-b border-white/5 flex items-center justify-between overflow-x-auto select-none px-2 h-10'}>
+                        <div className={'bg-[#0a0a0d] border-b border-white/5 flex items-center justify-between overflow-x-auto select-none px-2 h-10'}>
                             {/* Active Tab with < > filename */}
                             <div className={'flex items-center'}>
-                                <div className={'flex items-center gap-2 bg-[#182035] border-t-2 border-indigo-500 border-r border-white/5 px-4 h-10 text-sm font-medium text-white shadow-inner cursor-pointer'}>
-                                    <span className={'text-indigo-400 font-mono font-bold text-xs select-none'}>&lt;&thinsp;&gt;</span>
+                                <div className={'flex items-center gap-2 bg-[#121217] border-t-2 border-emerald-500 border-r border-white/5 px-4 h-10 text-xs font-mono font-medium text-white shadow-inner cursor-pointer'}>
+                                    <span className={'text-emerald-400 font-mono font-bold text-xs select-none'}>&lt;&thinsp;&gt;</span>
                                     {getFileIcon(filename)}
                                     <span className={'truncate max-w-[200px]'}>{filename}</span>
                                     <button
                                         type={'button'}
-                                        onClick={() => history.goBack()}
-                                        title={'Close'}
-                                        className={'ml-2 p-0.5 rounded hover:bg-white/10 text-neutral-400 hover:text-white'}
+                                        onClick={handleCloseTab}
+                                        title={'Close Tab (Return to File Manager)'}
+                                        className={'ml-2 p-0.5 rounded hover:bg-white/10 text-neutral-400 hover:text-white transition-colors'}
                                     >
                                         <XIcon className={'w-3.5 h-3.5'} />
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Top Right Editor Actions */}
+                            {/* Top Right Editor Actions: Save File Button */}
                             <div className={'flex items-center gap-2 pr-2'}>
                                 {action === 'edit' ? (
                                     <Can action={'file.update'}>
@@ -317,19 +354,24 @@ export default () => {
                                             type={'button'}
                                             onClick={() => save()}
                                             disabled={loading}
-                                            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all ${
+                                            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-all ${
                                                 isSavedRecently
                                                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                                                    : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md hover:shadow-indigo-500/25'
+                                                    : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-900/30'
                                             }`}
                                         >
                                             {isSavedRecently ? (
                                                 <>
                                                     <CheckIcon className={'w-3.5 h-3.5'} /> Saved
                                                 </>
+                                            ) : loading ? (
+                                                <>
+                                                    <span className={'w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin'} />
+                                                    Saving...
+                                                </>
                                             ) : (
                                                 <>
-                                                    <SaveIcon className={'w-3.5 h-3.5'} /> {t('edit.save-content')}
+                                                    <SaveIcon className={'w-3.5 h-3.5'} /> Save File
                                                 </>
                                             )}
                                         </button>
@@ -340,9 +382,9 @@ export default () => {
                                             type={'button'}
                                             onClick={() => setModalVisible(true)}
                                             disabled={loading}
-                                            className={'flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold tracking-wide bg-indigo-600 hover:bg-indigo-500 text-white shadow-md'}
+                                            className={'flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-medium tracking-wide bg-emerald-600 hover:bg-emerald-500 text-white shadow-md'}
                                         >
-                                            <SaveIcon className={'w-3.5 h-3.5'} /> {t('edit.create-file')}
+                                            <SaveIcon className={'w-3.5 h-3.5'} /> Save File
                                         </button>
                                     </Can>
                                 )}
@@ -350,8 +392,8 @@ export default () => {
                         </div>
 
                         {/* VS Code Breadcrumb Bar */}
-                        <div className={'bg-[#0c0f1a] px-4 py-1.5 border-b border-white/5 flex items-center gap-1.5 text-xs text-neutral-400 font-mono select-none overflow-x-auto'}>
-                            <FolderOpenIcon className={'w-3.5 h-3.5 text-indigo-400 shrink-0'} />
+                        <div className={'bg-[#08080a] px-4 py-1.5 border-b border-white/5 flex items-center gap-1.5 text-xs text-neutral-400 font-mono select-none overflow-x-auto'}>
+                            <FolderOpenIcon className={'w-3.5 h-3.5 text-emerald-400 shrink-0'} />
                             <span>server</span>
                             {pathSegments.map((segment, idx) => (
                                 <React.Fragment key={idx}>
@@ -364,13 +406,16 @@ export default () => {
                         </div>
 
                         {/* Editor Canvas */}
-                        <div className={'relative flex-1 bg-[#0b0e18] min-h-[460px]'}>
+                        <div className={'relative flex-1 bg-[#060608] min-h-[460px]'}>
                             <SpinnerOverlay visible={loading} />
                             <CodemirrorEditor
                                 mode={mode}
                                 filename={hash.replace(/^#/, '')}
                                 onModeChanged={setMode}
                                 initialContent={content}
+                                onEditor={(editorInstance) => {
+                                    editorRef.current = editorInstance;
+                                }}
                                 fetchContent={(value) => {
                                     fetchFileContent = value;
                                 }}
@@ -385,10 +430,10 @@ export default () => {
                         </div>
 
                         {/* VS Code Status Bar */}
-                        <div className={'bg-[#0b1020] border-t border-white/5 px-3 py-1 flex items-center justify-between text-xs text-neutral-400 select-none'}>
+                        <div className={'bg-[#08080a] border-t border-white/5 px-3 py-1 flex items-center justify-between text-xs text-neutral-400 select-none'}>
                             {/* Left Side Status */}
                             <div className={'flex items-center gap-4'}>
-                                <div className={'flex items-center gap-1.5 text-indigo-400 font-medium'}>
+                                <div className={'flex items-center gap-1.5 text-emerald-400 font-medium'}>
                                     <VscSourceControl className={'w-3.5 h-3.5'} />
                                     <span>Main branch</span>
                                 </div>
@@ -425,7 +470,7 @@ export default () => {
                                         className={'bg-transparent hover:bg-white/10 text-neutral-200 text-xs py-0.5 px-2 rounded cursor-pointer border-none outline-none font-mono'}
                                     >
                                         {modes.map((m) => (
-                                            <option key={`${m.name}_${m.mime}`} value={m.mime} className={'bg-[#0f1422] text-white'}>
+                                            <option key={`${m.name}_${m.mime}`} value={m.mime} className={'bg-[#0a0a0d] text-white'}>
                                                 {m.name}
                                             </option>
                                         ))}
