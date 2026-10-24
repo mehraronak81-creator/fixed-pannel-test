@@ -81,31 +81,29 @@ class Vantablack extends Command
         $this->registerClientRoutes();
 
         $this->info('Running database migrations...');
-        try {
-            $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
-            $output = Artisan::output();
-            $this->output->write($output);
-        } catch (\Throwable $e) {
-            $output = $e->getMessage();
-            $this->error($output);
-            $migrationExitCode = self::FAILURE;
-        }
+        $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
+        $output = Artisan::output();
+        $this->output->write($output);
 
         // If migration failed because a table/view already exists (common on existing panels with addons like server_orders)
         if ($migrationExitCode !== self::SUCCESS) {
             $maxRetries = 5;
             while ($migrationExitCode !== self::SUCCESS && $maxRetries > 0) {
-                if (preg_match("/Table ['\"]?([^'\" ]+)['\"]? already exists/i", $output, $matches)) {
+                if (preg_match("/Table '([^']+)' already exists/i", $output, $matches)) {
                     $tableName = $matches[1];
                     $this->warn("Table '{$tableName}' already exists in database. Reconciling migration state...");
 
-                    $migrationFiles = File::glob(database_path('migrations/*.php'));
+                    $migrationFiles = File::glob(database_path("migrations/*{$tableName}*.php"));
+                    if (empty($migrationFiles)) {
+                        $migrationFiles = File::glob(database_path('migrations/*.php'));
+                    }
+
                     $reconciled = false;
                     $currentBatch = (DB::table('migrations')->max('batch') ?? 0) + 1;
 
                     foreach ($migrationFiles as $file) {
                         $content = File::get($file);
-                        if (preg_match("/create\s*\(\s*['\"]" . preg_quote($tableName, '/') . "['\"]/i", $content)) {
+                        if (str_contains($content, "create('{$tableName}'") || str_contains($content, "create(\"{$tableName}\"")) {
                             $migrationName = pathinfo($file, PATHINFO_FILENAME);
                             DB::table('migrations')->insertOrIgnore([
                                 'migration' => $migrationName,
@@ -119,15 +117,9 @@ class Vantablack extends Command
 
                     if ($reconciled) {
                         $this->info('Retrying database migrations...');
-                        try {
-                            $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
-                            $output = Artisan::output();
-                            $this->output->write($output);
-                        } catch (\Throwable $e) {
-                            $output = $e->getMessage();
-                            $this->error($output);
-                            $migrationExitCode = self::FAILURE;
-                        }
+                        $migrationExitCode = Artisan::call('migrate', ['--force' => true]);
+                        $output = Artisan::output();
+                        $this->output->write($output);
                         $maxRetries--;
                         continue;
                     }
