@@ -102,10 +102,24 @@
                 --gray700-default: {{ $siteConfiguration['vantablack']['lightmode_gray700'] }};;
             }
 
-            <?php if (true) {
-                echo '.backdrop{border:1px solid;border-color:var(--gray600)!important;backdrop-filter:blur(16px);}';
-            }?>
+            /* TRUE PURE BLACK BACKGROUND & EXTREME LIQUID GLASS OVERHAUL */
+            body,
+            #app,
+            .app-wrapper {
+                background: #000000 !important;
+                background-color: #000000 !important;
+                background-image: radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 40%), radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.03) 0%, transparent 40%) !important;
+                background-attachment: fixed !important;
+            }
 
+            .liquid-glass, .box, .card, div[class*="bg-"], .admin-card {
+                background: rgba(12, 12, 16, 0.6) !important;
+                backdrop-filter: blur(24px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
+                border-radius: 14px !important;
+            }
 
         </style>
 

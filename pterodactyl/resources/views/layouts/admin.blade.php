@@ -25,6 +25,8 @@
                 /* PURE BLACK BACKGROUND ACROSS THE ENTIRE ADMIN SUITE */
                 body,
                 body.skin-vantahost,
+                #app,
+                .app-wrapper,
                 .wrapper,
                 .skin-vantahost .wrapper,
                 .content-wrapper,
@@ -32,7 +34,8 @@
                 .modal-content {
                     background: #000000 !important;
                     background-color: #000000 !important;
-                    background-image: none !important;
+                    background-image: radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 40%), radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.03) 0%, transparent 40%) !important;
+                    background-attachment: fixed !important;
                     color: #f5f5f5 !important;
                 }
 
@@ -45,8 +48,8 @@
                 .main-sidebar,
                 .navbar-static-top {
                     background: rgba(6, 6, 8, 0.8) !important;
-                    backdrop-filter: blur(20px) !important;
-                    -webkit-backdrop-filter: blur(20px) !important;
+                    backdrop-filter: blur(24px) saturate(200%) !important;
+                    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
                     border-color: rgba(255, 255, 255, 0.07) !important;
                 }
 
@@ -56,8 +59,8 @@
                     color: #71717a !important;
                 }
 
-                /* TRANSPARENT LIQUID GLASS CARDS ON ALL INNER ADMIN PAGES */
-                .box,
+                /* EXTREME LIQUID GLASS CARDS & CONTAINERS */
+                .liquid-glass, .box, .card, div[class*="bg-"], .admin-card,
                 .box.box-primary,
                 .box.box-info,
                 .box.box-success,
@@ -76,21 +79,18 @@
                 .panel-danger,
                 .skin-vantahost .panel,
                 .vantablack-card,
-                .admin-card,
                 .vh-metric-card,
                 .vh-health-stat,
                 .vh-health-node,
                 .vh-control-card,
                 .modal-content,
                 .callout {
-                    background: rgba(255, 255, 255, 0.03) !important;
-                    background-color: rgba(255, 255, 255, 0.03) !important;
-                    backdrop-filter: blur(20px) saturate(180%) !important;
-                    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-                    border: 1px solid rgba(255, 255, 255, 0.09) !important;
-                    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
-                    border-radius: 12px !important;
+                    background: rgba(12, 12, 16, 0.6) !important;
+                    backdrop-filter: blur(24px) saturate(200%) !important;
+                    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
+                    border-radius: 14px !important;
                     color: #f5f5f5 !important;
                 }
 

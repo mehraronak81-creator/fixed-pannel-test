@@ -49,11 +49,12 @@ export default ({ server }: { server: Server }) => {
             to={`/server/${server.id}`}
             className="liquid-glass px-5 py-3.5 flex items-center justify-between transition-all relative overflow-hidden group w-full no-underline hover:border-white/20"
             style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%)',
-                backdropFilter: 'blur(20px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                border: '1px solid rgba(255, 255, 255, 0.09)',
-                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                background: 'rgba(12, 12, 16, 0.6)',
+                backdropFilter: 'blur(24px) saturate(200%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(200%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
             }}
         >
             {/* Left Section: Server Icon Box + Server Name */}

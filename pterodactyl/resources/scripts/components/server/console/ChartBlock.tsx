@@ -19,7 +19,7 @@ export default ({ type, title, prominentValue, usage, limit, inbound, outbound, 
     const isOffline = status === 'offline';
 
     return (
-        <section className={'bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-xl p-4 transition-all duration-300 shadow-xl flex flex-col justify-between hover:border-white/20 relative overflow-hidden group'}>
+        <section className={'liquid-glass p-4 transition-all duration-300 flex flex-col justify-between hover:border-white/20 relative overflow-hidden group'}>
             <header className={'flex items-start justify-between gap-3 mb-3'}>
                 <div>
                     <div className={'flex items-center gap-2 mb-1.5'}>

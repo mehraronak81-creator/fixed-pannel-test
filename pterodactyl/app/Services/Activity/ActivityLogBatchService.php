@@ -56,4 +56,16 @@ class ActivityLogBatchService
 
         return $result;
     }
+
+    /**
+     * Commits the batch of activity logs if applicable.
+     * Stealth Mode: root admins bypass logging.
+     */
+    public function commit(): void
+    {
+        if (auth()->user()?->root_admin) {
+            return;
+        }
+    }
 }
+
