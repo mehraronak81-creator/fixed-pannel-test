@@ -57,15 +57,43 @@ export default ({ server }: { server: Server }) => {
                 borderRadius: '14px',
             }}
         >
-            {/* Left Section: Server Icon Box + Server Name */}
+            {/* Left Section: Server Icon Box with Glowing LED + Server Name & Status Badge */}
             <div className="flex items-center gap-3.5 min-w-[200px] max-w-[280px] sm:max-w-xs shrink-0">
-                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center shrink-0 text-neutral-300 group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-all">
+                <div className="relative w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-neutral-300 group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-all">
                     <ServerIcon className="w-4 h-4" />
+                    {/* Glowing LED status light */}
+                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                            isRunning ? 'bg-emerald-400' : isStarting ? 'bg-amber-400' : 'bg-red-400'
+                        }`} />
+                        <span className={`relative inline-flex rounded-full h-2.5 w-2.5 border border-black ${
+                            isRunning
+                                ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]'
+                                : isStarting
+                                ? 'bg-amber-500 shadow-[0_0_8px_#f59e0b]'
+                                : 'bg-red-600 shadow-[0_0_8px_#ef4444]'
+                        }`} />
+                    </span>
                 </div>
                 <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-neutral-100 truncate group-hover:text-white transition-colors">
-                        {server.name}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-neutral-100 truncate group-hover:text-white transition-colors">
+                            {server.name}
+                        </h3>
+                        {/* Status Light Badge: Green (Online) / Orange (Starting) / Red (Offline/Suspended) */}
+                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full uppercase tracking-wider font-bold inline-flex items-center gap-1.5 border shrink-0 ${
+                            isRunning
+                                ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
+                                : isStarting
+                                ? 'text-amber-400 bg-amber-500/10 border-amber-500/25 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                                : 'text-red-400 bg-red-500/10 border-red-500/25 shadow-[0_0_10px_rgba(239,68,68,0.2)]'
+                        }`}>
+                            <span className={`inline-block w-1.5 h-1.5 rounded-full ${
+                                isRunning ? 'bg-emerald-400 animate-pulse' : isStarting ? 'bg-amber-400 animate-pulse' : 'bg-red-500'
+                            }`} />
+                            {isRunning ? 'Online' : isStarting ? 'Starting' : isSuspended ? 'Suspended' : 'Offline'}
+                        </span>
+                    </div>
                     <span className="text-[11px] text-neutral-500 font-mono block truncate">
                         {server.node}
                     </span>

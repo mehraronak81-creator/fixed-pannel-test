@@ -170,25 +170,30 @@ const SubNavigation = () => {
                 <div>
                     <div className={'flex items-center gap-x-3'}>
                         <p className={'text-lg font-semibold text-gray-50'}>{name}</p>
-                        <span className={`py-1 px-2 rounded
+                        <span className={`py-1 px-2.5 rounded-full text-xs font-semibold inline-flex items-center gap-1.5 border
                             ${status === 'offline'
-                                ? 'text-danger-50'
+                                ? 'text-red-400 bg-red-500/10 border-red-500/25 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
                                 : status === 'running' 
-                                ? 'text-success-50'
+                                ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
                                 : status === 'starting' 
-                                ? 'text-yellow-50 bg-yellow-500/40'
+                                ? 'text-amber-400 bg-amber-500/10 border-amber-500/25 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
                                 : status === 'stopping'
-                                ? 'text-red-50 bg-red-500/40'
-                                : ''
+                                ? 'text-red-400 bg-red-500/10 border-red-500/25 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
+                                : 'text-neutral-400 bg-neutral-500/10 border-neutral-500/20'
                             }
-                        `}
-                        css={`${status === 'offline'
-                                ? 'background-color: color-mix(in srgb, var(--dangerBackground) 40%, transparent);'
-                                : status === 'running'
-                                ? 'background-color: color-mix(in srgb, var(--successBackground) 40%, transparent);'
-                                : ''
-                            }`}
-                        >
+                        `}>
+                            <span className="relative flex h-2 w-2">
+                                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                                    status === 'running' ? 'bg-emerald-400' : status === 'starting' ? 'bg-amber-400' : 'bg-red-400'
+                                }`} />
+                                <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                                    status === 'running'
+                                        ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]'
+                                        : status === 'starting'
+                                        ? 'bg-amber-500 shadow-[0_0_6px_#f59e0b]'
+                                        : 'bg-red-500 shadow-[0_0_6px_#ef4444]'
+                                }`} />
+                            </span>
                             {status === 'offline' 
                                 ? t('offline')
                                 : status === 'running'
@@ -197,7 +202,7 @@ const SubNavigation = () => {
                                 ? t('starting')
                                 : status === 'stopping'
                                 ? t('stopping')
-                                : ''
+                                : 'Connecting...'
                             }
                         </span>
                     </div>
