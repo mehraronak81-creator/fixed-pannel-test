@@ -13,9 +13,10 @@ import MinecraftModsContainer from '@/components/server/mods/MinecraftModsContai
 import MinecraftManagerContainer from '@/components/server/minecraft/MinecraftManagerContainer';
 import SettingsContainer from '@/components/server/settings/SettingsContainer';
 import AccountOverviewContainer from '@/components/dashboard/AccountOverviewContainer';
+import AccountApiContainer from '@/components/dashboard/AccountApiContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
-import { UserIcon, EyeIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, CubeTransparentIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon, VolumeUpIcon } from '@heroicons/react/outline'
+import { UserIcon, EyeIcon, KeyIcon, ViewGridIcon, TerminalIcon, FolderOpenIcon, CubeIcon, CubeTransparentIcon, DatabaseIcon, CalendarIcon, UserGroupIcon, ArchiveIcon, GlobeIcon, AdjustmentsIcon, CogIcon, VolumeUpIcon } from '@heroicons/react/outline'
 
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
@@ -106,6 +107,13 @@ export default {
             name: 'account',
             icon: UserIcon,
             component: AccountOverviewContainer,
+            exact: true,
+        },
+        {
+            path: '/api',
+            name: 'account-api',
+            icon: KeyIcon,
+            component: AccountApiContainer,
             exact: true,
         },
         {

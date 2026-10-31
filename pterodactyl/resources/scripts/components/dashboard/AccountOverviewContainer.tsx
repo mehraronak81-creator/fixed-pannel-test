@@ -9,7 +9,7 @@ import FlashMessageRender from '@/components/FlashMessageRender';
 import UserAvatar from '@/components/UserAvatar'
 import MessageBox from '@/components/MessageBox';
 import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import AccountSubNavigation from '@/components/dashboard/AccountSubNavigation';
 
 export default () => {
     const { t } = useTranslation('vantablack/account');
@@ -17,6 +17,7 @@ export default () => {
 
     return (
         <PageContentBlock title={t('account-overview')}>
+            <AccountSubNavigation />
             {state?.twoFactorRedirect && (
                 <MessageBox title={'2-Factor Required'} type={'error'}>
                     {t('twofactor-messagebox')}

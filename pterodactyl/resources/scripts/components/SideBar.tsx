@@ -5,7 +5,7 @@ import { ApplicationStore } from '@/state';
 import DropdownMenu, { DropdownLinkRow, DropdownButtonRow } from '@/components/elements/DropdownMenu';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import UserAvatar from '@/components/UserAvatar';
-import { ServerIcon, UserCircleIcon, DotsVerticalIcon, CogIcon, EyeIcon, MoonIcon, LogoutIcon } from '@heroicons/react/outline';
+import { ServerIcon, UserCircleIcon, DotsVerticalIcon, CogIcon, EyeIcon, MoonIcon, LogoutIcon, KeyIcon } from '@heroicons/react/outline';
 import http from '@/api/http';
 import styled from 'styled-components/macro';
 import tw from 'twin.macro';
@@ -137,6 +137,9 @@ const SideBar = ({ children, type }: Props) => {
                     {rootAdmin && <DropdownLinkRow href="/admin">
                         <CogIcon className="w-5" /> {t('admin-view')}
                     </DropdownLinkRow> }
+                    <DropdownLinkRow href="/account/api">
+                        <KeyIcon className="w-5" /> API Credentials
+                    </DropdownLinkRow>
                     <DropdownLinkRow href="/account/activity">
                         <EyeIcon className="w-5" /> {t('account-activity')}
                     </DropdownLinkRow>

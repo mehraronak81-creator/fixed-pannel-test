@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
-import { UserCircleIcon, CogIcon, EyeIcon, LogoutIcon } from '@heroicons/react/outline';
+import { UserCircleIcon, CogIcon, EyeIcon, LogoutIcon, KeyIcon } from '@heroicons/react/outline';
 import http from '@/api/http';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
@@ -97,6 +97,10 @@ const SideBarIcon = ({ children }: Props) => {
                 <NavLink to={'/account'} exact>
                     <UserCircleIcon/>
                     <span>{t('account')}</span>
+                </NavLink>
+                <NavLink to={'/account/api'}>
+                    <KeyIcon/>
+                    <span>API Credentials</span>
                 </NavLink>
                 <NavLink to={'/account/activity'}>
                     <EyeIcon/>

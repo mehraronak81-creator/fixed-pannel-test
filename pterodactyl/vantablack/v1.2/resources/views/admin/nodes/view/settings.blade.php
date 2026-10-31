@@ -195,12 +195,12 @@
                 </div>
                 <div class="box-body row">
                     <div class="form-group col-xs-12">
-                        <label for="disk_overallocate" class="control-label">Maximum Web Upload Filesize</label>
+                        <label for="upload_size" class="control-label">Maximum Web Upload Filesize</label>
                         <div class="input-group">
-                            <input type="text" name="upload_size" class="form-control" value="{{ old('upload_size', $node->upload_size) }}"/>
+                            <input type="number" name="upload_size" class="form-control" min="1" max="10240" value="{{ old('upload_size', $node->upload_size) }}"/>
                             <span class="input-group-addon">MiB</span>
                         </div>
-                        <p class="text-muted"><small>Enter the maximum size of files that can be uploaded through the web-based file manager.</small></p>
+                        <p class="text-muted"><small>Enter the maximum size of files that can be uploaded through the web-based file manager (up to 10240 MiB / 10 GiB).</small></p>
                     </div>
                     <div class="col-xs-12">
                         <div class="row">

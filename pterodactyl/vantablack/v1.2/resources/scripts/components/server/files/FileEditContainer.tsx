@@ -93,7 +93,7 @@ export default () => {
     const { data: fileData } = useFileManagerSwr();
 
     const editorRef = useRef<CodeMirror.Editor | null>(null);
-    let fetchFileContent: null | (() => Promise<string>) = null;
+    const fetchFileContent = useRef<null | (() => Promise<string>)>(null);
 
     const rawPath = hash.replace(/^#\/?/, '');
     const filename = rawPath ? rawPath.split('/').pop() || 'untitled' : 'untitled';
@@ -117,13 +117,25 @@ export default () => {
 
     const save = useCallback(
         (name?: string) => {
-            if (!fetchFileContent) {
-                return;
-            }
-
             setLoading(true);
             clearFlashes('files:view');
-            fetchFileContent()
+
+            const getContentPromise = (): Promise<string> => {
+                if (fetchFileContent.current) {
+                    return fetchFileContent.current().catch(() => {
+                        if (editorRef.current) {
+                            return editorRef.current.getValue();
+                        }
+                        return content;
+                    });
+                }
+                if (editorRef.current) {
+                    return Promise.resolve(editorRef.current.getValue());
+                }
+                return Promise.resolve(content);
+            };
+
+            getContentPromise()
                 .then((content) => saveFileContents(uuid, name || hashToPath(hash), content))
                 .then(() => {
                     setIsSavedRecently(true);
@@ -142,7 +154,7 @@ export default () => {
                 })
                 .then(() => setLoading(false));
         },
-        [fetchFileContent, hash, id, uuid]
+        [hash, id, uuid, content]
     );
 
     // Global VS Code shortcut Ctrl+S / Cmd+S
@@ -417,7 +429,7 @@ export default () => {
                                     editorRef.current = editorInstance;
                                 }}
                                 fetchContent={(value) => {
-                                    fetchFileContent = value;
+                                    fetchFileContent.current = value;
                                 }}
                                 onContentSaved={() => {
                                     if (action !== 'edit') {

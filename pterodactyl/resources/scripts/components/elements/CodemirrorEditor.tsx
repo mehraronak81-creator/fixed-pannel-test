@@ -198,7 +198,7 @@ export default ({ style, initialContent, filename, mode, fetchContent, onContent
 
     useEffect(() => {
         if (!editor) {
-            fetchContent(() => Promise.reject(new Error('no editor session has been configured')));
+            fetchContent(() => Promise.resolve(initialContent || ''));
             return;
         }
 
@@ -208,7 +208,7 @@ export default ({ style, initialContent, filename, mode, fetchContent, onContent
         });
 
         fetchContent(() => Promise.resolve(editor.getValue()));
-    }, [editor, fetchContent, onContentSaved]);
+    }, [editor, fetchContent, onContentSaved, initialContent]);
 
     return (
         <EditorContainer style={style}>

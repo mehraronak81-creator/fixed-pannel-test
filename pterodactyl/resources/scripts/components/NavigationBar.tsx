@@ -11,7 +11,7 @@ import ServerSelector from '@/components/elements/ServerSelector';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import UserAvatar from '@/components/UserAvatar';
 import DropdownMenu, { DropdownLinkRow, DropdownButtonRow } from '@/components/elements/DropdownMenu';
-import { UserCircleIcon, CogIcon, EyeIcon, MoonIcon, LogoutIcon, MenuIcon, XIcon, ServerIcon, SupportIcon } from '@heroicons/react/outline';
+import { UserCircleIcon, CogIcon, EyeIcon, MoonIcon, LogoutIcon, MenuIcon, XIcon, ServerIcon, SupportIcon, KeyIcon } from '@heroicons/react/outline';
 import { FaDiscord } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 
@@ -124,6 +124,9 @@ const ClientDropdown = ({ sideBar }: Dropdown) => {
             {rootAdmin && <DropdownLinkRow href="/admin">
                 <CogIcon className="w-5" /> {t`admin-area`}
             </DropdownLinkRow> }
+            <DropdownLinkRow href="/account/api">
+                <KeyIcon className="w-5" /> <span className={'whitespace-nowrap'}>API Credentials</span>
+            </DropdownLinkRow>
             <DropdownLinkRow href="/account/activity">
                 <EyeIcon className="w-5" /> {t`account-activity`}
             </DropdownLinkRow>

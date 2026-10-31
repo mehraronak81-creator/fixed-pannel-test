@@ -13,6 +13,7 @@ import ActivityLogEntry from '@/components/elements/activity/ActivityLogEntry';
 import Tooltip from '@/components/elements/tooltip/Tooltip';
 import useLocationHash from '@/plugins/useLocationHash';
 import { useTranslation } from 'react-i18next';
+import AccountSubNavigation from '@/components/dashboard/AccountSubNavigation';
 
 export default () => {
     const { t } = useTranslation('vantablack/activity');
@@ -35,6 +36,7 @@ export default () => {
     return (
         <PageContentBlock title={t('account-activity-log')}>
             <FlashMessageRender byKey={'account'} />
+            <AccountSubNavigation />
             {(filters.filters?.event || filters.filters?.ip) && (
                 <div className={'flex justify-end mb-2'}>
                     <Link

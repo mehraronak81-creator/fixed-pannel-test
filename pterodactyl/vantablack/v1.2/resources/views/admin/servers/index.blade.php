@@ -76,7 +76,7 @@
             <form action="{{ route('admin.servers') }}" method="GET" class="row" style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px;">
                 <div style="flex: 2; min-width: 220px;">
                     <div class="input-group" style="width: 100%;">
-                        <input type="text" name="filter[*]" class="form-control" placeholder="Search by name, owner username, UUID, or node..." value="{{ request()->input('filter.*') ?? request()->input('filter.name') ?? request()->input('query') }}">
+                        <input type="text" name="filter[*]" class="form-control" placeholder="Search by name, owner username, UUID, or node..." value="{{ is_array(request()->input('filter')) ? (request()->input('filter')['*'] ?? request()->input('filter')['name'] ?? '') : (is_string(request()->input('filter')) ? request()->input('filter') : (request()->input('query') ?? '')) }}">
                     </div>
                 </div>
 
