@@ -105,13 +105,22 @@ export default () => {
     const [tab, setTab] = useState<Tab>('players');
 
     /* ----------------------------- Live Players & Cache ----------------------------- */
-    const { players, refresh } = usePlayers();
+    const { players, serverReportedCount, refresh } = usePlayers();
     const [playerQuery, setPlayerQuery] = useState('');
     const [broadcast, setBroadcast] = useState('');
     const [broadcastMode, setBroadcastMode] = useState<'chat' | 'title'>('chat');
 
     const [cachedPlayers, setCachedPlayers] = useState<UsercacheEntry[]>([]);
     const [loadingCache, setLoadingCache] = useState(false);
+
+    // Auto-refresh every 15 seconds while on the Players tab
+    useEffect(() => {
+        if (tab !== 'players' || !isOnline) return undefined;
+        const interval = window.setInterval(() => {
+            refresh();
+        }, 15000);
+        return () => window.clearInterval(interval);
+    }, [tab, isOnline, refresh]);
 
     // Punish Modal (Kick / Ban with custom reason)
     const [punishModal, setPunishModal] = useState<{ type: 'kick' | 'ban'; name: string } | null>(null);
@@ -146,22 +155,36 @@ export default () => {
         loadUserCache();
     }, [loadUserCache]);
 
+    const cachedPlayerMap = useMemo(() => {
+        const map = new Map<string, UsercacheEntry>();
+        cachedPlayers.forEach((c) => {
+            if (c.name) map.set(c.name.toLowerCase(), c);
+        });
+        return map;
+    }, [cachedPlayers]);
+
     const filteredLivePlayers = useMemo(() => {
         const q = playerQuery.trim().toLowerCase();
         if (!q) return players;
         return players.filter((p) => p.name.toLowerCase().includes(q));
     }, [players, playerQuery]);
 
+    const liveNameSet = useMemo(() => new Set(players.map((p) => p.name.toLowerCase())), [players]);
+    const liveUuidSet = useMemo(
+        () => new Set(players.map((p) => (p.uuid || '').toLowerCase()).filter(Boolean)),
+        [players]
+    );
+
     const offlineKnownPlayers = useMemo(() => {
-        const liveSet = new Set(players.map((p) => p.name.toLowerCase()));
         const q = playerQuery.trim().toLowerCase();
         return cachedPlayers.filter((p) => {
             if (!p.name) return false;
-            if (liveSet.has(p.name.toLowerCase())) return false;
+            if (liveNameSet.has(p.name.toLowerCase())) return false;
+            if (p.uuid && liveUuidSet.has(p.uuid.toLowerCase())) return false;
             if (q && !p.name.toLowerCase().includes(q) && !(p.uuid || '').toLowerCase().includes(q)) return false;
             return true;
         });
-    }, [cachedPlayers, players, playerQuery]);
+    }, [cachedPlayers, liveNameSet, liveUuidSet, playerQuery]);
 
     const doBroadcast = useCallback(() => {
         const message = broadcast.trim();
@@ -445,7 +468,13 @@ export default () => {
                         type={'button'}
                     >
                         <UsersIcon /> Players
-                        {players.length > 0 ? ` (${players.length})` : ''}
+                        {(() => {
+                            const count =
+                                serverReportedCount !== null && serverReportedCount !== undefined
+                                    ? serverReportedCount
+                                    : players.length;
+                            return count > 0 ? ` (${count})` : '';
+                        })()}
                     </button>
                     <button
                         className={`${styles.tab} ${tab === 'whitelist-ops' ? styles.tabActive : ''}`}
@@ -595,12 +624,14 @@ export default () => {
                             <div className={styles.playerList}>
                                 {filteredLivePlayers.map((player) => {
                                     const isOp = opNameSet.has(player.name.toLowerCase());
+                                    const cached = cachedPlayerMap.get(player.name.toLowerCase());
+                                    const effectiveUuid = player.uuid || cached?.uuid;
                                     return (
                                         <div key={player.name} className={styles.playerCard}>
                                             <div className={styles.playerTop}>
                                                 <img
                                                     className={styles.avatar}
-                                                    src={avatarUrl(player.name, 48)}
+                                                    src={avatarUrl(effectiveUuid || player.name, 48)}
                                                     alt={player.name}
                                                     loading={'lazy'}
                                                 />
