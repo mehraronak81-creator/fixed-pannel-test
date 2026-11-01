@@ -34,11 +34,14 @@ export default () => {
                             <Route path={'/'} exact>
                                 <DashboardContainer />
                             </Route>
-                            {routes.account.map(({ path, component: Component }) => (
-                                <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
-                                    <Component />
-                                </Route>
-                            ))}
+                            {routes.account.map(({ path, component: Component }) => {
+                                const routePath = path === '/' ? ['/account', '/account/'] : `/account${path.startsWith('/') ? path : `/${path}`}`;
+                                return (
+                                    <Route key={path} path={routePath} exact>
+                                        <Component />
+                                    </Route>
+                                );
+                            })}
                             <Route path={'*'}>
                                 <NotFound />
                             </Route>

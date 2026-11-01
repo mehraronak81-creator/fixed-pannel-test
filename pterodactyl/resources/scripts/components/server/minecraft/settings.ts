@@ -95,6 +95,20 @@ export const SETTING_SECTIONS: SettingSection[] = [
     {
         title: 'World',
         settings: [
+            {
+                key: 'level-name',
+                label: 'World name',
+                description: 'The directory name of the world.',
+                type: 'text',
+                default: 'world',
+            },
+            {
+                key: 'level-seed',
+                label: 'World seed',
+                description: 'Seed used for procedural terrain generation.',
+                type: 'text',
+                default: '',
+            },
             bool('allow-nether', 'Allow Nether', 'Enable travel to the Nether dimension.', 'true'),
             bool('spawn-monsters', 'Spawn monsters', 'Allow hostile mobs to spawn.', 'true'),
             bool('spawn-npcs', 'Spawn NPCs', 'Allow villagers and other NPCs to spawn.', 'true'),

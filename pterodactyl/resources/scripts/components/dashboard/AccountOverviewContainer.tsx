@@ -10,6 +10,7 @@ import UserAvatar from '@/components/UserAvatar'
 import MessageBox from '@/components/MessageBox';
 import { useLocation } from 'react-router-dom';
 import AccountSubNavigation from '@/components/dashboard/AccountSubNavigation';
+import { useTranslation } from 'react-i18next';
 
 export default () => {
     const { t } = useTranslation('vantablack/account');

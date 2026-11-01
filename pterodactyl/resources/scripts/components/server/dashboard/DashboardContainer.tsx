@@ -90,8 +90,9 @@ const DashboardContainer = () => {
 
     const server = ServerContext.useStoreState((state) => state.server.data);
     const isLavalink = React.useMemo(() => {
-        const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''}`.toLowerCase();
-        return s.includes('lavalink') || s.includes('java');
+        const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''} ${server?.eggName || ''}`.toLowerCase();
+        const isMinecraftOrOther = /minecraft|paper|purpur|spigot|bukkit|forge|fabric|velocity|bungee|mohist|node|python/i.test(s);
+        return !isMinecraftOrOther && (s.includes('lavalink') || (server?.eggName?.toLowerCase().includes('lavalink') ?? false));
     }, [server]);
 
     return(

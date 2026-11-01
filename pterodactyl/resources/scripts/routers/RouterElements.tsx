@@ -24,8 +24,9 @@ const NavItem = ({ route }: Props) => {
   const server = ServerContext.useStoreState((state) => state.server.data);
 
   if (route.path === '/lavalink') {
-    const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''}`.toLowerCase();
-    const isLavalink = s.includes('lavalink') || s.includes('java');
+    const s = `${server?.name || ''} ${server?.description || ''} ${server?.dockerImage || ''} ${server?.eggName || ''}`.toLowerCase();
+    const isMinecraftOrOther = /minecraft|paper|purpur|spigot|bukkit|forge|fabric|velocity|bungee|mohist|node|python/i.test(s);
+    const isLavalink = !isMinecraftOrOther && (s.includes('lavalink') || (server?.eggName?.toLowerCase().includes('lavalink') ?? false));
     if (!isLavalink) return null;
   }
 
