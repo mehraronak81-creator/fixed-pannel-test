@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ServerContext } from '@/state/server';
 import { SocketEvent } from '@/components/server/events';
 
-// Blacklist of words from standard server list headers, loggers, and commands that must NEVER be treated as player names
+// Words from standard server list headers, loggers, commands, and ranks that must NEVER be treated as player names
 export const IGNORED_WORDS = new Set([
     'there',
     'are',
@@ -37,10 +37,22 @@ export const IGNORED_WORDS = new Set([
     'help',
     'async',
     'chat',
+    'all',
+    'members',
+    'admin',
+    'admins',
+    'moderator',
+    'moderators',
+    'owner',
+    'owners',
+    'vip',
+    'vips',
+    'user',
+    'users',
 ]);
 
 /**
- * Strips ANSI escape sequences, Minecraft § color formatting, and log prefixes like "[12:34:56 INFO]:"
+ * Strips ANSI escape sequences, Minecraft § and & color codes, and logger prefixes
  */
 export const clean = (rawLine: string): string =>
     rawLine
@@ -48,46 +60,49 @@ export const clean = (rawLine: string): string =>
         .replace(/\x1b\[[0-9;]*m/g, '')
         .replace(/\[[0-9;]*m/g, '')
         .replace(/§[0-9a-fk-orx]/gi, '')
+        .replace(/&[0-9a-fk-orx]/gi, '')
         .replace(/§/g, '')
         .replace(/^.*?\]:\s*/, '')
         .trim();
 
 /**
- * Validates and extracts a single valid Minecraft username from player tokens that may have
- * rank prefixes or suffixes (e.g. "[Admin] Steve", "Alex (AFK)", "default: Notch", "~kokoshibo01", "*Herobrine").
- * Strictly rejects any token containing spaces, invalid characters, or blacklisted words.
+ * Extracts all valid Minecraft player usernames from a roster console line.
+ * In Minecraft (Vanilla, EssentialsX, Paper, Spigot), group/roster lines ALWAYS contain a colon (:),
+ * where the group name or header is before the colon, and the player names are after the colon.
  */
-export const extractPlayerName = (token: string): string | null => {
-    if (!token) return null;
-    let s = token.trim();
-    // Strip brackets like [Admin], [Mod], [VIP], [AFK]
-    s = s.replace(/\[[^\]]*\]/g, '').trim();
-    // Strip parentheses like (AFK), (Guest)
-    s = s.replace(/\([^)]*\)/g, '').trim();
-    // Strip rank/group prefix like "default: Notch" or "Admin: Steve" or "Admins:"
-    s = s.replace(/^[a-zA-Z0-9_-]+:\s*/, '').trim();
-    // Strip symbols like ~ (EssentialsX nickname prefix), * (OP prefix), +, -, #
-    s = s.replace(/^[~*+#\-]+\s*/, '').trim();
+export const extractPlayerNamesFromLine = (line: string): string[] => {
+    if (!line) return [];
 
-    // A valid Minecraft Java Edition username must be strictly 3 to 16 alphanumeric characters or underscores
-    if (!/^[A-Za-z0-9_]{3,16}$/.test(s)) {
-        return null;
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) return [];
+
+    const content = line.slice(colonIdx + 1).trim();
+    if (!content) return [];
+
+    // Split by commas, spaces, tabs, pipe
+    const rawTokens = content.split(/[, \t|]+/);
+    const validNames: string[] = [];
+
+    for (const token of rawTokens) {
+        if (!token) continue;
+        let s = token.trim();
+        // Strip color codes
+        s = s.replace(/§[0-9a-fk-orx]/gi, '').replace(/&[0-9a-fk-orx]/gi, '');
+        // Strip brackets like [Admin], [VIP], [AFK]
+        s = s.replace(/\[[^\]]*\]/g, '').trim();
+        // Strip parentheses like (AFK), (Guest)
+        s = s.replace(/\([^)]*\)/g, '').trim();
+        // Strip symbols like ~ (EssentialsX nicknames), * (OPs), +, -, #, . (GeyserMC/Floodgate Bedrock)
+        s = s.replace(/^[~*+#\-\.]+/g, '').trim();
+
+        // Valid Minecraft Java & Bedrock usernames
+        if (/^[A-Za-z0-9_]{3,16}$/.test(s) && !IGNORED_WORDS.has(s.toLowerCase())) {
+            validNames.push(s);
+        }
     }
 
-    if (IGNORED_WORDS.has(s.toLowerCase())) {
-        return null;
-    }
-
-    return s;
+    return validNames;
 };
-
-// Vanilla, Paper, Purpur, Spigot, EssentialsX, Velocity patterns:
-// "There are 0 of a max of 20 players online:" (minecraft:list / Paper / Vanilla)
-// "There are 1 of a max of 20 players online: Steve"
-// "There are 2 out of maximum 20 players online." (EssentialsX)
-// "There are 2/20 players online: Steve, Alex"
-// "There are 0 players online."
-const LIST_HEADER_REGEX = /^There are (\d+)\s*(?:of a max(?:imum)?(?: of)?|out of maximum|\/)?\s*(\d+)?\s*players online\.?:?\s*(.*)$/i;
 
 const JOIN_REGEX = /(?:UUID of player\s+([A-Za-z0-9_]{3,16})\s+is|\b([A-Za-z0-9_]{3,16})\b\s+(?:joined the game|connected|logged in))/i;
 const LEAVE_REGEX = /\b([A-Za-z0-9_]{3,16})\b\s+(?:left the game|lost connection|disconnected|timed out)/i;
@@ -106,11 +121,12 @@ export interface UsePlayersReturn {
 }
 
 /**
- * Tracks which players are currently online by combining:
- * 1. Vanilla `minecraft:list` command (bypasses EssentialsX multi-line formatting)
- * 2. Multi-line group accumulator (for EssentialsX `/list` fallback)
- * 3. Historical console scrollback suppression (ignoring stale Join/Leave replay on mount)
- * 4. Real live Minecraft Server Status Ping (https://api.mcsrvstat.us/3/)
+ * Robust live Minecraft player detection hook:
+ * 1. Sends both `minecraft:list` (Vanilla) and `list` (EssentialsX/Paper)
+ * 2. Immediately flushes old Wings scrollback console replay
+ * 3. Incrementally gathers all player names across multiple group lines (Admins, default, etc.)
+ * 4. Combines with live https://api.mcsrvstat.us/3/ socket ping
+ * 5. Accurately tracks live Join/Leave events post-sync
  */
 export default (counter = 0): UsePlayersReturn => {
     const [players, setPlayers] = useState<Record<string, OnlinePlayer>>({});
@@ -124,16 +140,8 @@ export default (counter = 0): UsePlayersReturn => {
         return match || state.server.data?.allocations[0];
     });
 
-    // Ref to ignore old scrollback history:
-    // Only accept live JOIN / LEAVE events AFTER a fresh list command establishes baseline
     const isSynchronized = useRef(false);
-
-    // Multi-line accumulator ref for EssentialsX rank groups
-    const accumulator = useRef<{
-        targetCount: number;
-        collected: Map<string, OnlinePlayer>;
-        expiry: number;
-    } | null>(null);
+    const activeRosterWindowUntil = useRef(0);
 
     // Clear roster when server stops
     useEffect(() => {
@@ -142,7 +150,7 @@ export default (counter = 0): UsePlayersReturn => {
             setServerReportedCount(0);
             setPingOnlineCount(null);
             isSynchronized.current = false;
-            accumulator.current = null;
+            activeRosterWindowUntil.current = 0;
         }
     }, [status]);
 
@@ -153,7 +161,6 @@ export default (counter = 0): UsePlayersReturn => {
         const port = allocation.port;
         if (!host || !port) return;
 
-        // Skip internal RFC1918 addresses unless alias domain is set
         const isInternal = /^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\.|^127\./.test(host);
         const queryHost = allocation.alias || (!isInternal ? host : null);
         if (!queryHost) return;
@@ -172,8 +179,8 @@ export default (counter = 0): UsePlayersReturn => {
                         setPlayers((prev) => {
                             const next = { ...prev };
                             data.players.list.forEach((p: { name: string; uuid?: string }) => {
-                                const valid = extractPlayerName(p.name);
-                                if (valid) {
+                                const valid = p.name ? p.name.replace(/^[~*+#\-\.]+/g, '').trim() : '';
+                                if (valid && /^[A-Za-z0-9_]{3,16}$/.test(valid) && !IGNORED_WORDS.has(valid.toLowerCase())) {
                                     next[valid] = {
                                         name: valid,
                                         uuid: p.uuid || next[valid]?.uuid,
@@ -191,31 +198,21 @@ export default (counter = 0): UsePlayersReturn => {
             });
     }, [allocation, counter]);
 
-    // Primary refresh: sends 'minecraft:list' (bypasses EssentialsX), polls ping, and fallbacks to 'list'
+    // Primary refresh: executes both minecraft:list and list, and polls mcsrvstat.us
     const refresh = useCallback(() => {
         if (connected && instance && status === 'running') {
-            accumulator.current = null;
-            // Send minecraft:list first
             instance.send('send command', 'minecraft:list');
-            // Ping server status in parallel
+            instance.send('send command', 'list');
             pingServer();
-            // In 750ms, also send fallback 'list' if server hasn't answered yet
-            const fallbackTimer = window.setTimeout(() => {
-                if (!isSynchronized.current && connected && instance) {
-                    instance.send('send command', 'list');
-                }
-            }, 750);
-            return () => window.clearTimeout(fallbackTimer);
         }
-        return undefined;
     }, [connected, instance, status, pingServer]);
 
-    // Auto-poll on initial socket connection after 600ms (letting Wings flush scrollback history first)
+    // Auto-poll on initial socket connection after 500ms (letting Wings flush scrollback history first)
     useEffect(() => {
         if (connected && instance && status === 'running') {
             const timer = window.setTimeout(() => {
                 refresh();
-            }, 600);
+            }, 500);
             return () => window.clearTimeout(timer);
         }
         return undefined;
@@ -230,124 +227,86 @@ export default (counter = 0): UsePlayersReturn => {
             const line = clean(raw);
             if (!line) return;
 
-            // 1. If actively accumulating multi-line player names (e.g. EssentialsX "Admins: ...", "default: ...")
-            if (accumulator.current) {
-                const now = Date.now();
-                if (now < accumulator.current.expiry) {
-                    const rawTokens = line.split(',');
-                    rawTokens.forEach((token) => {
-                        const name = extractPlayerName(token);
-                        if (name) {
-                            accumulator.current?.collected.set(name, {
-                                name,
-                                since: counter || Date.now(),
-                            });
-                        }
-                    });
+            // 1. Check for count header: "There are X of Y players online" or "There are X out of maximum Y players online."
+            const countMatch =
+                line.match(/(?:There are\s+)?(\d+)\s*(?:of a max(?:imum)?(?: of)?|out of maximum|\/)\s*(\d+)\s*(?:players online)?/i) ||
+                line.match(/(\d+)\s*\/\s*(\d+)\s*players online/i) ||
+                line.match(/players online:?\s*(\d+)/i);
 
-                    // Check if target count is reached
-                    if (accumulator.current.collected.size >= accumulator.current.targetCount) {
-                        const newRoster: Record<string, OnlinePlayer> = {};
-                        accumulator.current.collected.forEach((val, key) => {
-                            newRoster[key] = val;
-                        });
-                        setPlayers(newRoster);
-                        isSynchronized.current = true;
-                        accumulator.current = null;
-                        return;
-                    }
-                } else {
-                    // Timeout expired: commit whatever was collected
-                    if (accumulator.current.collected.size > 0) {
-                        const newRoster: Record<string, OnlinePlayer> = {};
-                        accumulator.current.collected.forEach((val, key) => {
-                            newRoster[key] = val;
-                        });
-                        setPlayers(newRoster);
-                    }
-                    isSynchronized.current = true;
-                    accumulator.current = null;
-                }
-            }
-
-            // 2. Check for "There are X of Y players online" header (Vanilla / Paper / EssentialsX)
-            const listHeaderMatch = line.match(LIST_HEADER_REGEX);
-            if (listHeaderMatch) {
-                const count = parseInt(listHeaderMatch[1], 10);
+            if (countMatch) {
+                const count = parseInt(countMatch[1], 10);
                 const safeCount = isNaN(count) ? 0 : count;
-
                 setServerReportedCount(safeCount);
 
-                // Instantly wipe existing players map to discard any stale scrollback history!
-                setPlayers({});
-
                 if (safeCount === 0) {
+                    setPlayers({});
                     isSynchronized.current = true;
-                    accumulator.current = null;
+                    activeRosterWindowUntil.current = 0;
                     return;
                 }
 
-                // If safeCount > 0, parse trailing player names on the same line (if any)
-                const trailing = listHeaderMatch[3]?.trim();
-                const sameLineCollected = new Map<string, OnlinePlayer>();
+                // Fresh count > 0: start an active window of 3500ms to accumulate players from same line and any subsequent group lines
+                // Wipe scrollback to start fresh collection
+                setPlayers({});
+                isSynchronized.current = true;
 
-                if (trailing) {
-                    const rawTokens = trailing.split(',');
-                    rawTokens.forEach((token) => {
-                        const name = extractPlayerName(token);
-                        if (name) {
-                            sameLineCollected.set(name, { name, since: counter || Date.now() });
-                        }
+                // If same line has players after colon (e.g. Vanilla "There are 2 of a max 20 online: p1, p2")
+                const namesOnSameLine = extractPlayerNamesFromLine(line);
+                if (namesOnSameLine.length > 0) {
+                    setPlayers((prev) => {
+                        const next = { ...prev };
+                        namesOnSameLine.forEach((name) => {
+                            next[name] = { name, since: counter || Date.now() };
+                        });
+                        return next;
                     });
                 }
 
-                // If all players were listed on the same line (Vanilla / minecraft:list)
-                if (sameLineCollected.size >= safeCount) {
-                    const newRoster: Record<string, OnlinePlayer> = {};
-                    sameLineCollected.forEach((val, key) => {
-                        newRoster[key] = val;
-                    });
-                    setPlayers(newRoster);
-                    isSynchronized.current = true;
-                    accumulator.current = null;
-                    return;
-                }
-
-                // Otherwise, players are split across subsequent lines (EssentialsX multi-rank lines)
-                accumulator.current = {
-                    targetCount: safeCount,
-                    collected: sameLineCollected,
-                    expiry: Date.now() + 1500,
-                };
+                activeRosterWindowUntil.current = Date.now() + 3500;
                 return;
             }
 
-            // 3. Track live Join events (STRICTLY IGNORED until baseline list is established!)
+            // 2. If actively accumulating group lines from EssentialsX / Paper multi-line list (e.g. "Admins: ...", "default: ...")
+            if (Date.now() < activeRosterWindowUntil.current) {
+                const names = extractPlayerNamesFromLine(line);
+                if (names.length > 0) {
+                    setPlayers((prev) => {
+                        const next = { ...prev };
+                        names.forEach((name) => {
+                            if (!next[name]) {
+                                next[name] = { name, since: counter || Date.now() };
+                            }
+                        });
+                        return next;
+                    });
+                    return;
+                }
+            }
+
+            // 3. Post-baseline live Join events
             if (isSynchronized.current) {
                 const joinMatch = line.match(JOIN_REGEX);
                 if (joinMatch) {
                     const rawName = joinMatch[1] || joinMatch[2];
-                    const name = extractPlayerName(rawName);
-                    if (name) {
+                    if (rawName && !IGNORED_WORDS.has(rawName.toLowerCase()) && /^[A-Za-z0-9_]{3,16}$/.test(rawName)) {
                         setPlayers((prev) => {
-                            if (prev[name]) return prev;
-                            return { ...prev, [name]: { name, since: counter || Date.now() } };
+                            if (prev[rawName]) return prev;
+                            return { ...prev, [rawName]: { name: rawName, since: counter || Date.now() } };
                         });
                         setServerReportedCount((prev) => (prev !== null ? prev + 1 : 1));
                         return;
                     }
                 }
 
-                // 4. Track live Leave events (STRICTLY IGNORED until baseline list is established!)
+                // 4. Post-baseline live Leave events
                 const leaveMatch = line.match(LEAVE_REGEX);
                 if (leaveMatch) {
                     const rawName = leaveMatch[1];
-                    const name = extractPlayerName(rawName);
-                    if (name) {
+                    if (rawName) {
                         setPlayers((prev) => {
-                            if (!prev[name]) return prev;
+                            if (!prev[rawName]) return prev;
                             const next = { ...prev };
-                            delete next[name];
+                            delete next[rawName];
                             return next;
                         });
                         setServerReportedCount((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
