@@ -84,6 +84,9 @@
 .actionOp { border-color: rgba(16, 185, 129, 0.4) !important; color: #34d399 !important; background: rgba(16, 185, 129, 0.1) !important; }
 .actionKick { border-color: rgba(245, 158, 11, 0.4) !important; color: #fbbf24 !important; background: rgba(245, 158, 11, 0.1) !important; }
 .actionBan { border-color: rgba(239, 68, 68, 0.4) !important; color: #f87171 !important; background: rgba(239, 68, 68, 0.1) !important; }
+.actions select { display: inline-flex; align-items: center; height: 28px; padding: 0 .5rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.12); color: #e5e5e5; background: rgba(10, 10, 14, 0.9); font-size: 11px; font-weight: 600; cursor: pointer; outline: none; transition: all 120ms ease; }
+.actions select:focus { border-color: rgba(16, 185, 129, 0.5); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15); }
+.actions select option { background-color: #0a0a0e; color: #e5e5e5; }
 
 .emptyState { padding: 2.25rem 1rem; border: 1px dashed rgba(255, 255, 255, 0.14); border-radius: 14px; color: #a1a1aa; text-align: center; background: rgba(255, 255, 255, 0.02); display: grid; justify-items: center; gap: .5rem; }
 .emptyState svg { width: 34px; height: 34px; color: #10b981; }

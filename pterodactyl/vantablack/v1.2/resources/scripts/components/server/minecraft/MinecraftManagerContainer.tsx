@@ -652,12 +652,21 @@ export default () => {
                                                     disabled={!isOnline || !canControlConsole}
                                                     defaultValue={''}
                                                     aria-label={`Set gamemode for ${player.name}`}
+                                                    style={{
+                                                        backgroundColor: 'rgba(10, 10, 14, 0.9)',
+                                                        color: '#e5e5e5',
+                                                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                                                        borderRadius: '6px',
+                                                        padding: '4px 8px',
+                                                        fontSize: '11px',
+                                                        outline: 'none',
+                                                    }}
                                                 >
-                                                    <option value={''} disabled>
+                                                    <option value={''} disabled style={{ backgroundColor: '#0a0a0e', color: '#888888' }}>
                                                         Gamemode…
                                                     </option>
                                                     {GAMEMODES.map((mode) => (
-                                                        <option key={mode} value={mode}>
+                                                        <option key={mode} value={mode} style={{ backgroundColor: '#0a0a0e', color: '#e5e5e5' }}>
                                                             {mode.charAt(0).toUpperCase() + mode.slice(1)}
                                                         </option>
                                                     ))}

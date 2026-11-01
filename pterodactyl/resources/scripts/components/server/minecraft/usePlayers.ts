@@ -2,36 +2,94 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ServerContext } from '@/state/server';
 import { SocketEvent } from '@/components/server/events';
 
-// ANSI escape codes & Minecraft color/formatting codes (§0-9, §a-f, §k-o, §r, §x)
-const ANSI = /\x1b\[[0-9;]*[a-zA-Z]|\[[0-9;]*m/g;
-const SECTION = /§[0-9a-fk-orx]/gi;
+// Blacklist of words from standard server list headers, loggers, and commands that must NEVER be treated as player names
+export const IGNORED_WORDS = new Set([
+    'there',
+    'are',
+    'out',
+    'of',
+    'maximum',
+    'max',
+    'players',
+    'online',
+    'server',
+    'info',
+    'thread',
+    'default',
+    'none',
+    'list',
+    'connected',
+    'current',
+    'total',
+    'logged',
+    'game',
+    'left',
+    'lost',
+    'connection',
+    'timed',
+    'console',
+    'uuid',
+    'player',
+    'warn',
+    'error',
+    'command',
+    'unknown',
+    'help',
+    'async',
+    'chat',
+]);
 
-const clean = (line: string): string =>
-    line
-        .replace(ANSI, '')
-        .replace(SECTION, '')
+/**
+ * Strips ANSI escape sequences, Minecraft § color formatting, and log prefixes like "[12:34:56 INFO]:"
+ */
+export const clean = (rawLine: string): string =>
+    rawLine
+        .replace(/\x1b\[[0-9;]*[a-zA-Z]/g, '')
+        .replace(/\x1b\[[0-9;]*m/g, '')
+        .replace(/\[[0-9;]*m/g, '')
+        .replace(/§[0-9a-fk-orx]/gi, '')
         .replace(/§/g, '')
-        // Drop leading timestamp / thread prefixes: "[12:34:56 INFO]:" or "[Server thread/INFO]:"
-        .replace(/^\[[^\]]*\]\s*(\[[^\]]*\]:?\s*)?/g, '')
+        .replace(/^.*?\]:\s*/, '')
         .trim();
 
 /**
- * Extracts a valid Minecraft username from player tokens that may have
- * prefixes or suffixes (e.g. "[Admin] Steve", "Alex (AFK)", "default: Notch", "*Herobrine")
+ * Validates and extracts a single valid Minecraft username from player tokens that may have
+ * rank prefixes or suffixes (e.g. "[Admin] Steve", "Alex (AFK)", "default: Notch", "*Herobrine").
+ * Strictly rejects any token containing spaces, invalid characters, or blacklisted words.
  */
 export const extractPlayerName = (token: string): string | null => {
     if (!token) return null;
-    let s = token.replace(/\[[^\]]*\]/g, '').replace(/\([^)]*\)/g, '');
-    s = s.replace(/^[a-zA-Z0-9_-]+:\s*/, '');
-    s = s.replace(/[*~+]/g, '').trim();
-    const match = s.match(/\b([A-Za-z0-9_]{3,16})\b/);
-    return match ? match[1] : null;
+    let s = token.trim();
+    // Strip brackets like [Admin], [Mod], [VIP]
+    s = s.replace(/\[[^\]]*\]/g, '').trim();
+    // Strip parentheses like (AFK), (Guest)
+    s = s.replace(/\([^)]*\)/g, '').trim();
+    // Strip rank/group prefix like "default: Notch" or "Admin: Steve"
+    s = s.replace(/^[a-zA-Z0-9_-]+:\s*/, '').trim();
+    // Strip symbols like * ~ + -
+    s = s.replace(/^[*~+-]+\s*/, '').trim();
+
+    // A valid Minecraft Java Edition username must be strictly 3 to 16 alphanumeric characters or underscores
+    if (!/^[A-Za-z0-9_]{3,16}$/.test(s)) {
+        return null;
+    }
+
+    if (IGNORED_WORDS.has(s.toLowerCase())) {
+        return null;
+    }
+
+    return s;
 };
 
-// Vanilla, Paper, Purpur, Spigot, EssentialsX, Velocity patterns
-const LIST_COUNT_REGEX = /(?:There are\s+)?(\d+)\s*(?:of a max of|\/)\s*(\d+)\s*(?:players online)?/i;
+// Vanilla, Paper, Purpur, Spigot, EssentialsX, Velocity patterns:
+// "There are 0 out of maximum 20 players online."
+// "There are 1 of a max of 20 players online: Steve"
+// "There are 2/20 players online: Steve, Alex"
+// "There are 0 players online."
+const LIST_HEADER_REGEX = /^There are (\d+)\s*(?:of a max(?:imum)?(?: of)?|out of maximum|\/)?\s*(\d+)?\s*players online\.?:?\s*(.*)$/i;
+
 const JOIN_REGEX = /(?:UUID of player\s+([A-Za-z0-9_]{3,16})\s+is|\b([A-Za-z0-9_]{3,16})\b\s+(?:joined the game|connected|logged in))/i;
-const LEAVE_REGEX = /\b([A-Za-z0-9_]{3,16})\b\s+(?:left the game|lost connection|disconnected|timed out|left)/i;
+const LEAVE_REGEX = /\b([A-Za-z0-9_]{3,16})\b\s+(?:left the game|lost connection|disconnected|timed out)/i;
 
 export interface OnlinePlayer {
     name: string;
@@ -81,12 +139,16 @@ export default (counter = 0) => {
             const line = clean(raw);
             if (!line) return;
 
-            // 1. Check if we are waiting for player names on the line immediately following "There are X online:"
+            // 1. If we are awaiting player list on the immediately following line (e.g. EssentialsX / Paper next-line roster)
             if (expectingNextLine.current) {
                 const elapsed = Date.now() - expectingNextLine.current.timestamp;
                 if (elapsed < 3000) {
-                    const tokens = line.split(/[, ]+/);
-                    const names = tokens.map(extractPlayerName).filter(Boolean) as string[];
+                    // Split strictly by ',' (comma) - never split by spaces to guess player names!
+                    const rawTokens = line.split(',');
+                    const names = rawTokens
+                        .map(extractPlayerName)
+                        .filter((n): n is string => Boolean(n));
+
                     if (names.length > 0) {
                         setPlayers((prev) => {
                             const next: Record<string, OnlinePlayer> = {};
@@ -102,24 +164,27 @@ export default (counter = 0) => {
                 expectingNextLine.current = null;
             }
 
-            // 2. Check for "list" command output
-            const countMatch = line.match(LIST_COUNT_REGEX);
-            if (countMatch || /players online:?/i.test(line)) {
-                const onlineCount = countMatch ? parseInt(countMatch[1], 10) : -1;
+            // 2. Check for "There are X of Y players online"
+            const listHeaderMatch = line.match(LIST_HEADER_REGEX);
+            if (listHeaderMatch) {
+                const count = parseInt(listHeaderMatch[1], 10);
 
-                if (onlineCount === 0) {
+                // If count === 0: immediately clear players and reset waiting ref! NEVER parse any words when count === 0!
+                if (isNaN(count) || count === 0) {
                     setPlayers({});
                     expectingNextLine.current = null;
                     return;
                 }
 
-                // Extract player list from rest of line (after colon if present)
-                const colonIdx = line.indexOf(':');
-                const restOfLine = colonIdx !== -1 ? line.slice(colonIdx + 1).trim() : '';
+                // If count > 0:
+                const trailing = listHeaderMatch[3]?.trim();
+                if (trailing) {
+                    // Split ONLY trailing by ',' (comma)
+                    const rawTokens = trailing.split(',');
+                    const names = rawTokens
+                        .map(extractPlayerName)
+                        .filter((n): n is string => Boolean(n));
 
-                if (restOfLine) {
-                    const tokens = restOfLine.split(/[, ]+/);
-                    const names = tokens.map(extractPlayerName).filter(Boolean) as string[];
                     if (names.length > 0) {
                         setPlayers((prev) => {
                             const next: Record<string, OnlinePlayer> = {};
@@ -128,20 +193,22 @@ export default (counter = 0) => {
                             });
                             return next;
                         });
+                        expectingNextLine.current = null;
                         return;
                     }
-                } else if (onlineCount > 0) {
-                    // Next console line will contain player names (Paper/Purpur multi-line list)
-                    expectingNextLine.current = { count: onlineCount, timestamp: Date.now() };
-                    return;
                 }
+
+                // If trailing is empty or yielded no names (e.g. EssentialsX prints players on the next line: "default: Steve, Alex")
+                expectingNextLine.current = { count, timestamp: Date.now() };
+                return;
             }
 
             // 3. Track live Join events
             const joinMatch = line.match(JOIN_REGEX);
             if (joinMatch) {
-                const name = joinMatch[1] || joinMatch[2];
-                if (name && !['Server', 'CONSOLE', 'UUID'].includes(name)) {
+                const rawName = joinMatch[1] || joinMatch[2];
+                const name = extractPlayerName(rawName);
+                if (name) {
                     setPlayers((prev) => (prev[name] ? prev : { ...prev, [name]: { name, since: counter || Date.now() } }));
                     return;
                 }
@@ -150,8 +217,9 @@ export default (counter = 0) => {
             // 4. Track live Leave events
             const leaveMatch = line.match(LEAVE_REGEX);
             if (leaveMatch) {
-                const name = leaveMatch[1];
-                if (name && !['Server', 'CONSOLE', 'UUID'].includes(name)) {
+                const rawName = leaveMatch[1];
+                const name = extractPlayerName(rawName);
+                if (name) {
                     setPlayers((prev) => {
                         if (!prev[name]) return prev;
                         const next = { ...prev };
